@@ -1,4 +1,4 @@
-package org.sopt.certi_server.domain.user.domain;
+package org.sopt.certi_server.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,7 +14,15 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    public static User createUser(){
-        return new User();
+    @Column(name = "nickname")
+    private String nickname;
+
+
+    public User(String nickname){
+        this.nickname = nickname;
+    }
+
+    public static User createUser(String nickname){
+        return new User(nickname);
     }
 }

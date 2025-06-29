@@ -1,4 +1,4 @@
-package org.sopt.cerdeuk_server.global.config;
+package org.sopt.certi_server.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(
-                                "/api/v1/auth/sign-up",
+                                "/api/v1/auth/login-uri",
                                 "/api/v1/auth/login"
                                 ).permitAll()
                         .anyRequest().authenticated());
