@@ -17,12 +17,19 @@ public class User {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "email")
+    private String email;
 
-    public User(String nickname){
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
+    public User(String nickname, String email, String profileImageUrl){
         this.nickname = nickname;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl;
     }
 
-    public static User createUser(String nickname){
-        return new User(nickname);
+    public static User createUser(String nickname, String email, String profileImageUrl){
+        return new User(nickname, email, profileImageUrl);
     }
 }

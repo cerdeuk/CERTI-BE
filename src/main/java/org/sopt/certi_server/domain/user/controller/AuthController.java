@@ -2,9 +2,11 @@ package org.sopt.certi_server.domain.user.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.sopt.certi_server.domain.user.dto.request.LoginRequest;
 import org.sopt.certi_server.domain.user.dto.request.LoginUriRequest;
 import org.sopt.certi_server.domain.user.dto.response.LoginSuccessResponse;
 import org.sopt.certi_server.domain.user.dto.response.LoginUriResponse;
+import org.sopt.certi_server.domain.user.dto.response.UserInformation;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
 import org.sopt.certi_server.domain.user.service.AuthService;
 import org.sopt.certi_server.domain.user.service.SocialService;
@@ -21,11 +23,22 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping(value = "login-uri")
+    @GetMapping(value = "/login-uri")
     public ResponseEntity<SuccessResponse<LoginUriResponse>> processLoginUri(@Valid LoginUriRequest request){
         SocialType socialType = SocialType.from(request.socialType());
         SocialService socialService = authService.getSocialServiceByType(socialType);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, socialService.getAuthorizationUri()));
+    }
+
+    @GetMapping(value = "/login")
+    public ResponseEntity<SuccessResponse<LoginSuccessResponse>> processLogin(@Valid LoginRequest request){
+        SocialType socialType = SocialType.from(request.socialType());
+        SocialService socialService = authService.getSocialServiceByType(socialType);
+
+        UserInformation userInfo = socialService.getUserInfo(request.code());
+
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, authService.login(userInfo)));
+
     }
 
 }
