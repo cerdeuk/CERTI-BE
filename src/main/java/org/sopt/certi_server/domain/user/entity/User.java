@@ -4,17 +4,27 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "nickname")
+    @Column(name = "university_name")
+    private String universityName;
+
+    @Column(name = "track")
+    private String track;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "nickname", nullable = false)
     private String nickname;
 
     @Column(name = "email")

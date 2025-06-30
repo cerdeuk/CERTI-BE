@@ -2,10 +2,10 @@ package org.sopt.certi_server.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.sopt.certi_server.domain.user.dto.kakao.response.KakaoOAuthResponse;
-import org.sopt.certi_server.domain.user.dto.kakao.response.KakaoUserInformationResponse;
+import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoOAuthResponse;
+import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoUserInformationResponse;
 import org.sopt.certi_server.domain.user.dto.response.LoginUriResponse;
-import org.sopt.certi_server.domain.user.dto.response.UserInformation;
+import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
 import org.sopt.certi_server.global.client.KakaoApiFeignClient;
 import org.sopt.certi_server.global.client.KakaoOAuthFeignClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ public class KakaoService implements SocialService{
     }
 
     @Override
-    public UserInformation getUserInfo(String code) {
+    public OAuthUserInformation getUserInfo(String code) {
 
         KakaoOAuthResponse oauth = getOAuthToken(code);
         log.info("oauth info: {}", oauth);
@@ -44,7 +44,7 @@ public class KakaoService implements SocialService{
         log.info("kakao oauth access token: {}", accessToken);
         try{
             KakaoUserInformationResponse information = kakaoApiFeignClient.getInformation("Bearer " + accessToken);
-            return UserInformation.from(information);
+            return OAuthUserInformation.from(information);
         }catch (Exception e){
             log.error("kakao user data 획득 실패: {}", e.getMessage());
             throw e;

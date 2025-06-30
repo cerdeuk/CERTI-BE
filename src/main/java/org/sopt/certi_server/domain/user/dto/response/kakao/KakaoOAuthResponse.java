@@ -1,4 +1,4 @@
-package org.sopt.certi_server.domain.user.dto.kakao.response;
+package org.sopt.certi_server.domain.user.dto.response.kakao;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;

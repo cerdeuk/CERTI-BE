@@ -1,16 +1,16 @@
 package org.sopt.certi_server.domain.user.dto.response;
 
-import org.sopt.certi_server.domain.user.dto.kakao.response.KakaoUserInformationResponse;
+import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoUserInformationResponse;
 
-public record UserInformation(
+public record OAuthUserInformation(
         String email,
         String nickname,
         String profileImageUrl
 ) {
-    public static UserInformation from(
+    public static OAuthUserInformation from(
             KakaoUserInformationResponse information
     ){
-        return new UserInformation(
+        return new OAuthUserInformation(
                 information.kakaoAccount().email(),
                 information.kakaoAccount().profile().nickname(),
                 information.kakaoAccount().profile().profileImageUrl()

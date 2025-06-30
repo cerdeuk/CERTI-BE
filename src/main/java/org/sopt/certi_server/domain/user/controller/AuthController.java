@@ -4,16 +4,20 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.user.dto.request.LoginRequest;
 import org.sopt.certi_server.domain.user.dto.request.LoginUriRequest;
-import org.sopt.certi_server.domain.user.dto.response.LoginSuccessResponse;
+import org.sopt.certi_server.domain.user.dto.request.SignupRequest;
+import org.sopt.certi_server.domain.user.dto.response.AuthResponse;
+import org.sopt.certi_server.domain.user.dto.response.JwtResponse;
 import org.sopt.certi_server.domain.user.dto.response.LoginUriResponse;
-import org.sopt.certi_server.domain.user.dto.response.UserInformation;
+import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
 import org.sopt.certi_server.domain.user.service.AuthService;
 import org.sopt.certi_server.domain.user.service.SocialService;
+import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.code.SuccessCode;
 import org.sopt.certi_server.global.error.dto.SuccessResponse;
+import org.sopt.certi_server.global.error.exception.ForbiddenException;
+import org.sopt.certi_server.global.error.exception.UnauthorizedException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,14 +35,33 @@ public class AuthController {
     }
 
     @GetMapping(value = "/login")
-    public ResponseEntity<SuccessResponse<LoginSuccessResponse>> processLogin(@Valid LoginRequest request){
+    public ResponseEntity<SuccessResponse<AuthResponse>> processLogin(@Valid LoginRequest request){
         SocialType socialType = SocialType.from(request.socialType());
         SocialService socialService = authService.getSocialServiceByType(socialType);
 
-        UserInformation userInfo = socialService.getUserInfo(request.code());
+        OAuthUserInformation userInfo = socialService.getUserInfo(request.code());
 
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, authService.login(userInfo)));
 
     }
+
+    @PostMapping(value = "/sign-up")
+    public ResponseEntity<SuccessResponse<AuthResponse>> processSignup(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody SignupRequest request
+    ){
+        if(authorization == null){
+            throw new UnauthorizedException();
+        }
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE, authService.register(authorization, request.userInformation())));
+    }
+
+    @GetMapping(value = "/reissue")
+    public ResponseEntity<SuccessResponse<JwtResponse>> processReissue(
+            @RequestHeader("Authorization") String authorization
+    ){
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, authService.reIssueToken(authorization)));
+    }
+
 
 }

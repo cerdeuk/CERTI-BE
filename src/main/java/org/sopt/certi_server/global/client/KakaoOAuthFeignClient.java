@@ -1,6 +1,6 @@
 package org.sopt.certi_server.global.client;
 
-import org.sopt.certi_server.domain.user.dto.kakao.response.KakaoOAuthResponse;
+import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoOAuthResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;

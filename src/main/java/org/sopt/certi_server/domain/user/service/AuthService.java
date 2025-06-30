@@ -1,19 +1,17 @@
 package org.sopt.certi_server.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.sopt.certi_server.domain.user.dto.response.UserInformation;
+import org.sopt.certi_server.domain.user.dto.response.AuthResponse;
+import org.sopt.certi_server.domain.user.dto.response.JwtResponse;
+import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
 import org.sopt.certi_server.domain.user.entity.User;
-import org.sopt.certi_server.domain.user.dto.response.LoginSuccessResponse;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
 import org.sopt.certi_server.domain.user.repository.UserRepository;
-import org.sopt.certi_server.global.client.KakaoOAuthFeignClient;
-import org.sopt.certi_server.global.error.code.ErrorCode;
-import org.sopt.certi_server.global.error.exception.NotFoundException;
+import org.sopt.certi_server.global.error.exception.UnauthorizedException;
 import org.sopt.certi_server.global.jwt.util.JwtUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,24 +22,46 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final KakaoService kakaoService;
 
+    public AuthResponse login(OAuthUserInformation userInfo){
+        return userRepository.findByEmail(userInfo.email())
+                .map(this::handleExistingUser)
+                .orElseGet(() -> handleNewUser(userInfo));
+    }
+
+    private AuthResponse handleNewUser(OAuthUserInformation userInfo) {
+        String preSignupToken = jwtUtil.createPreSignupToken(userInfo.email());
+        return AuthResponse.ofNotRegisteredUser(preSignupToken, userInfo);
+    }
+
+    private AuthResponse handleExistingUser(User user) {
+        JwtResponse jwtResponse = issueToken(user.getId());
+        return AuthResponse.ofRegisteredUser(jwtResponse);
+    }
+
     @Transactional
-    public LoginSuccessResponse login(UserInformation userInfo){
-        Optional<User> userOpt = userRepository.findByEmail(userInfo.email());
-        // 이미 회원 가입한 회원
-        if(userOpt.isPresent()){
-            User findUser = userOpt.get();
-            String accessToken = jwtUtil.createAccessToken(findUser.getId());
-            String refreshToken = jwtUtil.createRefreshToken(findUser.getId());
-            return LoginSuccessResponse.of(accessToken, refreshToken);
+    public AuthResponse register(String authorization, OAuthUserInformation userInfo) {
+
+        String preSignupToken = jwtUtil.extractToken(authorization);
+
+        if(jwtUtil.isTokenExpired(preSignupToken)){
+            throw new UnauthorizedException();
         }
-        // 신규 가입 회원
-        else{
-            User newUser = User.createUser(userInfo.nickname(), userInfo.email(), userInfo.profileImageUrl());
-            userRepository.save(newUser);
-            String accessToken = jwtUtil.createAccessToken(newUser.getId());
-            String refreshToken = jwtUtil.createRefreshToken(newUser.getId());
-            return LoginSuccessResponse.of(accessToken, refreshToken);
+
+        User newUser = User.createUser(userInfo.nickname(), userInfo.email(), userInfo.profileImageUrl());
+        userRepository.save(newUser);
+        JwtResponse token = issueToken(newUser.getId());
+        return AuthResponse.ofRegisteredUser(token);
+    }
+
+    public JwtResponse reIssueToken(String authorization) {
+        String refreshToken = jwtUtil.extractToken(authorization);
+
+        boolean tokenExpired = jwtUtil.isTokenExpired(refreshToken);
+        if(tokenExpired){
+            throw new UnauthorizedException();
         }
+        Long userId = jwtUtil.getUserId(refreshToken);
+        return issueToken(userId);
     }
 
     public SocialService getSocialServiceByType(SocialType socialType) {
@@ -49,5 +69,11 @@ public class AuthService {
             case KAKAO -> kakaoService;
             case APPLE -> null;
         };
+    }
+
+    public JwtResponse issueToken(Long userId){
+        String accessToken = jwtUtil.createAccessToken(userId);
+        String refreshToken = jwtUtil.createRefreshToken(userId);
+        return JwtResponse.of(accessToken, refreshToken);
     }
 }
