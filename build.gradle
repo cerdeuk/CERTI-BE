@@ -56,6 +56,9 @@ dependencies {
 	// Feign
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.3.0'
 
+	// Feign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.3.0'
+
 }
 
 tasks.named('test') {
