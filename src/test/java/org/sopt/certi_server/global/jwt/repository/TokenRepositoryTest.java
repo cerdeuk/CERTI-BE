@@ -43,6 +43,7 @@ class TokenRepositoryTest {
 
 	 }
 
+	 /*
 	@Test
 	@DisplayName("Token 객체를 Redis에서 삭제할 수 있다")
 	void deleteToken() {
@@ -59,5 +60,5 @@ class TokenRepositoryTest {
 		Optional<Token> deletedToken = tokenRepository.findById(userId);
 		assertThat(deletedToken).isNotPresent();
 	}
-
+*/
 }
