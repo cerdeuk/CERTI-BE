@@ -1,4 +1,4 @@
-package org.sopt.certi_server.global.jwt.entity;
+package org.sopt.certi_server.global.jwt.domain.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;

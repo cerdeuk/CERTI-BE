@@ -1,0 +1,46 @@
+package org.sopt.certi_server.global.jwt.core;
+
+import io.jsonwebtoken.Jwts;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.sopt.certi_server.global.jwt.config.JwtProperties;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
+import java.util.Map;
+
+@Component
+@Slf4j
+@RequiredArgsConstructor
+public class JwtProvider {
+
+    private static final String USER_ID = "userId";
+    private static final String USER_EMAIL = "userEmail";
+
+    private final JwtProperties jwtProperties;
+    private final SecretKey secretKey;
+
+    public String generateAccessToken(Long userId) {
+        return generateToken(Map.of(USER_ID, userId), jwtProperties.getAccessTokenExpirationTime());
+    }
+
+    public String generateRefreshToken(Long userId) {
+        return generateToken(Map.of(USER_ID, userId), jwtProperties.getRefreshTokenExpirationTime());
+    }
+
+    public String generatePreSignupToken(String email) {
+        return generateToken(Map.of(USER_EMAIL, email), jwtProperties.getPreSignupTokenExpirationTime());
+    }
+
+    public String generateToken(Map<String, Object> claims, long expirationTime){
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + expirationTime);
+        return Jwts.builder()
+                .claims(claims)
+                .issuedAt(now)
+                .expiration(expiry)
+                .signWith(secretKey)
+                .compact();
+    }
+}

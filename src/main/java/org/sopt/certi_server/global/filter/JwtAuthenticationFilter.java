@@ -7,7 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.global.error.exception.UnauthorizedException;
-import org.sopt.certi_server.global.jwt.util.JwtUtil;
+import org.sopt.certi_server.global.jwt.core.JwtExtractor;
+import org.sopt.certi_server.global.jwt.core.JwtValidator;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,19 +36,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/v1/auth/sign-up"
     );
 
-    private final JwtUtil jwtUtil;
+    private final JwtExtractor jwtExtractor;
+    private final JwtValidator jwtValidator;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
-        String token = jwtUtil.extractToken(authorization);
-        boolean tokenExpired = jwtUtil.isTokenExpired(token);
+        String token = jwtExtractor.extractToken(authorization);
+        boolean tokenExpired = jwtValidator.isExpired(token);
 
         if(tokenExpired){
             throw new UnauthorizedException();
         }
 
-        Long userId = jwtUtil.getUserId(token);
+        Long userId = jwtExtractor.extractUserId(token);
         authenticate(request, userId);
         filterChain.doFilter(request, response);
     }

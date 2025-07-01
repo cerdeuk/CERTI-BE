@@ -1,6 +1,7 @@
 package org.sopt.certi_server.domain.user.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.user.dto.request.LoginRequest;
 import org.sopt.certi_server.domain.user.dto.request.LoginUriRequest;
@@ -47,7 +48,7 @@ public class AuthController {
 
     @PostMapping(value = "/sign-up")
     public ResponseEntity<SuccessResponse<AuthResponse>> processSignup(
-            @RequestHeader("Authorization") String authorization,
+            @RequestHeader("Authorization") @NotEmpty(message = "해당 api에는 authorization 헤더가 필수입니다.") String authorization,
             @RequestBody SignupRequest request
     ){
         if(authorization == null){
@@ -58,7 +59,7 @@ public class AuthController {
 
     @GetMapping(value = "/reissue")
     public ResponseEntity<SuccessResponse<JwtResponse>> processReissue(
-            @RequestHeader("Authorization") String authorization
+            @RequestHeader("Authorization") @NotEmpty(message = "해당 api에는 authorization 헤더가 필수입니다.") String authorization
     ){
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, authService.reIssueToken(authorization)));
     }
