@@ -51,9 +51,6 @@ public class AuthController {
             @RequestHeader("Authorization") @NotEmpty(message = "해당 api에는 authorization 헤더가 필수입니다.") String authorization,
             @RequestBody SignupRequest request
     ){
-        if(authorization == null){
-            throw new UnauthorizedException();
-        }
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE, authService.register(authorization, request.userInformation())));
     }
 
