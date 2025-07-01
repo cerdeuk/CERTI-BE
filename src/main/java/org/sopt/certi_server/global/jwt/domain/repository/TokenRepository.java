@@ -1,8 +1,8 @@
-package org.sopt.certi_server.global.jwt.repository;
+package org.sopt.certi_server.global.jwt.domain.repository;
 
 import java.util.Optional;
 
-import org.sopt.certi_server.global.jwt.entity.Token;
+import org.sopt.certi_server.global.jwt.domain.entity.Token;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

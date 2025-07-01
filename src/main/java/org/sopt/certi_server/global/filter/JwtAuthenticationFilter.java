@@ -7,7 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.global.error.exception.UnauthorizedException;
-import org.sopt.certi_server.global.jwt.util.JwtUtil;
+import org.sopt.certi_server.global.jwt.core.JwtExtractor;
+import org.sopt.certi_server.global.jwt.core.JwtValidator;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,28 +26,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final List<String> EXCLUDE_URL_GET = Arrays.asList(
             "/swagger-ui/**",
             "/v3/api-docs/**",
-            "/api/v1/auth/login-url",
-            "/api/v1/auth/reissue"
+            "/api/v1/auth/login-uri",
+            "/api/v1/auth/reissue",
+            "/api/v1/auth/login"
     );
 
 
     private static final List<String> EXCLUDE_URL_POST = Arrays.asList(
-            "/api/v1/auth/sign-up",
-            "/api/v1/auth/login"
+            "/api/v1/auth/sign-up"
     );
 
-    private final JwtUtil jwtUtil;
+    private final JwtExtractor jwtExtractor;
+    private final JwtValidator jwtValidator;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = jwtUtil.extractToken(request);
-        boolean tokenExpired = jwtUtil.isTokenExpired(token);
+        String authorization = request.getHeader("Authorization");
+        String token = jwtExtractor.extractToken(authorization);
+        boolean tokenExpired = jwtValidator.isExpired(token);
 
         if(tokenExpired){
             throw new UnauthorizedException();
         }
 
-        Long userId = jwtUtil.getUserId(token);
+        Long userId = jwtExtractor.extractUserId(token);
         authenticate(request, userId);
         filterChain.doFilter(request, response);
     }

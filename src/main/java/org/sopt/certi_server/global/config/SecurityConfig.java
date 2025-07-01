@@ -1,10 +1,11 @@
-package org.sopt.cerdeuk_server.global.config;
+package org.sopt.certi_server.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.sopt.certi_server.global.jwt.util.JwtUtil;
+import org.sopt.certi_server.global.jwt.core.JwtExtractor;
 import org.sopt.certi_server.global.filter.ExceptionHandlerFilter;
 import org.sopt.certi_server.global.filter.JwtAuthenticationFilter;
+import org.sopt.certi_server.global.jwt.core.JwtValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtUtil jwtUtil;
+    private final JwtExtractor jwtExtractor;
+    private final JwtValidator jwtValidator;
     private final ObjectMapper objectMapper;
 
     @Bean
@@ -40,13 +42,15 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(
+                                "/api/v1/auth/login-uri",
+                                "/api/v1/auth/login",
                                 "/api/v1/auth/sign-up",
-                                "/api/v1/auth/login"
+                                "/api/v1/auth/reissue"
                                 ).permitAll()
                         .anyRequest().authenticated());
 
         http
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtExtractor, jwtValidator), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new ExceptionHandlerFilter(objectMapper), JwtAuthenticationFilter.class);
         // 세션 설정
         http

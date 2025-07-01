@@ -1,4 +1,4 @@
-package org.sopt.certi_server.global.jwt.repository;
+package org.sopt.certi_server.global.jwt.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.sopt.certi_server.global.jwt.entity.Token;
+import org.sopt.certi_server.global.jwt.domain.entity.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
