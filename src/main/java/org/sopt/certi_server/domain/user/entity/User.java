@@ -2,8 +2,12 @@ package org.sopt.certi_server.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import org.sopt.certi_server.domain.user.entity.enums.CollegeType;
+import org.sopt.certi_server.domain.user.entity.enums.MajorType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
 @Entity
@@ -33,6 +37,12 @@ public class User extends BaseTimeEntity {
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
+    @Enumerated(EnumType.STRING)
+    private CollegeType collegeType;
+
+    @Enumerated(EnumType.STRING)
+    private MajorType majorType;
+
     public User(String nickname, String email, String profileImageUrl){
         this.nickname = nickname;
         this.email = email;
@@ -41,5 +51,19 @@ public class User extends BaseTimeEntity {
 
     public static User createUser(String nickname, String email, String profileImageUrl){
         return new User(nickname, email, profileImageUrl);
+    }
+
+    @Builder
+    public User(Long id, String universityName, String track, String phoneNumber, String nickname, String email,
+        String profileImageUrl, CollegeType collegeType, MajorType majorType) {
+        this.id = id;
+        this.universityName = universityName;
+        this.track = track;
+        this.phoneNumber = phoneNumber;
+        this.nickname = nickname;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl;
+        this.collegeType = collegeType;
+        this.majorType = majorType;
     }
 }
