@@ -20,11 +20,10 @@ public enum MajorType {
 	private final String majorTypeName;
 
 	public static MajorType fromCollegeType(String majorTypeName) {
-		for (MajorType majorType : MajorType.values()) {
-			if (majorType.majorTypeName.equals(majorTypeName)) {
-				return majorType;
-			}
+		try{
+			return MajorType.valueOf(majorTypeName);
+		}catch(IllegalArgumentException e){
+			throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
 		}
-		throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
 	}
 }

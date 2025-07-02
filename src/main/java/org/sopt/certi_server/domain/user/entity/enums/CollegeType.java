@@ -17,11 +17,10 @@ public enum CollegeType {
 	private final String collegeName;
 
 	public static CollegeType from(String collegeName){
-		for(CollegeType c : CollegeType.values()){
-			if(c.collegeName.equals(collegeName)){
-				return c;
-			}
+		try{
+			return CollegeType.valueOf(collegeName);
+		}catch(IllegalArgumentException e){
+			throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
 		}
-		throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
 	}
 }
