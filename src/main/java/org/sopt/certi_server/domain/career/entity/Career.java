@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "carrer")
+@Table(name = "career")
 public class Career {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
