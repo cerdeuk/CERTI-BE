@@ -3,7 +3,7 @@ package org.sopt.certi_server.domain.career.service;
 import java.util.List;
 
 import org.sopt.certi_server.domain.career.dto.request.CreateCareerRequest;
-import org.sopt.certi_server.domain.career.dto.response.CareerResponse;
+import org.sopt.certi_server.domain.career.dto.response.CareerDetailResponse;
 import org.sopt.certi_server.domain.career.entity.Career;
 import org.sopt.certi_server.domain.career.repository.CareerRepository;
 import org.sopt.certi_server.domain.user.entity.User;
@@ -14,15 +14,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class CareerService {
 	private final CareerRepository careerRepository;
 	private final UserService userService;
 
-	public List<CareerResponse> getCareerList(final Long userId){
+	public List<CareerDetailResponse> getCareerList(final Long userId){
 		//사용자 검증
 		User user = userService.getUser(userId);
 
@@ -30,7 +32,7 @@ public class CareerService {
 		List<Career> careers = careerRepository.findByUserId(userId);
 
 		return careers.stream()
-			.map(CareerResponse::of)
+			.map(CareerDetailResponse::of)
 			.toList();
 	}
 
@@ -53,9 +55,11 @@ public class CareerService {
 	@Transactional
 	public void deleteCareer(final Long userId, final Long careerId) {
 		User user = userService.getUser(userId);
+
 		Career career = careerRepository.findByUserIdAndId(userId, careerId)
 			.orElseThrow(()-> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
 
+		log.info("Deleting career " + careerId);
 		careerRepository.delete(career);
 	}
 }

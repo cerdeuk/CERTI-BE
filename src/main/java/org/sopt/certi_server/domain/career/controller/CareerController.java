@@ -3,9 +3,8 @@ package org.sopt.certi_server.domain.career.controller;
 import java.util.List;
 
 import org.sopt.certi_server.domain.career.dto.request.CreateCareerRequest;
-import org.sopt.certi_server.domain.career.dto.response.CareerResponse;
+import org.sopt.certi_server.domain.career.dto.response.CareerDetailResponse;
 import org.sopt.certi_server.domain.career.dto.response.GetCareersReponse;
-import org.sopt.certi_server.domain.career.entity.Career;
 import org.sopt.certi_server.domain.career.service.CareerService;
 import org.sopt.certi_server.global.error.code.SuccessCode;
 import org.sopt.certi_server.global.error.dto.SuccessResponse;
@@ -31,16 +30,17 @@ public class CareerController {
 
 	@GetMapping
 	public ResponseEntity<SuccessResponse<GetCareersReponse>> getCareers(
-		@AuthenticationPrincipal @NotBlank(message = "사용자 ID는 필수 값입니다") Long userId){
-		List<CareerResponse> careerResponseList = careerService.getCareerList(userId);
-		GetCareersReponse getCareersReponse = GetCareersReponse.of(careerResponseList);
+		@AuthenticationPrincipal Long userId
+		){
+		List<CareerDetailResponse> careerDetailResponseList = careerService.getCareerList(userId);
+		GetCareersReponse getCareersReponse = GetCareersReponse.of(careerDetailResponseList);
 
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, getCareersReponse));
 	}
 
 	@PostMapping
 	public ResponseEntity<SuccessResponse> createCareer(
-		@AuthenticationPrincipal @NotBlank(message = "사용자 ID는 필수 입력값입니다") Long userId,
+		@AuthenticationPrincipal Long userId,
 		@Valid @RequestBody CreateCareerRequest request
 	){
 		careerService.createCareer(userId, request);
@@ -49,8 +49,8 @@ public class CareerController {
 
 	@DeleteMapping("/{career-id}")
 	public ResponseEntity<SuccessResponse> deleteCareer(
-		@AuthenticationPrincipal @NotBlank(message = "사용자 ID는 필수 입력값입니다") Long userId,
-		@PathVariable Long careerId
+		@AuthenticationPrincipal Long userId,
+		@PathVariable("career-id") Long careerId
 	){
 		careerService.deleteCareer(userId, careerId);
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_DELETE));

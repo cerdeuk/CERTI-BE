@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 
 @Builder
-public record CareerResponse(
+public record CareerDetailResponse(
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM", timezone = "Asia/Seoul")
 	LocalDate startAt,
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM", timezone = "Asia/Seoul")
@@ -18,8 +18,8 @@ public record CareerResponse(
 	String description,
 	String place
 ) {
-	public static CareerResponse of(Career career) {
-		return CareerResponse.builder()
+	public static CareerDetailResponse of(Career career) {
+		return CareerDetailResponse.builder()
 			.startAt(career.getStartAt())
 			.endAt(career.getEndAt())
 			.name(career.getName())
