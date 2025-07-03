@@ -1,9 +1,14 @@
 package org.sopt.certi_server.domain.certification.service;
 
 import lombok.RequiredArgsConstructor;
+import org.bouncycastle.asn1.pkcs.CertificationRequest;
+import org.sopt.certi_server.domain.agency.entity.Agency;
+import org.sopt.certi_server.domain.agency.repository.AgencyRepository;
 import org.sopt.certi_server.domain.category.entity.Category;
+import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.entity.Certification;
+import org.sopt.certi_server.domain.certification.entity.enums.TestType;
 import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
@@ -18,11 +23,35 @@ import java.util.List;
 public class CertificationService {
 
     private final CertificationRepository certificationRepository;
+    private final AgencyRepository agencyRepository;
 
     public CertificationDetailResponse getCertificationDetail(Long certificationId){
         Certification certification = certificationRepository.findById(certificationId).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
         List<Category> categories = certificationRepository.getCategoriesByCertificationId(certificationId);
         return CertificationDetailResponse.from(certification, categories);
+    }
+
+    @Transactional
+    public void createCertification(CertificationCreateRequest request) {
+        Agency findAgency = agencyRepository.findById(request.agencyId()).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+        TestType testType = TestType.from(request.testType());
+        Certification newCertification = convertDtoToEntity(request, testType, findAgency);
+        certificationRepository.save(newCertification);
+    }
+
+    private Certification convertDtoToEntity(CertificationCreateRequest request, TestType testType, Agency agency) {
+        return Certification.builder()
+                .agency(agency)
+                .name(request.certificationName())
+                .testType(testType)
+                .averagePeriod(request.averagePeriod())
+                .charge(request.charge())
+                .description(request.description())
+                .testDate(request.testDate())
+                .applicationMethod(request.applicationMethod())
+                .cardImageUrl(request.cardImageUrl())
+                .applicationUrl(request.applicationUrl())
+                .build();
     }
 
 }

@@ -32,6 +32,7 @@ public class FavoriteService {
                 .collect(Collectors.toList()));
     }
 
+    @Transactional
     public boolean toggleFavorite(Long userId, Long certificationId) {
 
         User user = userRepository.findById(userId)

@@ -9,10 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController(value = "/api/v1/home/favorite")
+@RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/api/v1/home/favorite")
 public class FavoriteController {
 
     private final FavoriteService favoriteService;

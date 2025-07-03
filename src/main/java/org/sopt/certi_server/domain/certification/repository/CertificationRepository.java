@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface CertificationRepository extends JpaRepository<Certification, Long> {
 
-    @Query("select cat from CertificationCategory cc join fetch cc.category cat where cc.certification.id = :certificationId")
+    @Query("select cat from CertificationCategory cc join cc.category cat where cc.certification.id = :certificationId")
     List<Category> getCategoriesByCertificationId(Long certificationId);
 }

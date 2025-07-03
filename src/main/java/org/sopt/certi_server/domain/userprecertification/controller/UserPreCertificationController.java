@@ -37,7 +37,7 @@ public class UserPreCertificationController {
     @DeleteMapping(value = "/{certificationId}")
     public ResponseEntity<SuccessResponse<Void>> deletePreCertification(
             @AuthenticationPrincipal @NotNull(message = "인증되지 않은 사용자입니다.") Long userId,
-            Long certificationId
+            @PathVariable Long certificationId
     ){
         userPreCertificationService.deletePreCertification(userId, certificationId);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_DELETE));

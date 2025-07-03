@@ -11,7 +11,15 @@ import java.util.List;
 
 public interface UserPreCertificationRepository extends JpaRepository<UserPreCertification, Long> {
 
-    @Query("select upc from UserPreCertification upc join fetch upc.certification where upc.user.id = :userId")
+
+    // 원래 fetch join의 대상에는 별칭을 지정해주어선 안되지만, 체인 형식으로 쓰는 경우에는 사용할 수 있도록 함
+    @Query("""
+
+            select upc 
+            from UserPreCertification upc 
+            join fetch upc.certification c 
+            join fetch c.agency
+            where upc.user.id = :userId""")
     List<UserPreCertification> getPreCertificationsByUserId(Long userId);
 
     void deleteByUserAndCertification(User user, Certification certification);

@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.certification.controller;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.favorite.service.FavoriteService;
@@ -20,8 +21,14 @@ public class CertificationController {
     private final FavoriteService favoriteService;
 
     @GetMapping(value = "/{certificationId}")
-    public ResponseEntity<SuccessResponse<CertificationDetailResponse>> getCertification(Long certificationId){
+    public ResponseEntity<SuccessResponse<CertificationDetailResponse>> getCertification(@PathVariable Long certificationId){
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.getCertificationDetail(certificationId)));
+    }
+
+    @PostMapping
+    public ResponseEntity<SuccessResponse<Void>> addCertification(@RequestBody CertificationCreateRequest request){
+        certificationService.createCertification(request);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
     }
 
     @PostMapping(value = "/{certificationId}/favorite")

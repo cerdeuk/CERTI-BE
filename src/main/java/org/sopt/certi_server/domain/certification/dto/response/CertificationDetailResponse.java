@@ -10,7 +10,7 @@ public record CertificationDetailResponse(
         Long certificationId,
         String certificationName,
         List<String> categories,
-        Long averagePeriod,
+        String averagePeriod,
         Long charge,
         String agency,
         String applicationUrl,
