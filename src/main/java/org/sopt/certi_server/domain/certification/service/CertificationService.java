@@ -26,17 +26,25 @@ public class CertificationService {
     private final AgencyRepository agencyRepository;
 
     public CertificationDetailResponse getCertificationDetail(Long certificationId){
-        Certification certification = certificationRepository.findById(certificationId).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+        Certification certification = getCertification(certificationId);
         List<Category> categories = certificationRepository.getCategoriesByCertificationId(certificationId);
         return CertificationDetailResponse.from(certification, categories);
     }
 
     @Transactional
     public void createCertification(CertificationCreateRequest request) {
-        Agency findAgency = agencyRepository.findById(request.agencyId()).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+        Agency findAgency = getAgency(request);
         TestType testType = TestType.from(request.testType());
         Certification newCertification = convertDtoToEntity(request, testType, findAgency);
         certificationRepository.save(newCertification);
+    }
+
+    public Certification getCertification(Long certificationId) {
+        return certificationRepository.findById(certificationId).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    private Agency getAgency(CertificationCreateRequest request) {
+        return agencyRepository.findById(request.agencyId()).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
     }
 
     private Certification convertDtoToEntity(CertificationCreateRequest request, TestType testType, Agency agency) {

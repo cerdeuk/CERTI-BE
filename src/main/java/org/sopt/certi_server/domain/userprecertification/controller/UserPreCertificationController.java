@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.userprecertification.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.userprecertification.dto.request.UserPreCertificationRequest;
@@ -28,7 +29,7 @@ public class UserPreCertificationController {
     @PostMapping
     public ResponseEntity<SuccessResponse<Void>> addPreCertification(
             @AuthenticationPrincipal @NotNull(message = "인증되지 않은 사용자입니다.") Long userId,
-            @RequestBody UserPreCertificationRequest request
+            @RequestBody @Valid UserPreCertificationRequest request
     ){
         userPreCertificationService.createNewPreCertification(userId, request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
