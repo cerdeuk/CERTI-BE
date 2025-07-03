@@ -1,6 +1,7 @@
 package org.sopt.certi_server.domain.user.dto.response;
 
-import org.sopt.certi_server.domain.user.dto.kakao.response.KakaoUserInformationResponse;
+
+import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoUserInformationResponse;
 
 public record UserInformation(
         String email,
