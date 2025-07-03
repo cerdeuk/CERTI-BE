@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.career.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.sopt.certi_server.domain.user.entity.User;
@@ -14,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,10 +33,10 @@ public class Career {
 	private String name;
 
 	@Column(name = "created_at", nullable = false)
-	private LocalDateTime createdAt;
+	private LocalDate startAt;
 
 	@Column(name = "end_at", nullable = false)
-	private LocalDateTime endAt;
+	private LocalDate endAt;
 
 	@Column(name = "place", nullable = false)
 	private String place;
@@ -45,4 +47,16 @@ public class Career {
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
+
+	@Builder
+	public Career(Long id, String name, LocalDate startAt, LocalDate endAt, String place, String description,
+		User user) {
+		this.id = id;
+		this.name = name;
+		this.startAt = startAt;
+		this.endAt = endAt;
+		this.place = place;
+		this.description = description;
+		this.user = user;
+	}
 }
