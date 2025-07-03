@@ -1,22 +1,19 @@
-package org.sopt.certi_server.domain.acquisition.entity;
+package org.sopt.certi_server.domain.userprecertification.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
-import org.sopt.certi_server.global.entity.BaseTimeEntity;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Acquisition extends BaseTimeEntity {
-
+@Table(name = "user_pre_certification")
+public class UserPreCertification {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "acquisition_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,5 +24,16 @@ public class Acquisition extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private LocalDateTime acquisitionDate;
+    @Builder
+    public UserPreCertification(User user, Certification certification) {
+        this.user = user;
+        this.certification = certification;
+    }
+
+    public static UserPreCertification create(User user, Certification certification) {
+        return UserPreCertification.builder()
+                .user(user)
+                .certification(certification)
+                .build();
+    }
 }

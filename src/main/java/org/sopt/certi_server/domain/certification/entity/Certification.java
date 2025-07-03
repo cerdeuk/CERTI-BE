@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.sopt.certi_server.domain.agency.entity.Agency;
+import org.sopt.certi_server.domain.certification.entity.enums.TestType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
 @Entity
@@ -23,6 +24,9 @@ public class Certification extends BaseTimeEntity {
     private Agency agency;
 
     private String name;
+
+    @Enumerated(value = EnumType.STRING)
+    private TestType testType;
 
     private Long averagePeriod;
 

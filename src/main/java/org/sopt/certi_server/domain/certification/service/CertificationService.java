@@ -5,7 +5,6 @@ import org.sopt.certi_server.domain.category.entity.Category;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
-import org.sopt.certi_server.domain.certificationcategory.repository.CertificationCategoryRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -19,11 +18,10 @@ import java.util.List;
 public class CertificationService {
 
     private final CertificationRepository certificationRepository;
-    private final CertificationCategoryRepository certificationCategoryRepository;
 
     public CertificationDetailResponse getCertificationDetail(Long certificationId){
         Certification certification = certificationRepository.findById(certificationId).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
-        List<Category> categories = certificationCategoryRepository.getCategoriesByCertificationId(certificationId);
+        List<Category> categories = certificationRepository.getCategoriesByCertificationId(certificationId);
         return CertificationDetailResponse.from(certification, categories);
     }
 
