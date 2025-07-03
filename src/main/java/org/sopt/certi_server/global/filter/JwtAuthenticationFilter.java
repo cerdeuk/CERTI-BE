@@ -28,12 +28,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/v3/api-docs/**",
             "/api/v1/auth/login-uri",
             "/api/v1/auth/reissue",
-            "/api/v1/auth/login"
+            "/api/v1/auth/login",
+            "/api/v1/careers/**"
     );
 
 
     private static final List<String> EXCLUDE_URL_POST = Arrays.asList(
-            "/api/v1/auth/sign-up"
+            "/api/v1/auth/sign-up",
+            "/api/v1/careers/**"
+    );
+
+    private static final List<String> EXCLUDE_URL_DELETE = Arrays.asList(
+        "/api/v1/careers/**"
     );
 
     private final JwtExtractor jwtExtractor;
@@ -71,6 +77,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (method.equals(HttpMethod.POST.name())){
             return EXCLUDE_URL_POST.stream().anyMatch(exclude -> new AntPathMatcher().match(exclude, path));
+        }
+        if(method.equals(HttpMethod.DELETE.name())){
+            return EXCLUDE_URL_DELETE.stream().anyMatch(exclude -> new AntPathMatcher().match(exclude, path));
         }
         return false;
     }
