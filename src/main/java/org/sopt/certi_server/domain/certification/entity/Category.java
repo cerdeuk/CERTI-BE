@@ -1,4 +1,4 @@
-package org.sopt.certi_server.domain.category.entity;
+package org.sopt.certi_server.domain.certification.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

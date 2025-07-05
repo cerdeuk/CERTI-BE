@@ -1,9 +1,9 @@
-package org.sopt.certi_server.domain.career.repository;
+package org.sopt.certi_server.domain.user.repository;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.sopt.certi_server.domain.career.entity.Career;
+import org.sopt.certi_server.domain.user.entity.Career;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

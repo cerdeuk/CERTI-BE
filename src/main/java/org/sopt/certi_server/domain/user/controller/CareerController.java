@@ -1,11 +1,11 @@
-package org.sopt.certi_server.domain.career.controller;
+package org.sopt.certi_server.domain.user.controller;
 
 import java.util.List;
 
-import org.sopt.certi_server.domain.career.dto.request.CreateCareerRequest;
-import org.sopt.certi_server.domain.career.dto.response.CareerDetailResponse;
-import org.sopt.certi_server.domain.career.dto.response.GetCareersReponse;
-import org.sopt.certi_server.domain.career.service.CareerService;
+import org.sopt.certi_server.domain.user.dto.request.CreateCareerRequest;
+import org.sopt.certi_server.domain.user.dto.response.CareerDetailResponse;
+import org.sopt.certi_server.domain.user.dto.response.GetCareersReponse;
+import org.sopt.certi_server.domain.user.service.CareerService;
 import org.sopt.certi_server.global.error.code.SuccessCode;
 import org.sopt.certi_server.global.error.dto.SuccessResponse;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @RestController

@@ -1,7 +1,6 @@
-package org.sopt.certi_server.domain.usermajor.entity;
+package org.sopt.certi_server.domain.user.entity;
 
-import org.sopt.certi_server.domain.Major.entity.Major;
-import org.sopt.certi_server.domain.user.entity.User;
+import org.sopt.certi_server.domain.major.entity.MajorImpl;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,8 +14,8 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "user_major")
-public class UserMajor {
+@Table(name = "user_major_impl")
+public class UserMajorImpl {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,7 +24,7 @@ public class UserMajor {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Major.class)
-	@JoinColumn(name = "major_id")
-	private Major major;
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = MajorImpl.class)
+	@JoinColumn(name = "major_impl_id")
+	private MajorImpl majorImpl;
 }

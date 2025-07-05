@@ -1,4 +1,4 @@
-package org.sopt.certi_server.domain.activity.entity;
+package org.sopt.certi_server.domain.user.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

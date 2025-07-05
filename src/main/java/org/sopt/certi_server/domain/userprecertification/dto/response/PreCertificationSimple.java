@@ -2,8 +2,6 @@ package org.sopt.certi_server.domain.userprecertification.dto.response;
 
 import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
 
-import java.time.LocalDateTime;
-
 public record PreCertificationSimple(
         Long certificationId,
         String certificationName,
@@ -13,6 +11,6 @@ public record PreCertificationSimple(
 ) {
 
     public static PreCertificationSimple from(UserPreCertification upc){
-        return new PreCertificationSimple(upc.getCertification().getId(), upc.getCertification().getName(), upc.getCertification().getAveragePeriod(),upc.getCertification().getTestDate(), upc.getCertification().getAgency().getName());
+        return new PreCertificationSimple(upc.getCertification().getId(), upc.getCertification().getName(), upc.getCertification().getAveragePeriod(),upc.getCertification().getTestDateInformation(), upc.getCertification().getAgency().getName());
     }
 }
