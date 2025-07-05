@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import org.sopt.certi_server.domain.user.entity.enums.CollegeType;
-import org.sopt.certi_server.domain.user.entity.enums.MajorType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
 @Entity
@@ -40,9 +39,6 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private CollegeType collegeType;
 
-    @Enumerated(EnumType.STRING)
-    private MajorType majorType;
-
     public User(String nickname, String email, String profileImageUrl){
         this.nickname = nickname;
         this.email = email;
@@ -55,7 +51,7 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(Long id, String universityName, String track, String phoneNumber, String nickname, String email,
-        String profileImageUrl, CollegeType collegeType, MajorType majorType) {
+        String profileImageUrl, CollegeType collegeType) {
         this.id = id;
         this.universityName = universityName;
         this.track = track;
@@ -64,6 +60,5 @@ public class User extends BaseTimeEntity {
         this.email = email;
         this.profileImageUrl = profileImageUrl;
         this.collegeType = collegeType;
-        this.majorType = majorType;
     }
 }
