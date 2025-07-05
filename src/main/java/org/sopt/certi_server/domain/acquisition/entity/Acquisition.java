@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import org.sopt.certi_server.domain.acquisition.entity.enums.CardType;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
@@ -23,6 +24,9 @@ public class Acquisition extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "certification_id")
     private Certification certification;
+
+    @Enumerated(value = EnumType.STRING)
+    private CardType cardType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

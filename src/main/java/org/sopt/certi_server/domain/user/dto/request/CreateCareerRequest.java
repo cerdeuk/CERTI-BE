@@ -1,4 +1,4 @@
-package org.sopt.certi_server.domain.career.dto.request;
+package org.sopt.certi_server.domain.user.dto.request;
 
 import java.time.LocalDate;
 

@@ -1,8 +1,8 @@
-package org.sopt.certi_server.domain.career.dto.response;
+package org.sopt.certi_server.domain.user.dto.response;
 
 import java.time.LocalDate;
 
-import org.sopt.certi_server.domain.career.entity.Career;
+import org.sopt.certi_server.domain.user.entity.Career;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

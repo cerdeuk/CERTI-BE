@@ -5,10 +5,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.sopt.certi_server.domain.agency.entity.Agency;
-import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.entity.enums.TestType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,11 +35,17 @@ public class Certification extends BaseTimeEntity {
 
     private Long charge;
 
+    @ElementCollection
+    @CollectionTable(name = "tags")
+    private List<String> tags = new ArrayList<>();
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(columnDefinition = "TEXT")
-    private String testDate;
+    private String testDateInformation;
+
+    private LocalDate nearestTestDate;
 
     @Column(columnDefinition = "TEXT")
     private String applicationMethod;
@@ -55,6 +63,8 @@ public class Certification extends BaseTimeEntity {
             Long charge,
             String description,
             String testDate,
+            LocalDate nearestTestDate,
+            List<String> tags,
             String applicationMethod,
             String cardImageUrl,
             String applicationUrl
@@ -65,7 +75,9 @@ public class Certification extends BaseTimeEntity {
         this.averagePeriod = averagePeriod;
         this.charge = charge;
         this.description = description;
-        this.testDate = testDate;
+        this.testDateInformation = testDate;
+        this.nearestTestDate = nearestTestDate;
+        this.tags = tags;
         this.applicationMethod = applicationMethod;
         this.cardImageUrl = cardImageUrl;
         this.applicationUrl = applicationUrl;

@@ -1,4 +1,4 @@
-package org.sopt.certi_server.domain.userjob.entity;
+package org.sopt.certi_server.domain.user.entity;
 
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.user.entity.User;
