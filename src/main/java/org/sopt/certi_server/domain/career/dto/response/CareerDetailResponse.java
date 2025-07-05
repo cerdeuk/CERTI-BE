@@ -18,7 +18,7 @@ public record CareerDetailResponse(
 	String description,
 	String place
 ) {
-	public static CareerDetailResponse of(Career career) {
+	public static CareerDetailResponse from(Career career) {
 		return CareerDetailResponse.builder()
 			.startAt(career.getStartAt())
 			.endAt(career.getEndAt())

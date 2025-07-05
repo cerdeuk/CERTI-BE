@@ -32,7 +32,7 @@ public class CareerService {
 		List<Career> careers = careerRepository.findByUserId(userId);
 
 		return careers.stream()
-			.map(CareerDetailResponse::of)
+			.map(CareerDetailResponse::from)
 			.toList();
 	}
 
