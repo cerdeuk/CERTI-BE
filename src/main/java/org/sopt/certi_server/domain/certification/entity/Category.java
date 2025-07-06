@@ -1,6 +1,7 @@
 package org.sopt.certi_server.domain.certification.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
@@ -14,4 +15,10 @@ public class Category extends BaseTimeEntity {
     private Long id;
 
     private String name;
+
+    @Builder
+    public Category(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
