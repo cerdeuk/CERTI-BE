@@ -6,7 +6,6 @@ import org.sopt.certi_server.domain.activity.dto.request.CreateActivityRequest;
 import org.sopt.certi_server.domain.activity.dto.response.ActivityDetailResponse;
 import org.sopt.certi_server.domain.activity.dto.response.GetActivityListResponse;
 import org.sopt.certi_server.domain.activity.service.ActivityService;
-import org.sopt.certi_server.domain.career.dto.request.CreateCareerRequest;
 import org.sopt.certi_server.global.error.code.SuccessCode;
 import org.sopt.certi_server.global.error.dto.SuccessResponse;
 import org.springframework.http.ResponseEntity;

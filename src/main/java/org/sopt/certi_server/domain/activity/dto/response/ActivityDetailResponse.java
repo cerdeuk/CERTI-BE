@@ -2,9 +2,7 @@ package org.sopt.certi_server.domain.activity.dto.response;
 
 import java.time.LocalDate;
 
-import org.sopt.certi_server.domain.activity.entity.Activity;
-import org.sopt.certi_server.domain.career.dto.response.CareerDetailResponse;
-import org.sopt.certi_server.domain.career.entity.Career;
+import org.sopt.certi_server.domain.user.entity.Activity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
