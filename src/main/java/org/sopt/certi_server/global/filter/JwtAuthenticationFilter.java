@@ -29,17 +29,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/v1/auth/login-uri",
             "/api/v1/auth/reissue",
             "/api/v1/auth/login",
-            "/api/v1/careers/**"
+            "/api/v1/careers/**",
+             "/api/v1/activity/**"
     );
 
 
     private static final List<String> EXCLUDE_URL_POST = Arrays.asList(
             "/api/v1/auth/sign-up",
-            "/api/v1/careers/**"
+            "/api/v1/careers/**",
+        "/api/v1/activity/**"
     );
 
     private static final List<String> EXCLUDE_URL_DELETE = Arrays.asList(
-        "/api/v1/careers/**"
+        "/api/v1/careers/**",
+        "/api/v1/activity/**"
     );
 
     private final JwtExtractor jwtExtractor;
