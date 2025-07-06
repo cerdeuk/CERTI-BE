@@ -1,7 +1,7 @@
 package org.sopt.certi_server.domain.user.entity;
 
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.sopt.certi_server.domain.user.entity.User;
 
@@ -29,6 +29,7 @@ public class Activity {
     @Column(name = "activity_id", nullable = false)
     private Long id;
 
+
     @Column(nullable = false)
     private String name;
 
@@ -48,6 +49,7 @@ public class Activity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+
     @Builder
     public Activity(Long id, String name, String description, LocalDate startAt, LocalDate endAt, String place,
         User user) {
@@ -59,4 +61,5 @@ public class Activity {
         this.place = place;
         this.user = user;
     }
+
 }
