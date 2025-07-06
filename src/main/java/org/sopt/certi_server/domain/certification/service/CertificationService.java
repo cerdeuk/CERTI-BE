@@ -1,10 +1,9 @@
 package org.sopt.certi_server.domain.certification.service;
 
 import lombok.RequiredArgsConstructor;
-import org.bouncycastle.asn1.pkcs.CertificationRequest;
-import org.sopt.certi_server.domain.agency.entity.Agency;
-import org.sopt.certi_server.domain.agency.repository.AgencyRepository;
-import org.sopt.certi_server.domain.category.entity.Category;
+import org.sopt.certi_server.domain.certification.entity.Agency;
+import org.sopt.certi_server.domain.certification.repository.AgencyRepository;
+import org.sopt.certi_server.domain.certification.entity.Category;
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.entity.Certification;
@@ -55,7 +54,7 @@ public class CertificationService {
                 .averagePeriod(request.averagePeriod())
                 .charge(request.charge())
                 .description(request.description())
-                .testDate(request.testDate())
+                .testDate(request.testDateInformation())
                 .applicationMethod(request.applicationMethod())
                 .cardImageUrl(request.cardImageUrl())
                 .applicationUrl(request.applicationUrl())

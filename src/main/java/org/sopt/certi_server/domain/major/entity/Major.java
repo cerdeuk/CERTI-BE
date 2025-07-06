@@ -1,4 +1,4 @@
-package org.sopt.certi_server.domain.Major.entity;
+package org.sopt.certi_server.domain.major.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

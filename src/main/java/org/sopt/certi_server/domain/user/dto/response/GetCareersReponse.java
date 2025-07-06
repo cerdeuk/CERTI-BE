@@ -1,4 +1,4 @@
-package org.sopt.certi_server.domain.career.dto.response;
+package org.sopt.certi_server.domain.user.dto.response;
 
 import java.util.List;
 

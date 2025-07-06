@@ -1,6 +1,6 @@
 package org.sopt.certi_server.domain.certification.dto.response;
 
-import org.sopt.certi_server.domain.category.entity.Category;
+import org.sopt.certi_server.domain.certification.entity.Category;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 
 import java.util.List;

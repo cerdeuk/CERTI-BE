@@ -1,11 +1,11 @@
-package org.sopt.certi_server.domain.career.service;
+package org.sopt.certi_server.domain.user.service;
 
 import java.util.List;
 
-import org.sopt.certi_server.domain.career.dto.request.CreateCareerRequest;
-import org.sopt.certi_server.domain.career.dto.response.CareerDetailResponse;
-import org.sopt.certi_server.domain.career.entity.Career;
-import org.sopt.certi_server.domain.career.repository.CareerRepository;
+import org.sopt.certi_server.domain.user.dto.request.CreateCareerRequest;
+import org.sopt.certi_server.domain.user.dto.response.CareerDetailResponse;
+import org.sopt.certi_server.domain.user.entity.Career;
+import org.sopt.certi_server.domain.user.repository.CareerRepository;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.service.UserService;
 import org.sopt.certi_server.global.error.code.ErrorCode;

@@ -4,14 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.sopt.certi_server.domain.career.dto.request.CreateCareerRequest;
-import org.sopt.certi_server.domain.career.dto.response.CareerDetailResponse;
-import org.sopt.certi_server.domain.career.entity.Career;
-import org.sopt.certi_server.domain.career.repository.CareerRepository;
+import org.sopt.certi_server.domain.user.dto.request.CreateCareerRequest;
+import org.sopt.certi_server.domain.user.dto.response.CareerDetailResponse;
+import org.sopt.certi_server.domain.user.entity.Career;
+import org.sopt.certi_server.domain.user.repository.CareerRepository;
 import org.sopt.certi_server.domain.user.entity.User;
+import org.sopt.certi_server.domain.user.service.CareerService;
 import org.sopt.certi_server.domain.user.service.UserService;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
@@ -22,7 +21,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.ArgumentMatchers.*;
 
 class CareerServiceTest {
 
