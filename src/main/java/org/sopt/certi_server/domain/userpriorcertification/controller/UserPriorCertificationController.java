@@ -26,7 +26,7 @@ public class UserPriorCertificationController {
 	private final UserPriorCertificationService userPriorCertificationService;
 
 	@PostMapping("/{certificationId}")
-	public ResponseEntity<SuccessResponse<?>> addPriorCertification(
+	public ResponseEntity<SuccessResponse<String>> addPriorCertification(
 		@AuthenticationPrincipal Long userId,
 		@PathVariable(name = "certificationId") Long certificationId
 	){
@@ -36,7 +36,7 @@ public class UserPriorCertificationController {
 	}
 
 	@GetMapping("/{prior-certificationId}")
-	public ResponseEntity<SuccessResponse<?>> getPriorCertification(
+	public ResponseEntity<SuccessResponse<GetPriorCertificationDetailResponse>> getPriorCertification(
 		@AuthenticationPrincipal Long userId,
 		@PathVariable(name = "prior-certificationId") Long priorCertificationId
 	){
@@ -45,7 +45,7 @@ public class UserPriorCertificationController {
 	}
 
 	@DeleteMapping("/{prior-certificationId}")
-	public ResponseEntity<SuccessResponse<?>> deletePriorCertification(
+	public ResponseEntity<SuccessResponse> deletePriorCertification(
 		@AuthenticationPrincipal Long userId,
 		@PathVariable Long priorCertificationId
 	){
@@ -54,7 +54,7 @@ public class UserPriorCertificationController {
 	}
 
 	@GetMapping
-	public ResponseEntity<SuccessResponse<?>> getAllPriorCertifications(
+	public ResponseEntity<SuccessResponse<GetPriorCertificationListResponse>> getAllPriorCertifications(
 		@AuthenticationPrincipal Long userId
 	){
 		List<GetPriorCertificaitonResponse> getPriorCertificaitonResponses = userPriorCertificationService. getPriorCertificaitonList(userId);
