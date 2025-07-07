@@ -21,9 +21,9 @@ public class UserController {
 
 	@GetMapping("/home/user")
 	public ResponseEntity<SuccessResponse<GetUserResponse>> getHomeUser(
-		//@AuthenticationPrincipal Long userId
+		@AuthenticationPrincipal Long userId
 		){
-		GetUserResponse getUserResponse = userService.getHomeUser(1L);
+		GetUserResponse getUserResponse = userService.getHomeUser(userId);
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, getUserResponse));
 	}
 }
