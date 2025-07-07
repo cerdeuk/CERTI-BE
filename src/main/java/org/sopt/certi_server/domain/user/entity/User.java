@@ -39,6 +39,9 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private CollegeType collegeType;
 
+    @Column(name = "percentage", nullable = false)
+    private int percentage;
+
     public User(String nickname, String email, String profileImageUrl){
         this.nickname = nickname;
         this.email = email;
@@ -51,7 +54,7 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(Long id, String universityName, String track, String phoneNumber, String nickname, String email,
-        String profileImageUrl, CollegeType collegeType) {
+        String profileImageUrl, CollegeType collegeType, int percentage) {
         this.id = id;
         this.universityName = universityName;
         this.track = track;
@@ -60,5 +63,6 @@ public class User extends BaseTimeEntity {
         this.email = email;
         this.profileImageUrl = profileImageUrl;
         this.collegeType = collegeType;
+        this.percentage = percentage;
     }
 }
