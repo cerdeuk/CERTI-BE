@@ -54,7 +54,7 @@ public class CertificationService {
                 .averagePeriod(request.averagePeriod())
                 .charge(request.charge())
                 .description(request.description())
-                .testDate(request.testDateInformation())
+                .testDateInformation(request.testDateInformation())
                 .applicationMethod(request.applicationMethod())
                 .cardImageUrl(request.cardImageUrl())
                 .applicationUrl(request.applicationUrl())

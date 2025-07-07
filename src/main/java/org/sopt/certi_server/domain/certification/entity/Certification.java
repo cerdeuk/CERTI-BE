@@ -55,34 +55,22 @@ public class Certification extends BaseTimeEntity {
     private String applicationUrl;
 
     @Builder
-    public Certification(
-            Agency agency,
-            String name,
-            TestType testType,
-            String averagePeriod,
-            Long charge,
-            String description,
-            String testDate,
-            LocalDate nearestTestDate,
-            List<String> tags,
-            String applicationMethod,
-            String cardImageUrl,
-            String applicationUrl
-    ) {
+    public Certification(Long id, Agency agency, String name, TestType testType, String averagePeriod, Long charge,
+        List<String> tags, String description, String testDateInformation, LocalDate nearestTestDate,
+        String applicationMethod, String cardImageUrl, String applicationUrl) {
+        this.id = id;
         this.agency = agency;
         this.name = name;
         this.testType = testType;
         this.averagePeriod = averagePeriod;
         this.charge = charge;
-        this.description = description;
-        this.testDateInformation = testDate;
-        this.nearestTestDate = nearestTestDate;
         this.tags = tags;
+        this.description = description;
+        this.testDateInformation = testDateInformation;
+        this.nearestTestDate = nearestTestDate;
         this.applicationMethod = applicationMethod;
         this.cardImageUrl = cardImageUrl;
         this.applicationUrl = applicationUrl;
     }
-
-
 }
 

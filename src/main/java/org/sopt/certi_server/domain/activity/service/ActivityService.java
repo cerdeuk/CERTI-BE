@@ -6,8 +6,8 @@ import java.util.Objects;
 
 import org.sopt.certi_server.domain.activity.dto.request.CreateActivityRequest;
 import org.sopt.certi_server.domain.activity.dto.response.ActivityDetailResponse;
-import org.sopt.certi_server.domain.activity.entity.Activity;
 import org.sopt.certi_server.domain.activity.repository.ActivityRepository;
+import org.sopt.certi_server.domain.user.entity.Activity;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.service.UserService;
 import org.sopt.certi_server.global.error.code.ErrorCode;
