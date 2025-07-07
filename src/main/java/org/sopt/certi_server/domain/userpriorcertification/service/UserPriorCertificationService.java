@@ -1,12 +1,9 @@
 package org.sopt.certi_server.domain.userpriorcertification.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.sopt.certi_server.domain.certification.entity.Category;
 import org.sopt.certi_server.domain.certification.entity.Certification;
-import org.sopt.certi_server.domain.certification.entity.CertificationCategory;
 import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.user.entity.User;
@@ -48,7 +45,7 @@ public class UserPriorCertificationService {
 
 	public UserPriorCertification getPriorCertification(final Long userId, final Long priorCertificationId){
 		User user = userService.getUser(userId);
-		UserPriorCertification userPriorCertification = userPriorCertificationRepository.findByUserAndPriorCertificationId(user, priorCertificationId)
+		UserPriorCertification userPriorCertification = userPriorCertificationRepository.findByUserAndId(user, priorCertificationId)
 			.orElseThrow(()-> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
 
 		return userPriorCertification;
@@ -66,7 +63,7 @@ public class UserPriorCertificationService {
 
 	public List<GetPriorCertificaitonResponse> getPriorCertificaitonList(final Long userId) {
 		User user = userService.getUser(userId);
-		List<UserPriorCertification> userPriorCertificationList = userPriorCertificationRepository.findByUserOrderByPriorCertificationIdAsc(user);
+		List<UserPriorCertification> userPriorCertificationList = userPriorCertificationRepository.findByUserOrderByIdAsc(user);
 		List<GetPriorCertificaitonResponse> responses = userPriorCertificationList.stream()
 			.map(UserPriorCertification::getCertification)
 			.map(GetPriorCertificaitonResponse::from)

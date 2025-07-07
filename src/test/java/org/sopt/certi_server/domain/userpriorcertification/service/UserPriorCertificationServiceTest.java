@@ -2,9 +2,7 @@ package org.sopt.certi_server.domain.userpriorcertification.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.ArgumentMatchers.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,7 +87,7 @@ class UserPriorCertificationServiceTest {
 		@DisplayName("상세 조회 성공")
 		void detail_success() {
 			given(userService.getUser(anyLong())).willReturn(user);
-			given(userPriorCertificationRepository.findByUserAndPriorCertificationId(any(), anyLong()))
+			given(userPriorCertificationRepository.findByUserAndId(any(), anyLong()))
 				.willReturn(Optional.of(userPriorCertification));
 			given(certificationRepository.getCategoriesByCertificationId(anyLong()))
 				.willReturn(List.of(Category.builder().name("IT").build()));
@@ -108,7 +106,7 @@ class UserPriorCertificationServiceTest {
 		@DisplayName("리스트 조회 성공")
 		void list_success() {
 			given(userService.getUser(anyLong())).willReturn(user);
-			given(userPriorCertificationRepository.findByUserOrderByPriorCertificationIdAsc(any()))
+			given(userPriorCertificationRepository.findByUserOrderByIdAsc(any()))
 				.willReturn(List.of(userPriorCertification));
 
 			List<GetPriorCertificaitonResponse> result = userPriorCertificationService.getPriorCertificaitonList(1L);
@@ -126,7 +124,7 @@ class UserPriorCertificationServiceTest {
 		@DisplayName("삭제 성공")
 		void delete_success() {
 			given(userService.getUser(anyLong())).willReturn(user);
-			given(userPriorCertificationRepository.findByUserAndPriorCertificationId(any(), anyLong()))
+			given(userPriorCertificationRepository.findByUserAndId(any(), anyLong()))
 				.willReturn(Optional.of(userPriorCertification));
 
 			assertThatCode(() -> userPriorCertificationService.deletePriorCertification(1L, 1L))
