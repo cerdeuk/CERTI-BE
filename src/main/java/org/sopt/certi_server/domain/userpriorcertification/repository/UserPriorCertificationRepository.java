@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserPriorCertificationRepository extends JpaRepository<UserPriorCertification, Long> {
-	Optional<UserPriorCertification> findByUserAndPriorCertificationId(User user, Long priorCertificationId);
-	List<UserPriorCertification> findByUserOrderByPriorCertificationIdAsc(User user);
+	Optional<UserPriorCertification> findByUserAndId(User user, Long priorCertificationId);
+	List<UserPriorCertification> findByUserOrderByIdAsc(User user);
 }

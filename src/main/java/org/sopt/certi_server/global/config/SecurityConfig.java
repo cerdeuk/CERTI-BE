@@ -47,7 +47,8 @@ public class SecurityConfig {
                                 "/api/v1/auth/sign-up",
                                 "/api/v1/auth/reissue",
                                 "/api/v1/careers/**",
-                                "/api/v1/activity/**"
+                                "/api/v1/activity/**",
+                                "/api/v1/prior-certification/**"
                                 ).permitAll()
                         .anyRequest().authenticated());
 
