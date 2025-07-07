@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.acquisition.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,5 +33,10 @@ public class Acquisition extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private LocalDateTime acquisitionDate;
+    @Builder
+    public Acquisition(Certification certification, CardType cardType, User user) {
+        this.certification = certification;
+        this.cardType = cardType;
+        this.user = user;
+    }
 }
