@@ -45,6 +45,7 @@ public class UserJob {
 		this.user = user;
 		this.job = job;
 	}
+
 	@Builder
 	public UserJob(Long id, User user, Job job) {
 		this.id = id;

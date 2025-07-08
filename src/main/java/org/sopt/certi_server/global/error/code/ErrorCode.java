@@ -35,6 +35,7 @@ public enum ErrorCode {
 	SOCIAL_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "E40406", "존재하지 않는 소셜 타입입니다."),
 	TRACK_NOT_FOUND(HttpStatus.NOT_FOUND, "E40407", "존재하지 않는 계열입니다."),
 
+
 	/* 409 CONFLICT */
 
 	DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "E409001", "리소스 중복입니다"),

@@ -27,4 +27,5 @@ public class Job {
 
 	@Column(name = "name", nullable = false)
 	private String name;
+
 }
