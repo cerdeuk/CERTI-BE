@@ -31,7 +31,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/v1/auth/login",
             "/api/v1/careers/**",
              "/api/v1/activity/**",
-        "/api/v1/prior-certification/**"
+        "/api/v1/prior-certification/**",
+        "/api/v1/home/**",
+        "/api/v1/certification/**"
     );
 
 
@@ -39,13 +41,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/v1/auth/sign-up",
             "/api/v1/careers/**",
         "/api/v1/activity/**",
-        "/api/v1/prior-certification/**"
+        "/api/v1/prior-certification/**",
+        "/api/v1/certification/**"
+
     );
 
     private static final List<String> EXCLUDE_URL_DELETE = Arrays.asList(
         "/api/v1/careers/**",
         "/api/v1/activity/**",
-        "/api/v1/prior-certification/**"
+        "/api/v1/prior-certification/**",
+        "/api/v1/certification/**"
+
     );
 
     private final JwtExtractor jwtExtractor;
