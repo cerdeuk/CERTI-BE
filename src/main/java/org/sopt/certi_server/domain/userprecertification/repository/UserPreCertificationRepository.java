@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserPreCertificationRepository extends JpaRepository<UserPreCertification, Long> {
 
@@ -17,10 +18,12 @@ public interface UserPreCertificationRepository extends JpaRepository<UserPreCer
             select upc 
             from UserPreCertification upc 
             join fetch upc.certification c 
-            join fetch c.agency
+            left join fetch c.agency
             where upc.user.id = :userId
             """)
     List<UserPreCertification> getPreCertificationsByUserId(Long userId);
+
+    Optional<UserPreCertification> findFirstByUserOrderByCreatedTimeDesc(User user);
 
     void deleteByUserAndCertification(User user, Certification certification);
 

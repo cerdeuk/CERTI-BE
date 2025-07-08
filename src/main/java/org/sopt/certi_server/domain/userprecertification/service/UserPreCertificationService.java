@@ -11,6 +11,7 @@ import org.sopt.certi_server.domain.userprecertification.dto.request.UserPreCert
 import org.sopt.certi_server.domain.userprecertification.dto.response.PreCertificationSimple;
 import org.sopt.certi_server.domain.userprecertification.dto.response.PreCertificationSimpleListResponse;
 import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
+import org.sopt.certi_server.domain.userprecertification.entity.enums.IconType;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
@@ -27,8 +28,6 @@ public class UserPreCertificationService {
     private final UserService userService;
     private final CertificationService certificationService;
     private final UserPreCertificationRepository userPreCertificationRepository;
-    private final UserRepository userRepository;
-    private final CertificationRepository certificationRepository;
 
     public PreCertificationSimpleListResponse getPreCertificationListDataByUserId(Long userId) {
         return new PreCertificationSimpleListResponse(userPreCertificationRepository.getPreCertificationsByUserId(userId).stream().map(
@@ -40,7 +39,12 @@ public class UserPreCertificationService {
     public void createNewPreCertification(Long userId, Long preCertificationId) {
         User user = userService.getUser(userId);
         Certification certification = certificationService.getCertification(preCertificationId);
-        userPreCertificationRepository.save(UserPreCertification.create(user, certification));
+
+        IconType iconType = userPreCertificationRepository.findFirstByUserOrderByCreatedTimeDesc(user)
+                .map(userPreCertification -> IconType.issueNextIconType(userPreCertification.getIconType().getIndex()))
+                .orElseGet(IconType::issueRandomIconType);
+
+        userPreCertificationRepository.save(UserPreCertification.create(user, certification, iconType));
     }
 
     @Transactional

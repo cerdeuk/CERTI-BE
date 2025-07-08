@@ -16,6 +16,12 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(
+        name = "acquisition",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "certification_id"})
+        }
+)
 public class Acquisition extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

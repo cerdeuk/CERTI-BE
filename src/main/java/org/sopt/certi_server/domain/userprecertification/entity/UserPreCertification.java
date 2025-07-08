@@ -7,12 +7,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
+import org.sopt.certi_server.domain.userprecertification.entity.enums.IconType;
+import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user_pre_certification")
-public class UserPreCertification {
+@Table(
+        name = "user_pre_certification",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "certification_id"})
+        }
+)
+public class UserPreCertification extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -24,16 +31,21 @@ public class UserPreCertification {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Enumerated(value = EnumType.STRING)
+    private IconType iconType;
+
     @Builder
-    public UserPreCertification(User user, Certification certification) {
+    public UserPreCertification(User user, Certification certification, IconType iconType) {
         this.user = user;
         this.certification = certification;
+        this.iconType = iconType;
     }
 
-    public static UserPreCertification create(User user, Certification certification) {
+    public static UserPreCertification create(User user, Certification certification, IconType iconType) {
         return UserPreCertification.builder()
                 .user(user)
                 .certification(certification)
+                .iconType(iconType)
                 .build();
     }
 }
