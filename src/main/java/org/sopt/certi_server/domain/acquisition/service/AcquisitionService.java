@@ -1,0 +1,82 @@
+package org.sopt.certi_server.domain.acquisition.service;
+
+import lombok.RequiredArgsConstructor;
+import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
+import org.sopt.certi_server.domain.acquisition.entity.enums.CardType;
+import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
+import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionResponse;
+import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionDetailResponse;
+import org.sopt.certi_server.domain.certification.entity.Category;
+import org.sopt.certi_server.domain.certification.entity.Certification;
+import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
+import org.sopt.certi_server.domain.certification.service.CertificationService;
+import org.sopt.certi_server.domain.user.entity.User;
+import org.sopt.certi_server.domain.user.service.UserService;
+import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.exception.NotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class AcquisitionService {
+	private final AcquisitionRepository acquisitionRepository;
+	private final UserService userService;
+	private final CertificationService certificationService;
+
+	@Transactional
+	public String createAcquisition(final Long userId, final Long certificationId){
+		Certification certification = certificationService.getCertification(certificationId);
+		User user = userService.getUser(userId);
+
+		CardType cardType = CardType.issueRandomCardType();
+
+		Acquisition acquisition = org.sopt.certi_server.domain.acquisition.entity.Acquisition.builder()
+			.user(user)
+			.certification(certification)
+			.cardType(cardType)
+			.build();
+
+		acquisitionRepository.save(acquisition);
+
+		return acquisition.getCertification().getName();
+	}
+
+	public Acquisition getAcquisition(final Long userId, final Long acquisitionId){
+		User user = userService.getUser(userId);
+		Acquisition acquisition = acquisitionRepository.findByUserAndId(user, acquisitionId)
+			.orElseThrow(()-> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+
+		return acquisition;
+	}
+
+	public GetAcquisitionDetailResponse getAcquisitionDetail(final Long userId, final Long certificationId){
+		User user = userService.getUser(userId);
+		Acquisition acquisition = getAcquisition(userId, certificationId);
+
+		return GetAcquisitionDetailResponse.from(acquisition);
+	}
+
+	public List<GetAcquisitionResponse> getAcquisitionList(final Long userId) {
+		User user = userService.getUser(userId);
+		List<Acquisition> userPriorCertificationList = acquisitionRepository.findByUserOrderByIdAsc(user);
+		List<GetAcquisitionResponse> responses = userPriorCertificationList.stream()
+			.map(GetAcquisitionResponse::from)
+			.toList();
+
+		return responses;
+
+	}
+
+	@Transactional
+	public void deleteAcquisition(final Long userId, final Long priorCertificationId){
+		User user = userService.getUser(userId);
+		Acquisition userPriorCertification = getAcquisition(userId, priorCertificationId);
+
+		acquisitionRepository.delete(userPriorCertification);
+	}
+
+}
