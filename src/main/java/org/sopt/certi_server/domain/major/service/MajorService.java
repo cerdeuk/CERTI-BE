@@ -21,6 +21,6 @@ public class MajorService {
 		List<String> majorNameList = majorList.stream()
 			.map(MajorImpl::getName)
 			.toList();
-		return GetMajorListResponse.from(majorNameList);
+		return GetMajorListResponse.of(majorNameList);
 	}
 }
