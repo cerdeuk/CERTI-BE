@@ -16,6 +16,7 @@ public enum ErrorCode {
 	TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "E400005", "요청 값 타입이 올바르지 않습니다"),
 	DATA_INTEGRITY_VIOLATION(HttpStatus.BAD_REQUEST, "E400006", "데이터 무결성 제약 조건을 위반했습니다"),
 	TEST_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "E400006", "요청 테스트 타입이 올바르지 않습니다"),
+	JOB_SIZE_ERROR(HttpStatus.BAD_REQUEST, "E400007", "희망 분야는 1~3개까지 선택가능합니다"),
 
 	/* 401 */
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "E401001", "리소스 접근 권한이 없습니다."),
