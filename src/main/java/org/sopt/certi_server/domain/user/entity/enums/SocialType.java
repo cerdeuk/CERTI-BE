@@ -13,7 +13,7 @@ public enum SocialType {
         try{
             return SocialType.valueOf(value.toUpperCase());
         }catch (IllegalArgumentException e){
-            throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
+            throw new NotFoundException(ErrorCode.SOCIAL_TYPE_NOT_FOUND);
         }
     }
 }

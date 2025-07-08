@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import org.sopt.certi_server.domain.user.entity.enums.CollegeType;
+import org.sopt.certi_server.domain.major.entity.MajorImpl;
+import org.sopt.certi_server.domain.user.entity.enums.Grade;
+import org.sopt.certi_server.domain.user.entity.enums.TrackType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
 @Entity
@@ -22,10 +24,16 @@ public class User extends BaseTimeEntity {
     private String universityName;
 
     @Column(name = "track")
-    private String track;
+    @Enumerated(value = EnumType.STRING)
+    private TrackType track;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "grade")
+    @Enumerated(value = EnumType.STRING)
+    private Grade grade;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "major_impl_id")
+    private MajorImpl major;
 
     @Column(name = "nickname", nullable = false)
     private String nickname;
@@ -35,9 +43,6 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "profile_image_url")
     private String profileImageUrl;
-
-    @Enumerated(EnumType.STRING)
-    private CollegeType collegeType;
 
     @Column(name = "percentage", nullable = false)
     private int percentage;
@@ -53,16 +58,16 @@ public class User extends BaseTimeEntity {
     }
 
     @Builder
-    public User(Long id, String universityName, String track, String phoneNumber, String nickname, String email,
-        String profileImageUrl, CollegeType collegeType, int percentage) {
+    public User(Long id, String universityName, String track, String grade, MajorImpl major, String nickname, String email,
+                String profileImageUrl, int percentage) {
         this.id = id;
         this.universityName = universityName;
-        this.track = track;
-        this.phoneNumber = phoneNumber;
+        this.track = TrackType.from(track);
+        this.grade = Grade.from(grade);
+        this.major = major;
         this.nickname = nickname;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
-        this.collegeType = collegeType;
         this.percentage = percentage;
     }
 }

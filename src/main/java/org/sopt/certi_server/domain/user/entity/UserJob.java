@@ -1,5 +1,8 @@
 package org.sopt.certi_server.domain.user.entity;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.user.entity.User;
 
@@ -33,6 +36,15 @@ public class UserJob {
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Job.class)
 	@JoinColumn(name = "job_id")
 	private Job job;
+
+	public static UserJob createUserJob(User user, Job job){
+		return new UserJob(user, job);
+	}
+
+	private UserJob(User user, Job job) {
+		this.user = user;
+		this.job = job;
+	}
 
 	@Builder
 	public UserJob(Long id, User user, Job job) {

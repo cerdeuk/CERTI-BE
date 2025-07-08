@@ -35,8 +35,8 @@ public class AuthController {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, socialService.getAuthorizationUri()));
     }
 
-    @GetMapping(value = "/login")
-    public ResponseEntity<SuccessResponse<AuthResponse>> processLogin(@Valid LoginRequest request){
+    @PostMapping(value = "/login")
+    public ResponseEntity<SuccessResponse<AuthResponse>> processLogin(@Valid @RequestBody LoginRequest request){
         SocialType socialType = SocialType.from(request.socialType());
         SocialService socialService = authService.getSocialServiceByType(socialType);
 
@@ -48,10 +48,10 @@ public class AuthController {
 
     @PostMapping(value = "/sign-up")
     public ResponseEntity<SuccessResponse<AuthResponse>> processSignup(
-            @RequestHeader("Authorization") @NotEmpty(message = "해당 api에는 authorization 헤더가 필수입니다.") String authorization,
-            @RequestBody SignupRequest request
+            @RequestHeader("Authorization") @NotEmpty(message = "임시 토큰이 누락되었습니다.") String authorization,
+            @Valid @RequestBody SignupRequest request
     ){
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE, authService.register(authorization, request.userInformation())));
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE, authService.register(authorization, request)));
     }
 
     @GetMapping(value = "/reissue")

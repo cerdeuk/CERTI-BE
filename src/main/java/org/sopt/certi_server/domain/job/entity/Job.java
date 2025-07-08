@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "job")
+@Table(name = "jobs")
 public class Job {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
