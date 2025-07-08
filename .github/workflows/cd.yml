@@ -57,3 +57,4 @@ jobs:
           docker rm -f certi-server || true
           docker pull woals2840/certi-server
           docker run -d --name certi-server -p 8080:8080 woals2840/certi-server
+
