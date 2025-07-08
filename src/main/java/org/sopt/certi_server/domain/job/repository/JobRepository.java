@@ -1,0 +1,8 @@
+package org.sopt.certi_server.domain.job.repository;
+
+import org.sopt.certi_server.domain.job.entity.Job;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface JobRepository extends JpaRepository<Job, Long> {
+	Job findByName(String name);
+}
