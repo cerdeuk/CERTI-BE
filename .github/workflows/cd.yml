@@ -57,7 +57,7 @@ jobs:
         username: ${{ secrets.RELEASE_SERVER_USER }}
         key: ${{ secrets.RELEASE_SERVER_KEY }}
         script: |
-					docker rm -f certi-server
-					docker image pull woals/certi-server
-					docker run -d --name certi-server-8080 -p 8080:8080 woals2840/certi-server
+		docker rm -f certi-server
+		docker image pull woals/certi-server
+		docker run -d --name certi-server-8080 -p 8080:8080 woals2840/certi-server
      
