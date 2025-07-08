@@ -23,5 +23,11 @@ public enum Grade {
                 .filter(g -> g.grade.equalsIgnoreCase(grade))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(ErrorCode.GRADE_NOT_FOUND));
+    public static TrackType from(String grade){
+        try{
+            return TrackType.valueOf(grade);
+        }catch(IllegalArgumentException e){
+            throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
+        }
     }
 }
