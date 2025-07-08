@@ -8,17 +8,21 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum CollegeType {
-	ENGINEERING("공과대학"),
-	BUSINESS("경영대학"),
-	HUMANITIES("인문대학"),
-	SOCIALSCIENCES("사회과학대학");
+public enum TrackType {
+	HUMANITIES("인문계열"),
+	SOCIAL_SCIENCES("사회계열"),
+	EDUCATION("교육계열"),
+	NATURAL_SCIENCES("자연계열"),
+	ENGINEERING("공학계열"),
+	MEDICINE_AND_PHARMACY("의약계열"),
+	ARTS_AND_PHYSICAL_EDUCATION("예체능계열");
+
 
 	private final String collegeName;
 
-	public static CollegeType from(String collegeName){
+	public static TrackType from(String collegeName){
 		try{
-			return CollegeType.valueOf(collegeName);
+			return TrackType.valueOf(collegeName);
 		}catch(IllegalArgumentException e){
 			throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
 		}

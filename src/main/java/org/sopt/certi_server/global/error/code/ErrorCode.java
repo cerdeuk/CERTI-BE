@@ -28,6 +28,7 @@ public enum ErrorCode {
 
 	DATA_NOT_FOUND(HttpStatus.NOT_FOUND, "E404001", "데이터가 존재하지 않습니다"),
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E404002", "유저가 존재하지 않습니다"),
+	MAJOR_NOT_FOUND(HttpStatus.NOT_FOUND, "E404003", "존재하지 않는 전공입니다."),
 
 	/* 409 CONFLICT */
 
