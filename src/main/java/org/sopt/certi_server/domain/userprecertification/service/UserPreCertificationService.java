@@ -37,9 +37,9 @@ public class UserPreCertificationService {
     }
 
     @Transactional
-    public void createNewPreCertification(Long userId, UserPreCertificationRequest request) {
+    public void createNewPreCertification(Long userId, Long preCertificationId) {
         User user = userService.getUser(userId);
-        Certification certification = certificationService.getCertification(request.certificationId());
+        Certification certification = certificationService.getCertification(preCertificationId);
         userPreCertificationRepository.save(UserPreCertification.create(user, certification));
     }
 
