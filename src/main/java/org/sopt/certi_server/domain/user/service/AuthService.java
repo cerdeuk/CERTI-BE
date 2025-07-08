@@ -1,7 +1,8 @@
 package org.sopt.certi_server.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.sopt.certi_server.domain.major.entity.Major;
+import org.sopt.certi_server.domain.job.entity.Job;
+import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.request.SignupRequest;
@@ -88,6 +89,7 @@ public class AuthService {
     private User convertDtoToEntity(SignupRequest request){
         MajorImpl majorImpl = majorImplRepository.findMajorImplByName(request.major())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
+
 
         return User.builder()
                 .email(request.userInformation().email())
