@@ -56,6 +56,7 @@ jobs:
         username: ${{ secrets.RELEASE_SERVER_USER }}
         key: ${{ secrets.RELEASE_SERVER_KEY }}
         script: |
+          docker login -u ${{ secrets.DOCKERHUB_LOGIN_USERNAME }} -p ${{ secrets.DOCKERHUB_LOGIN_ACCESSTOKEN }}
           docker rm -f certi-server || true
           docker pull woals2840/certi-server
           docker run -d --name certi-server -p 8080:8080 woals2840/certi-server
