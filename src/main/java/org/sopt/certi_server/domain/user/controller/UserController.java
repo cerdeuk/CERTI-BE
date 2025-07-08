@@ -33,17 +33,17 @@ public class UserController {
 
 	@GetMapping("/job")
 	public ResponseEntity<SuccessResponse<GetJobResponse>> getUserJob(
-		//@AuthenticationPrincipal Long userId
+		@AuthenticationPrincipal Long userId
 	){
-		GetJobResponse jobResponse = userService.getUserJob(1L);
+		GetJobResponse jobResponse = userService.getUserJob(userId);
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, jobResponse));
 	}
 	@PostMapping("/job")
-	public ResponseEntity<SuccessResponse> updatehUserJob(
-		//@AuthenticationPrincipal Long userId,
+	public ResponseEntity<SuccessResponse> updateUserJob(
+		@AuthenticationPrincipal Long userId,
 		@RequestBody UpdateJobRequest updateJobRequest
 	){
-		userService.updateUserJob(1L, updateJobRequest.jobNameList());
+		userService.updateUserJob(userId, updateJobRequest.jobNameList());
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
 	}
 }
