@@ -1,5 +1,7 @@
 package org.sopt.certi_server.domain.certification.entity.enums;
 
+import java.util.Arrays;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.global.error.code.ErrorCode;
@@ -15,11 +17,11 @@ public enum TestType {
 
     private final String type;
 
-    public static TestType from(String typeName){
-        try{
-            return TestType.valueOf(typeName);
-        }catch (IllegalArgumentException e){
-            throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
-        }
+
+    public static TestType from(String typeName) {
+        return Arrays.stream(TestType.values())
+            .filter(t -> t.type.equalsIgnoreCase(typeName))
+            .findFirst()
+            .orElseThrow(() -> new NotFoundException(ErrorCode.TEST_TYPE_MISMATCH));
     }
 }
