@@ -15,6 +15,7 @@ public enum ErrorCode {
 	MISSING_HEADER(HttpStatus.BAD_REQUEST, "E400004", "필수 요청 헤더가 누락되었습니다."),
 	TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "E400005", "요청 값 타입이 올바르지 않습니다"),
 	DATA_INTEGRITY_VIOLATION(HttpStatus.BAD_REQUEST, "E400006", "데이터 무결성 제약 조건을 위반했습니다"),
+	TEST_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "E400006", "요청 테스트 타입이 올바르지 않습니다"),
 
 	/* 401 */
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "E401001", "리소스 접근 권한이 없습니다."),
