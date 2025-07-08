@@ -5,7 +5,7 @@ import java.util.List;
 public record GetMajorListResponse(
 	List<String> majorNameList
 ) {
-	public static GetMajorListResponse from(List<String> majorNameList) {
+	public static GetMajorListResponse of(List<String> majorNameList) {
 		return new GetMajorListResponse(majorNameList);
 	}
 }
