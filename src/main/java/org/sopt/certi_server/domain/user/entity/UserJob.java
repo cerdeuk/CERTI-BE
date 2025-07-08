@@ -15,8 +15,13 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Table(name = "user_job")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserJob {
@@ -37,6 +42,12 @@ public class UserJob {
 	}
 
 	private UserJob(User user, Job job) {
+		this.user = user;
+		this.job = job;
+	}
+	@Builder
+	public UserJob(Long id, User user, Job job) {
+		this.id = id;
 		this.user = user;
 		this.job = job;
 	}
