@@ -8,6 +8,7 @@ import org.sopt.certi_server.global.filter.JwtAuthenticationFilter;
 import org.sopt.certi_server.global.jwt.core.JwtValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,6 +20,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private static final String[] WHITELIST = {
+        "/api/v1/auth/login-uri",
+        "/api/v1/auth/login",
+        "/api/v1/auth/sign-up",
+        "/api/v1/auth/reissue",
+        "/api/v1/careers/**",
+        "/api/v1/activity/**",
+        "/api/v1/prior-certification/**",
+        "/api/v1/home/**",
+        "/api/v1/certification/**"
+    };
+
 
     private final JwtExtractor jwtExtractor;
     private final JwtValidator jwtValidator;
@@ -41,18 +54,12 @@ public class SecurityConfig {
         // 경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(
-                                "/api/v1/auth/login-uri",
-                                "/api/v1/auth/login",
-                                "/api/v1/auth/sign-up",
-                                "/api/v1/auth/reissue",
-                                "/api/v1/careers/**",
-                                "/api/v1/activity/**",
-                                "/api/v1/prior-certification/**",
-                            "/api/v1/home/**",
-                            "/api/v1/certification/**"
-                                ).permitAll()
-                        .anyRequest().authenticated());
+                    .requestMatchers(HttpMethod.OPTIONS)
+                    .permitAll() //OPTION추가
+                    .requestMatchers(WHITELIST)
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated());
 
         http
                 .addFilterBefore(new JwtAuthenticationFilter(jwtExtractor, jwtValidator), UsernamePasswordAuthenticationFilter.class)
