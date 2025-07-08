@@ -9,7 +9,7 @@ public record UpdateJobRequest(
 	List<String> jobNameList
 ) {
 	public UpdateJobRequest {
-		if(jobNameList.isEmpty() || jobNameList.size() > 3){
+		if(jobNameList == null || jobNameList.size() > 3){
 			throw new BadRequestException(ErrorCode.JOB_SIZE_ERROR);
 		}
 	}

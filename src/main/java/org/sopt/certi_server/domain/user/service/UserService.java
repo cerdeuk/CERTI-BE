@@ -66,7 +66,8 @@ public class UserService {
         //새로운 값으로 갱신
         List<UserJob> userJobList = jobNameList.stream()
             .map(jobName -> {
-                Job job = jobRepository.findByName(jobName);
+                Job job = jobRepository.findByName(jobName)
+                    .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
                 return UserJob.builder()
                     .job(job)
                     .user(user)
