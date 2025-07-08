@@ -28,7 +28,4 @@ public class Job {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
 }
