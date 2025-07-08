@@ -18,10 +18,10 @@ public enum Grade {
 
     private final String grade;
 
-    public static Grade from(String grade){
+    public static Grade from(String grade) {
         return Arrays.stream(Grade.values())
-                .filter(g -> g.grade.equalsIgnoreCase(grade))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException(ErrorCode.GRADE_NOT_FOUND));
-		}
+            .filter(g -> g.grade.equalsIgnoreCase(grade))
+            .findFirst()
+            .orElseThrow(() -> new NotFoundException(ErrorCode.GRADE_NOT_FOUND));
+    }
 }
