@@ -68,6 +68,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (method.equals(HttpMethod.GET.name())) {
             return EXCLUDE_URL.stream().anyMatch(exclude -> new AntPathMatcher().match(exclude, path));
         }
+
+        if (method.equals(HttpMethod.POST.name())) {
+            return EXCLUDE_URL.stream().anyMatch(exclude -> new AntPathMatcher().match(exclude, path));
+        }
         return false;
     }
 }

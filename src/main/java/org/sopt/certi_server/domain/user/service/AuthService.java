@@ -1,7 +1,8 @@
 package org.sopt.certi_server.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.sopt.certi_server.domain.major.entity.Major;
+import org.sopt.certi_server.domain.job.entity.Job;
+import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.request.SignupRequest;
@@ -9,7 +10,10 @@ import org.sopt.certi_server.domain.user.dto.response.AuthResponse;
 import org.sopt.certi_server.domain.user.dto.response.JwtResponse;
 import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
 import org.sopt.certi_server.domain.user.entity.User;
+import org.sopt.certi_server.domain.user.entity.UserJob;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
+import org.sopt.certi_server.domain.user.entity.enums.TrackType;
+import org.sopt.certi_server.domain.user.repository.UserJobRepository;
 import org.sopt.certi_server.domain.user.repository.UserRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
@@ -24,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final JobRepository jobRepository;
+    private final UserJobRepository userJobRepository;
     private final MajorImplRepository majorImplRepository;
     private final JwtService jwtService;
     private final KakaoService kakaoService;
@@ -53,6 +59,13 @@ public class AuthService {
 
         userRepository.save(newUser);
 
+        request.jobs()
+                .forEach(str -> {
+                    Job job = jobRepository.findByName(str)
+                            .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
+                    userJobRepository.save(UserJob.createUserJob(newUser, job));
+                });
+
         JwtResponse token = jwtService.issueToken(newUser.getId());
         return AuthResponse.ofRegisteredUser(newUser.getId(), token);
     }
@@ -71,6 +84,7 @@ public class AuthService {
     private User convertDtoToEntity(SignupRequest request){
         MajorImpl majorImpl = majorImplRepository.findMajorImplByName(request.major())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
+
 
         return User.builder()
                 .email(request.userInformation().email())

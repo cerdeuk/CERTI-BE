@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 
+import java.util.Arrays;
+
 @RequiredArgsConstructor
 public enum Grade {
 
@@ -16,11 +18,10 @@ public enum Grade {
 
     private final String grade;
 
-    public static TrackType from(String grade){
-        try{
-            return TrackType.valueOf(grade);
-        }catch(IllegalArgumentException e){
-            throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
-        }
+    public static Grade from(String grade){
+        return Arrays.stream(Grade.values())
+                .filter(g -> g.grade.equalsIgnoreCase(grade))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(ErrorCode.GRADE_NOT_FOUND));
     }
 }

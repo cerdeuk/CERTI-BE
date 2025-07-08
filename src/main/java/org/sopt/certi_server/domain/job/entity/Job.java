@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "job")
+@Table(name = "jobs")
 public class Job {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +27,4 @@ public class Job {
 
 	@Column(name = "name", nullable = false)
 	private String name;
-
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
 }

@@ -1,10 +1,13 @@
 package org.sopt.certi_server.domain.user.entity.enums;
 
+import org.sopt.certi_server.domain.certification.entity.enums.TestType;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Getter
@@ -18,13 +21,12 @@ public enum TrackType {
 	ARTS_AND_PHYSICAL_EDUCATION("예체능계열");
 
 
-	private final String collegeName;
+	private final String name;
 
-	public static TrackType from(String collegeName){
-		try{
-			return TrackType.valueOf(collegeName);
-		}catch(IllegalArgumentException e){
-			throw new NotFoundException(ErrorCode.DATA_NOT_FOUND);
-		}
+	public static TrackType from(String name){
+		return Arrays.stream(TrackType.values())
+				.filter(t -> t.name.equalsIgnoreCase(name))
+				.findFirst()
+				.orElseThrow(() -> new NotFoundException(ErrorCode.TRACK_NOT_FOUND));
 	}
 }

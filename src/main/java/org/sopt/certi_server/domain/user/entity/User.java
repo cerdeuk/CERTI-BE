@@ -62,8 +62,8 @@ public class User extends BaseTimeEntity {
                 String profileImageUrl, int percentage) {
         this.id = id;
         this.universityName = universityName;
-        this.track = TrackType.valueOf(track);
-        this.grade = Grade.valueOf(grade);
+        this.track = TrackType.from(track);
+        this.grade = Grade.from(grade);
         this.major = major;
         this.nickname = nickname;
         this.email = email;

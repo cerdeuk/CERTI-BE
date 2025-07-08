@@ -1,5 +1,8 @@
 package org.sopt.certi_server.domain.user.entity;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.user.entity.User;
 
@@ -15,6 +18,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user_job")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserJob {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +32,12 @@ public class UserJob {
 	@JoinColumn(name = "job_id")
 	private Job job;
 
+	public static UserJob createUserJob(User user, Job job){
+		return new UserJob(user, job);
+	}
+
+	private UserJob(User user, Job job) {
+		this.user = user;
+		this.job = job;
+	}
 }
