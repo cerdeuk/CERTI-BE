@@ -18,6 +18,7 @@ import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -63,6 +64,7 @@ public class CertificationService {
                 .charge(request.charge())
                 .description(request.description())
                 .testDateInformation(request.testDateInformation())
+                .nearestTestDate(LocalDate.parse(request.nearestTestDate()))
                 .applicationMethod(request.applicationMethod())
                 .applicationUrl(request.applicationUrl())
                 .build();

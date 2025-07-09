@@ -36,9 +36,9 @@ public class UserPreCertificationService {
     }
 
     @Transactional
-    public void createNewPreCertification(Long userId, Long preCertificationId) {
+    public void createNewPreCertification(Long userId, Long certificationId) {
         User user = userService.getUser(userId);
-        Certification certification = certificationService.getCertification(preCertificationId);
+        Certification certification = certificationService.getCertification(certificationId);
 
         IconType iconType = userPreCertificationRepository.findFirstByUserOrderByCreatedTimeDesc(user)
                 .map(userPreCertification -> IconType.issueNextIconType(userPreCertification.getIconType().getIndex()))
