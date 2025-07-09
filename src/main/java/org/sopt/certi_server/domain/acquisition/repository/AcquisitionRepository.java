@@ -1,6 +1,7 @@
 package org.sopt.certi_server.domain.acquisition.repository;
 
 import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
+import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,6 @@ public interface AcquisitionRepository extends JpaRepository<Acquisition, Long> 
 	List<Acquisition> findByUserOrderByIdAsc(User user);
 
 	Optional<Acquisition> findFirstByUserOrderByCreatedTimeDesc(User user);
+
+	void deleteAllByCertification(Certification certification);
 }

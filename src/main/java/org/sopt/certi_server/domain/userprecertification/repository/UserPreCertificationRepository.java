@@ -27,4 +27,6 @@ public interface UserPreCertificationRepository extends JpaRepository<UserPreCer
 
     void deleteByUserAndCertification(User user, Certification certification);
 
+    void deleteAllByCertification(Certification certification);
+
 }

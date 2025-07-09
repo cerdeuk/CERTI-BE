@@ -45,7 +45,7 @@ public class CertificationService {
     }
 
     private Agency getAgency(CertificationCreateRequest request) {
-        return agencyRepository.findById(request.agencyId()).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+        return agencyRepository.findByName(request.agencyName()).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
     }
 
     private Certification convertDtoToEntity(CertificationCreateRequest request, CertificationType certificationType, TestType testType, Agency agency) {
@@ -59,7 +59,6 @@ public class CertificationService {
                 .description(request.description())
                 .testDateInformation(request.testDateInformation())
                 .applicationMethod(request.applicationMethod())
-                .cardImageUrl(request.cardImageUrl())
                 .applicationUrl(request.applicationUrl())
                 .build();
     }

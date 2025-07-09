@@ -15,6 +15,7 @@ public class Agency extends BaseTimeEntity {
     @Column(name = "agency_id")
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private String agencyUrl;

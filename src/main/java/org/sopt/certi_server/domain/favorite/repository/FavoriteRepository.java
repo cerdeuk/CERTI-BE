@@ -23,4 +23,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     List<Certification> findFavoriteCertificationsByUserId(Long userId);
 
     Optional<Favorite> findByUserAndCertification(User user, Certification certification);
+
+    void deleteAllByCertification(Certification certification);
 }
