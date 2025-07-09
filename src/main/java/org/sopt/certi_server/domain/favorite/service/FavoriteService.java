@@ -1,6 +1,8 @@
 package org.sopt.certi_server.domain.favorite.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class FavoriteService {
 
     private final UserService userService;
@@ -37,7 +40,7 @@ public class FavoriteService {
 
     @Transactional
     public boolean toggleFavorite(Long userId, Long certificationId) {
-
+        log.info("userId = " + userId + ", certificationId = " + certificationId);
         User user = userService.getUser(userId);
         Certification certification = certificationService.getCertification(certificationId);
 

@@ -37,7 +37,7 @@ public class CertificationService {
 
     @Transactional
     public void createCertification(CertificationCreateRequest request) {
-        Agency findAgency = getAgency(request);
+        Agency findAgency = getAgencyById(request.agencyId());
         CertificationType certificationType = CertificationType.from(request.certificationType());
         TestType testType = TestType.from(request.testType());
         Certification newCertification = convertDtoToEntity(request, certificationType, testType, findAgency);
@@ -45,11 +45,12 @@ public class CertificationService {
     }
 
     public Certification getCertification(Long certificationId) {
-        return certificationRepository.findById(certificationId).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+        return certificationRepository.findById(certificationId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.CERTIFICATION_NOT_FOUND));
     }
 
-    private Agency getAgency(CertificationCreateRequest request) {
-        return agencyRepository.findByName(request.agencyName()).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+    private Agency getAgencyById(Long id) {
+        return agencyRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorCode.AGENCY_NOT_FOUND));
     }
 
     private Certification convertDtoToEntity(CertificationCreateRequest request, CertificationType certificationType, TestType testType, Agency agency) {

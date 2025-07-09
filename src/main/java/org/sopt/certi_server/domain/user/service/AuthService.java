@@ -1,6 +1,8 @@
 package org.sopt.certi_server.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
@@ -30,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -57,7 +60,7 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(String authorization, SignupRequest request) {
-
+        log.info(authorization);
         jwtService.validatePreSignupToken(authorization);
 
         User newUser = convertDtoToEntity(request);

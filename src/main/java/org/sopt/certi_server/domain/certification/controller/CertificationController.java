@@ -33,7 +33,7 @@ public class CertificationController {
 
     @PostMapping(value = "/{certificationId}/favorite")
     public ResponseEntity<SuccessResponse<Void>> toggleFavorite(
-            @AuthenticationPrincipal @NotNull(message = "인증되지 않은 사용자입니다.") Long userId,
+            @AuthenticationPrincipal Long userId,
             @PathVariable Long certificationId
     ){
         boolean isCreated = favoriteService.toggleFavorite(userId, certificationId);

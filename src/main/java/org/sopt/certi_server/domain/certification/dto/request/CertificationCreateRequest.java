@@ -5,7 +5,7 @@ import java.util.List;
 
 public record CertificationCreateRequest(
         String certificationName,
-        String agencyName,
+        Long agencyId,
         String certificationType,
         String testType,
         String averagePeriod,
