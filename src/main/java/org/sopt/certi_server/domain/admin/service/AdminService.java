@@ -1,0 +1,78 @@
+package org.sopt.certi_server.domain.admin.service;
+
+import org.sopt.certi_server.domain.admin.dto.request.CreateJobRequest;
+import org.sopt.certi_server.domain.admin.dto.request.CreateMajorRequest;
+import org.sopt.certi_server.domain.admin.repository.AdminRepository;
+import org.sopt.certi_server.domain.certification.entity.Certification;
+import org.sopt.certi_server.domain.certification.entity.CertificationJob;
+import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
+import org.sopt.certi_server.domain.certification.repository.CertificationJobRepository;
+import org.sopt.certi_server.domain.certification.repository.CertificationMajorRepository;
+import org.sopt.certi_server.domain.certification.service.CertificationService;
+import org.sopt.certi_server.domain.job.entity.Job;
+import org.sopt.certi_server.domain.job.repository.JobRepository;
+import org.sopt.certi_server.domain.major.entity.Major;
+import org.sopt.certi_server.domain.major.service.MajorService;
+import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.exception.InvalidValueException;
+import org.sopt.certi_server.global.error.exception.NotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class AdminService {
+	private final AdminRepository adminRepository;
+	private final MajorService majorService;
+	private final CertificationService certificationService;
+	private final CertificationMajorRepository certificationMajorRepository;
+	private final JobRepository jobRepository;
+	private final CertificationJobRepository certificationJobRepository;
+
+	@Transactional
+	public void createMajor(Long certificationId, CreateMajorRequest request) {
+		Major major = majorService.getMajorByName(request.majorName());
+		Certification certification = certificationService.getCertification(certificationId);
+
+
+		if(certificationService.getCertificationMajor(certification, major)!=null) {
+			throw new InvalidValueException(ErrorCode.BAD_REQUEST_DATA);
+		}
+
+		CertificationMajor certificationMajor = new CertificationMajor(major, certification, request.weight());
+		certificationMajorRepository.save(certificationMajor);
+	}
+
+	@Transactional
+	public void deleteMajor(Long certificationId, String majorName) {
+		Major major = majorService.getMajorByName(majorName);
+		Certification certification = certificationService.getCertification(certificationId);
+		CertificationMajor certificationMajor = certificationService.getCertificationMajor(certification, major);
+		certificationMajorRepository.delete(certificationMajor);
+	}
+
+	@Transactional
+	public void createJob(Long certificationId, CreateJobRequest createJobRequest) {
+		Certification certification = certificationService.getCertification(certificationId);
+		Job job = jobRepository.findByName(createJobRequest.jobName())
+			.orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+		if(certificationJobRepository.findByCertificationAndJob(certification, job).isPresent()){
+			throw new InvalidValueException(ErrorCode.BAD_REQUEST_DATA);
+		}
+		CertificationJob certificationJob = new CertificationJob(job, certification, createJobRequest.weight());
+		certificationJobRepository.save(certificationJob);
+	}
+
+	@Transactional
+	public void deleteJob(Long certificationId, String jobName) {
+		Certification certification = certificationService.getCertification(certificationId);
+		Job job = jobRepository.findByName(jobName)
+			.orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+		CertificationJob certificationJob = certificationJobRepository.findByCertificationAndJob(certification, job)
+			.orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+		certificationJobRepository.delete(certificationJob);
+	}
+}
