@@ -12,6 +12,7 @@ import java.util.List;
 public record GetAcquisitionDetailResponse(
 	String cardFrontImageUrl,
 	String cardBackImageUrl,
+	int index,
 	String name,
 	List<String> tags,
 	String description,
@@ -22,6 +23,7 @@ public record GetAcquisitionDetailResponse(
 		return GetAcquisitionDetailResponse.builder()
 			.cardFrontImageUrl(acquisition.getCardType().getCardFrontImageUrl())
 			.cardBackImageUrl(acquisition.getCardType().getCardBackImageUrl())
+			.index(acquisition.getCardType().getIndex())
 			.name(acquisition.getCertification().getName())
 			.createdAt(acquisition.getCreatedTime().toLocalDate())
 			.description(acquisition.getCertification().getDescription())
