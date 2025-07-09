@@ -18,6 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+
+import static org.sopt.certi_server.domain.acquisition.entity.enums.CardType.*;
+import static org.sopt.certi_server.domain.acquisition.entity.enums.CardType.CARD_TOTAL;
 
 @Service
 @RequiredArgsConstructor
@@ -27,14 +31,20 @@ public class AcquisitionService {
 	private final UserService userService;
 	private final CertificationService certificationService;
 
+
 	@Transactional
 	public String createAcquisition(final Long userId, final Long certificationId){
 		Certification certification = certificationService.getCertification(certificationId);
 		User user = userService.getUser(userId);
 
-		CardType cardType = CardType.issueRandomCardType();
+		CardType cardType = acquisitionRepository.findFirstByUserOrderByCreatedTimeDesc(user)
+				.map(acquisition -> {
+					int index = acquisition.getCardType().getIndex();
+					return issueNextCardType(index);
+				}).orElseGet(CardType::issueRandomCardType);
 
-		Acquisition acquisition = org.sopt.certi_server.domain.acquisition.entity.Acquisition.builder()
+
+		Acquisition acquisition = Acquisition.builder()
 			.user(user)
 			.certification(certification)
 			.cardType(cardType)

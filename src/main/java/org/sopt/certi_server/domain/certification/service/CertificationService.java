@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.certification.service;
 
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.certification.entity.Agency;
+import org.sopt.certi_server.domain.certification.entity.enums.CertificationType;
 import org.sopt.certi_server.domain.certification.repository.AgencyRepository;
 import org.sopt.certi_server.domain.certification.entity.Category;
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
@@ -33,8 +34,9 @@ public class CertificationService {
     @Transactional
     public void createCertification(CertificationCreateRequest request) {
         Agency findAgency = getAgency(request);
+        CertificationType certificationType = CertificationType.from(request.certificationType());
         TestType testType = TestType.from(request.testType());
-        Certification newCertification = convertDtoToEntity(request, testType, findAgency);
+        Certification newCertification = convertDtoToEntity(request, certificationType, testType, findAgency);
         certificationRepository.save(newCertification);
     }
 
@@ -46,10 +48,11 @@ public class CertificationService {
         return agencyRepository.findById(request.agencyId()).orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
     }
 
-    private Certification convertDtoToEntity(CertificationCreateRequest request, TestType testType, Agency agency) {
+    private Certification convertDtoToEntity(CertificationCreateRequest request, CertificationType certificationType, TestType testType, Agency agency) {
         return Certification.builder()
                 .agency(agency)
                 .name(request.certificationName())
+                .certificationType(certificationType)
                 .testType(testType)
                 .averagePeriod(request.averagePeriod())
                 .charge(request.charge())

@@ -15,8 +15,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/acquire")
-public class AcquireController {
+@RequestMapping("/api/v1/acquisition")
+public class AcquisitionController {
 	private final AcquisitionService acquisitionService;
 
 	@PostMapping("/{certificationId}")

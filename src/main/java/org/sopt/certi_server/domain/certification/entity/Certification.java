@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.sopt.certi_server.domain.certification.entity.enums.CertificationType;
 import org.sopt.certi_server.domain.certification.entity.enums.TestType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
@@ -27,6 +28,9 @@ public class Certification extends BaseTimeEntity {
     private Agency agency;
 
     private String name;
+
+    @Enumerated(value = EnumType.STRING)
+    private CertificationType certificationType;
 
     @Enumerated(value = EnumType.STRING)
     private TestType testType;
@@ -55,12 +59,13 @@ public class Certification extends BaseTimeEntity {
     private String applicationUrl;
 
     @Builder
-    public Certification(Long id, Agency agency, String name, TestType testType, String averagePeriod, Long charge,
+    public Certification(Long id, Agency agency, String name, CertificationType certificationType, TestType testType, String averagePeriod, Long charge,
         List<String> tags, String description, String testDateInformation, LocalDate nearestTestDate,
         String applicationMethod, String cardImageUrl, String applicationUrl) {
         this.id = id;
         this.agency = agency;
         this.name = name;
+        this.certificationType = certificationType;
         this.testType = testType;
         this.averagePeriod = averagePeriod;
         this.charge = charge;

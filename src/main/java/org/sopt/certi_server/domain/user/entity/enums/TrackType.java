@@ -24,6 +24,9 @@ public enum TrackType {
 	private final String name;
 
 	public static TrackType from(String name){
+		if(name == null){
+			throw new NotFoundException(ErrorCode.TRACK_NOT_FOUND);
+		}
 		return Arrays.stream(TrackType.values())
 				.filter(t -> t.name.equalsIgnoreCase(name))
 				.findFirst()

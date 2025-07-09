@@ -13,12 +13,14 @@ import org.sopt.certi_server.global.error.exception.NotFoundException;
 public enum TestType {
     WRITTEN("필기형"),
     PRACTICAL("실기형"),
-    COMBINED("종합형");
+    COMBINED("복합형");
 
     private final String type;
 
-
     public static TestType from(String typeName) {
+        if(typeName == null){
+
+        }
         return Arrays.stream(TestType.values())
             .filter(t -> t.type.equalsIgnoreCase(typeName))
             .findFirst()

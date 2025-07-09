@@ -1,6 +1,8 @@
 package org.sopt.certi_server.global.handler;
 
 import java.io.IOException;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.dto.ErrorResponse;
