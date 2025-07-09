@@ -18,9 +18,11 @@ import org.sopt.certi_server.domain.user.dto.response.JwtResponse;
 import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
+import org.sopt.certi_server.domain.user.entity.UserMajorImpl;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
 import org.sopt.certi_server.domain.user.entity.enums.TrackType;
 import org.sopt.certi_server.domain.user.repository.UserJobRepository;
+import org.sopt.certi_server.domain.user.repository.UserMajorImplRepository;
 import org.sopt.certi_server.domain.user.repository.UserRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
@@ -39,6 +41,7 @@ public class AuthService {
     private final JobRepository jobRepository;
     private final UserJobRepository userJobRepository;
     private final MajorImplRepository majorImplRepository;
+    private final UserMajorImplRepository userMajorImplRepository;
     private final JwtService jwtService;
     private final KakaoService kakaoService;
 
@@ -73,6 +76,11 @@ public class AuthService {
                             .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
                     userJobRepository.save(UserJob.createUserJob(newUser, job));
                 });
+
+        MajorImpl major = majorImplRepository.findMajorImplByName(request.major())
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
+
+        userMajorImplRepository.save(UserMajorImpl.createUserMajorImpl(newUser, major));
 
         JwtResponse token = jwtService.issueToken(newUser.getId());
         return AuthResponse.ofRegisteredUser(newUser.getId(), newUser.getNickname(), token);

@@ -25,11 +25,7 @@ public class SecurityConfig {
         "/api/v1/auth/login",
         "/api/v1/auth/sign-up",
         "/api/v1/auth/reissue",
-        "/api/v1/careers/**",
-        "/api/v1/activity/**",
-        "/api/v1/prior-certification/**",
-        "/api/v1/home/**",
-        "/api/v1/certification",
+        "/api/v1/admin/**"
     };
 
 
