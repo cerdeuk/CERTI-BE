@@ -21,8 +21,7 @@ jobs:
       - name: application.yml 생성
         run: |
           mkdir -p src/main/resources
-          cd src/main/resources
-          echo "${{ secrets.APPLICATION }}" > ./application.yml
+          echo "${{ secrets.APPLICATION }}" | base64 --decode > src/main/resources/application.yml
 
       - name: 빌드
         run: |
