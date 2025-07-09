@@ -10,6 +10,7 @@ import lombok.Builder;
 
 @Builder
 public record CareerDetailResponse(
+	Long careerId,
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM", timezone = "Asia/Seoul")
 	LocalDate startAt,
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM", timezone = "Asia/Seoul")
@@ -20,6 +21,7 @@ public record CareerDetailResponse(
 ) {
 	public static CareerDetailResponse from(Career career) {
 		return CareerDetailResponse.builder()
+			.careerId(career.getId())
 			.startAt(career.getStartAt())
 			.endAt(career.getEndAt())
 			.name(career.getName())
