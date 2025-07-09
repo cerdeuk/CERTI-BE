@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.certification.service;
 
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.certification.entity.Agency;
+import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
 import org.sopt.certi_server.domain.certification.entity.enums.CertificationType;
 import org.sopt.certi_server.domain.certification.repository.AgencyRepository;
 import org.sopt.certi_server.domain.certification.entity.Category;
@@ -9,7 +10,9 @@ import org.sopt.certi_server.domain.certification.dto.request.CertificationCreat
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.entity.enums.TestType;
+import org.sopt.certi_server.domain.certification.repository.CertificationMajorRepository;
 import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
+import org.sopt.certi_server.domain.major.entity.Major;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,7 @@ public class CertificationService {
 
     private final CertificationRepository certificationRepository;
     private final AgencyRepository agencyRepository;
+    private final CertificationMajorRepository certificationMajorRepository;
 
     public CertificationDetailResponse getCertificationDetail(Long certificationId){
         Certification certification = getCertification(certificationId);
@@ -62,6 +66,13 @@ public class CertificationService {
                 .cardImageUrl(request.cardImageUrl())
                 .applicationUrl(request.applicationUrl())
                 .build();
+    }
+
+    public CertificationMajor getCertificationMajor(Certification certification, Major major) {
+        CertificationMajor certificationMajor = certificationMajorRepository.findByCertificationAndMajor(certification, major)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+
+        return certificationMajor;
     }
 
 }
