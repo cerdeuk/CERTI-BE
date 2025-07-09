@@ -27,4 +27,8 @@ public class CertificationJob {
     private Certification certification;
 
     private float weight;
+
+    public void updateJob(Job job) {
+        this.job = job;
+    }
 }
