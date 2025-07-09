@@ -1,6 +1,8 @@
 package org.sopt.certi_server.domain.acquisition.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
 import org.sopt.certi_server.domain.acquisition.entity.enums.CardType;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
@@ -26,6 +28,7 @@ import static org.sopt.certi_server.domain.acquisition.entity.enums.CardType.CAR
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class AcquisitionService {
 	private final AcquisitionRepository acquisitionRepository;
 	private final UserService userService;
@@ -34,6 +37,7 @@ public class AcquisitionService {
 
 	@Transactional
 	public String createAcquisition(final Long userId, final Long certificationId){
+		log.info("userId : ", userId);
 		Certification certification = certificationService.getCertification(certificationId);
 		User user = userService.getUser(userId);
 

@@ -32,8 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         "/api/v1/activity/**",
         "/api/v1/prior-certification/**",
         "/api/v1/home/**",
-        "/api/v1/certification/**",
-        "/api/v1/**"
+        "/api/v1/certification"
     );
 
     private final JwtExtractor jwtExtractor;
