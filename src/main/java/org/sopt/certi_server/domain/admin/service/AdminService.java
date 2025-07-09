@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.admin.dto.response.*;
 import org.sopt.certi_server.domain.certification.entity.Certification;
-import org.sopt.certi_server.domain.certification.entity.CertificationCategory;
 import org.sopt.certi_server.domain.certification.entity.CertificationJob;
 import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
 import org.sopt.certi_server.domain.certification.repository.CertificationCategoryRepository;
@@ -16,11 +15,6 @@ import org.sopt.certi_server.domain.certification.repository.CertificationReposi
 import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.domain.admin.repository.AdminRepository;
-import org.sopt.certi_server.domain.certification.entity.Certification;
-import org.sopt.certi_server.domain.certification.entity.CertificationJob;
-import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
-import org.sopt.certi_server.domain.certification.repository.CertificationJobRepository;
-import org.sopt.certi_server.domain.certification.repository.CertificationMajorRepository;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
@@ -28,26 +22,12 @@ import org.sopt.certi_server.domain.major.entity.Major;
 import org.sopt.certi_server.domain.major.service.MajorService;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.InvalidValueException;
-import lombok.RequiredArgsConstructor;
-import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
-import org.sopt.certi_server.domain.admin.dto.response.*;
-import org.sopt.certi_server.domain.certification.entity.Certification;
-import org.sopt.certi_server.domain.certification.entity.CertificationCategory;
-import org.sopt.certi_server.domain.certification.entity.CertificationJob;
-import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
-import org.sopt.certi_server.domain.certification.repository.CertificationCategoryRepository;
-import org.sopt.certi_server.domain.certification.repository.CertificationJobRepository;
-import org.sopt.certi_server.domain.certification.repository.CertificationMajorRepository;
-import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
-import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
-import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
-import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 
 @Service
 @RequiredArgsConstructor
