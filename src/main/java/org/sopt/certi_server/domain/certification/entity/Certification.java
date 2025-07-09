@@ -54,14 +54,12 @@ public class Certification extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String applicationMethod;
 
-    private String cardImageUrl;
-
     private String applicationUrl;
 
     @Builder
     public Certification(Long id, Agency agency, String name, CertificationType certificationType, TestType testType, String averagePeriod, Long charge,
         List<String> tags, String description, String testDateInformation, LocalDate nearestTestDate,
-        String applicationMethod, String cardImageUrl, String applicationUrl) {
+        String applicationMethod, String applicationUrl) {
         this.id = id;
         this.agency = agency;
         this.name = name;
@@ -74,7 +72,6 @@ public class Certification extends BaseTimeEntity {
         this.testDateInformation = testDateInformation;
         this.nearestTestDate = nearestTestDate;
         this.applicationMethod = applicationMethod;
-        this.cardImageUrl = cardImageUrl;
         this.applicationUrl = applicationUrl;
     }
 }
