@@ -26,4 +26,8 @@ public class CertificationMajor {
     private Certification certification;
 
     private float weight;
+
+    public void updateMajor(Major major) {
+        this.major = major;
+    }
 }
