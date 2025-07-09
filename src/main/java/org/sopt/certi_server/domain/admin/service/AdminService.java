@@ -47,6 +47,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +64,6 @@ public class AdminService {
     private final FavoriteRepository favoriteRepository;
     private final CertificationCategoryRepository certificationCategoryRepository;
     private final UserPreCertificationRepository userPreCertificationRepository;
-
 
 	@Transactional
 	public void createMajor(Long certificationId, CreateMajorRequest request) {
