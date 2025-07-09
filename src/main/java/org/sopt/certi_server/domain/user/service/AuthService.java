@@ -55,7 +55,7 @@ public class AuthService {
 
     private AuthResponse handleExistingUser(User user) {
         JwtResponse jwtResponse = jwtService.issueToken(user.getId());
-        return AuthResponse.ofRegisteredUser(user.getId(), jwtResponse);
+        return AuthResponse.ofRegisteredUser(user.getId(), user.getNickname(), jwtResponse);
     }
 
     @Transactional
@@ -75,7 +75,7 @@ public class AuthService {
                 });
 
         JwtResponse token = jwtService.issueToken(newUser.getId());
-        return AuthResponse.ofRegisteredUser(newUser.getId(), token);
+        return AuthResponse.ofRegisteredUser(newUser.getId(), newUser.getNickname(), token);
     }
 
     public JwtResponse reIssueToken(String authorization) {
