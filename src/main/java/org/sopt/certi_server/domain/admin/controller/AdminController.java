@@ -1,5 +1,7 @@
 package org.sopt.certi_server.domain.admin.controller;
 
+import org.sopt.certi_server.domain.admin.dto.request.CreateJobRequest;
+import org.sopt.certi_server.domain.admin.dto.request.CreateMajorRequest;
 import org.sopt.certi_server.domain.admin.dto.response.AdminCertificationDetailResponse;
 import org.sopt.certi_server.domain.admin.dto.response.AdminCertificationListResponse;
 import org.sopt.certi_server.domain.admin.service.AdminService;
@@ -45,8 +47,8 @@ public class AdminController {
 	@PostMapping("/{certificationId}/major")
 	public ResponseEntity<SuccessResponse> addMajor(
 		@PathVariable Long certificationId,
-		@RequestBody String majorName){
-		adminService.createMajor(certificationId, majorName);
+		@RequestBody CreateMajorRequest request){
+		adminService.createMajor(certificationId, request);
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
 	}
 
@@ -62,9 +64,9 @@ public class AdminController {
 	@PostMapping("/{certificationId}/job")
 	public ResponseEntity<SuccessResponse> addJob(
 		@PathVariable Long certificationId,
-		@RequestBody String jobName
+		@RequestBody CreateJobRequest createJobRequest
 	){
-		adminService.createJob(certificationId, jobName);
+		adminService.createJob(certificationId, createJobRequest);
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
 	}
 
