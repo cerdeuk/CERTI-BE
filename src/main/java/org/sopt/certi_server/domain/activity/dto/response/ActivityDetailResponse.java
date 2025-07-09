@@ -10,6 +10,7 @@ import lombok.Builder;
 
 @Builder
 public record ActivityDetailResponse(
+	Long activityId,
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM", timezone = "Asia/Seoul")
 	LocalDate startAt,
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM", timezone = "Asia/Seoul")
@@ -20,6 +21,7 @@ public record ActivityDetailResponse(
 ) {
 	public static ActivityDetailResponse from(Activity activity) {
 		return ActivityDetailResponse.builder()
+			.activityId(activity.getId())
 			.startAt(activity.getStartAt())
 			.endAt(activity.getEndAt())
 			.name(activity.getName())
