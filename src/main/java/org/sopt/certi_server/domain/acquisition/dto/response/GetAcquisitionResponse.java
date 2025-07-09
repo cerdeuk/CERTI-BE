@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 public record GetAcquisitionResponse(
 	String name,
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.DD", timezone = "Asia/Seoul")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
 	LocalDate createdAt,
 	String cardFrontImageUrl,
 	String cardBackImageUrl,

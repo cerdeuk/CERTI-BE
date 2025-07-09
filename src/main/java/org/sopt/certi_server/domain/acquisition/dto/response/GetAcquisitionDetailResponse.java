@@ -15,7 +15,7 @@ public record GetAcquisitionDetailResponse(
 	String name,
 	List<String> tags,
 	String description,
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.DD", timezone = "Asia/Seoul")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
 	LocalDate createdAt
 ) {
 	public static GetAcquisitionDetailResponse from(Acquisition acquisition) {
