@@ -41,7 +41,7 @@ public class UserService {
         User user = getUser(userId);
         UserMajorImpl userMajor = userMajorImplRepository.findByUserId(userId);
         MajorImpl majorImpl = majorImplRepository.findById(userMajor.getMajorImpl().getId())
-            .orElseThrow(()-> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+            .orElseThrow(()-> new NotFoundException(ErrorCode.USER_NOT_FOUND));
         return GetUserResponse.from(user, majorImpl);
     }
 
