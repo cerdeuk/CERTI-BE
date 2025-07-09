@@ -10,9 +10,9 @@ import java.util.concurrent.ThreadLocalRandom;
 @Getter
 public enum IconType {
 
-    FIRST("", 0),
-    SECOND("", 1),
-    THIRD("", 2);
+    FIRST("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/serti_emoji-2.png", 0),
+    SECOND("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/serti_emoji-3.png", 1),
+    THIRD("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/serti_emoji.png", 2);
 
     private final String iconImageUrl;
     private final int index;

@@ -18,6 +18,9 @@ public enum TestType {
     private final String type;
 
     public static TestType from(String typeName) {
+        if(typeName == null){
+
+        }
         return Arrays.stream(TestType.values())
             .filter(t -> t.type.equalsIgnoreCase(typeName))
             .findFirst()

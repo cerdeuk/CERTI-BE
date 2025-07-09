@@ -19,8 +19,11 @@ public enum CertificationType {
     private final String koreanName;
 
     public static CertificationType from(String koreanName) {
+        if(koreanName == null){
+            throw new NotFoundException(ErrorCode.CERTIFICATION_TYPE_NOT_FOUND);
+        }
         return Arrays.stream(CertificationType.values())
-                .filter(ct -> ct.koreanName.equalsIgnoreCase(koreanName))
+                .filter(ct -> ct.koreanName.equals(koreanName))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CERTIFICATION_TYPE_NOT_FOUND));
     }
