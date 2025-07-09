@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.certification.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.sopt.certi_server.domain.job.entity.Job;
@@ -30,5 +31,12 @@ public class CertificationJob {
 
     public void updateJob(Job job) {
         this.job = job;
+    }
+
+    @Builder
+    public CertificationJob(Job job, Certification certification, float weight) {
+        this.job = job;
+        this.certification = certification;
+        this.weight = weight;
     }
 }

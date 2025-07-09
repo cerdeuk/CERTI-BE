@@ -69,7 +69,7 @@ public class CertificationService {
 
     public CertificationMajor getCertificationMajor(Certification certification, Major major) {
         CertificationMajor certificationMajor = certificationMajorRepository.findByCertificationAndMajor(certification, major)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+            .orElseGet(null);
 
         return certificationMajor;
     }
