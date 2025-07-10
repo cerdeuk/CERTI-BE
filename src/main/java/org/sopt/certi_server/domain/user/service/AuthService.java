@@ -16,6 +16,7 @@ import org.sopt.certi_server.domain.user.dto.request.SignupRequest;
 import org.sopt.certi_server.domain.user.dto.response.AuthResponse;
 import org.sopt.certi_server.domain.user.dto.response.JwtResponse;
 import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
+import org.sopt.certi_server.domain.user.dto.response.SignUpResponse;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
 import org.sopt.certi_server.domain.user.entity.UserMajorImpl;
@@ -29,6 +30,8 @@ import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.sopt.certi_server.global.jwt.domain.service.JwtService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -62,7 +65,7 @@ public class AuthService {
     }
 
     @Transactional
-    public AuthResponse register(String authorization, SignupRequest request) {
+    public SignUpResponse register(String authorization, SignupRequest request) {
         log.info(authorization);
         jwtService.validatePreSignupToken(authorization);
 
@@ -70,12 +73,14 @@ public class AuthService {
 
         userRepository.save(newUser);
 
-        request.jobs()
-                .forEach(str -> {
-                    Job job = jobRepository.findByName(str)
+        List<Job> jobs = request.jobs().stream()
+                .map(jobStr -> {
+                    Job job = jobRepository.findByName(jobStr)
                             .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
                     userJobRepository.save(UserJob.createUserJob(newUser, job));
-                });
+                    return job;
+                })
+                .toList();
 
         MajorImpl major = majorImplRepository.findMajorImplByName(request.major())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
@@ -83,7 +88,12 @@ public class AuthService {
         userMajorImplRepository.save(UserMajorImpl.createUserMajorImpl(newUser, major));
 
         JwtResponse token = jwtService.issueToken(newUser.getId());
-        return AuthResponse.ofRegisteredUser(newUser.getId(), newUser.getNickname(), token);
+        return SignUpResponse.of(
+                newUser,
+                major,
+                jobs,
+                token
+        );
     }
 
     public JwtResponse reIssueToken(String authorization) {
