@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.user.dto.request.LoginRequest;
 import org.sopt.certi_server.domain.user.dto.request.LoginUriRequest;
+import org.sopt.certi_server.domain.user.dto.request.SignInRequest;
 import org.sopt.certi_server.domain.user.dto.request.SignupRequest;
 import org.sopt.certi_server.domain.user.dto.response.*;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
@@ -41,6 +42,16 @@ public class AuthController {
 
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, authService.login(userInfo)));
 
+    }
+
+    @PostMapping(value = "/sign-in")
+    public ResponseEntity<SuccessResponse<AuthResponse>> processSignIn(@Valid @RequestBody SignInRequest request){
+        SocialType socialType = SocialType.from(request.socialType());
+        SocialService socialService = authService.getSocialServiceByType(socialType);
+
+        OAuthUserInformation userInfo = socialService.getUserInfoByAccessToken(request.accessToken());
+
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, authService.login(userInfo)));
     }
 
     @PostMapping(value = "/sign-up")
