@@ -29,13 +29,13 @@ public class CertificationRepositoryCustom {
 			.select(certification)
 			.from(certification)
 			.leftJoin(favorite).on(favorite.certification.eq(certification).and(favorite.user.eq(user)))
-			.join(certificationJob).on(certificationJob.certification.eq(certification))
+			.leftJoin(certificationJob).on(certificationJob.certification.eq(certification))
 			.where(certificationJob.job.id.eq(jobId));
 
 		if (isFavorite) {
 			certificationQuery.where(favorite.isNotNull());
 		}else {
-			certificationQuery.where(certification.isNotNull());
+			certificationQuery.where();
 		}
 
 		return certificationQuery.fetch().stream()
