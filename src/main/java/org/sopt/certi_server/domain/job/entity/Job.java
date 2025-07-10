@@ -25,7 +25,14 @@ public class Job {
 	@Column(name = "job_id", nullable = false)
 	private Long id;
 
-	@Column(name = "name", nullable = false)
+	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
+	public Job(String jobName) {
+		this.name = jobName;
+	}
+
+	public static Job create(String jobName) {
+		return new Job(jobName);
+	}
 }

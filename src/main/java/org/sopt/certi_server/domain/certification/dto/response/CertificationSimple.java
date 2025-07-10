@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.certification.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 
@@ -13,17 +14,18 @@ public class CertificationSimple{
     private String certificationType;
     private String testType;
     private List<String> tags;
-    private boolean isFavorite;
+    @JsonProperty(value = "isFavorite")
+    private boolean favorite;
 
     public CertificationSimple(
             Certification certification,
-            boolean isFavorite
+            boolean favorite
     ){
         this.certificationId = certification.getId();
         this.certificationName = certification.getName();
         this.certificationType = certification.getCertificationType().getKoreanName();
         this.testType = certification.getTestType().getType();
         this.tags = certification.getTags();
-        this.isFavorite = isFavorite;
+        this.favorite = favorite;
     }
 }
