@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.user.dto.request.LoginRequest;
 import org.sopt.certi_server.domain.user.dto.request.LoginUriRequest;
 import org.sopt.certi_server.domain.user.dto.request.SignupRequest;
-import org.sopt.certi_server.domain.user.dto.response.AuthResponse;
-import org.sopt.certi_server.domain.user.dto.response.JwtResponse;
-import org.sopt.certi_server.domain.user.dto.response.LoginUriResponse;
-import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
+import org.sopt.certi_server.domain.user.dto.response.*;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
 import org.sopt.certi_server.domain.user.service.AuthService;
 import org.sopt.certi_server.domain.user.service.SocialService;
@@ -47,7 +44,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/sign-up")
-    public ResponseEntity<SuccessResponse<AuthResponse>> processSignup(
+    public ResponseEntity<SuccessResponse<SignUpResponse>> processSignup(
             @RequestHeader("Authorization") @NotEmpty(message = "임시 토큰이 누락되었습니다.") String authorization,
             @Valid @RequestBody SignupRequest request
     ){
