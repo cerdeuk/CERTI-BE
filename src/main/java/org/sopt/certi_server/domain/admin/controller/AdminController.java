@@ -62,6 +62,13 @@ public class AdminController {
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
 	}
 
+	@PostMapping(value = "/agency")
+	public ResponseEntity<SuccessResponse<Void>> addAgency(@RequestBody AgencyCreateRequest request){
+		adminService.addAgency(request);
+		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
+
+	}
+
     @GetMapping(value = "/certification/{certificationId}")
     public ResponseEntity<SuccessResponse<AdminCertificationDetailResponse>> getCertificationDetail(@PathVariable Long certificationId){
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, adminService.getCertificationDetail(certificationId)));
