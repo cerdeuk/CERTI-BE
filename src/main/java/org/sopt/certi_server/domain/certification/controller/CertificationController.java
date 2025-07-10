@@ -1,11 +1,13 @@
 package org.sopt.certi_server.domain.certification.controller;
 
-import jakarta.validation.constraints.NotNull;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
-import org.sopt.certi_server.domain.admin.dto.response.AdminCertificationListResponse;
+
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationListResponse;
+import org.sopt.certi_server.domain.certification.dto.response.CertificationSimple;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.favorite.service.FavoriteService;
 import org.sopt.certi_server.global.error.code.SuccessCode;
@@ -53,4 +55,16 @@ public class CertificationController {
             return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_DELETE));
         }
     }
+
+
+    @GetMapping
+    public ResponseEntity<SuccessResponse<?>> getCertificationList(
+        @AuthenticationPrincipal Long userId,
+        @RequestParam(value = "isFavorite") Boolean isFavorite,
+        @RequestParam(value = "jobs") String job
+    ){
+        CertificationListResponse certificationListResponse = certificationService.getCertificationList(userId, isFavorite, job);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationListResponse));
+    }
+
 }
