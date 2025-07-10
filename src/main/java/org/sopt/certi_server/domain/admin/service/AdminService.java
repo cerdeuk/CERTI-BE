@@ -199,6 +199,7 @@ public class AdminService {
 		}
 	}
 
+	@Transactional
 	public void addAgency(AgencyCreateRequest request) {
 		try{
 			agencyRepository.save(Agency.create(request.agencyName()));
