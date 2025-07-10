@@ -56,7 +56,4 @@ jobs:
         username: ${{ secrets.RELEASE_SERVER_USER }}
         key: ${{ secrets.RELEASE_SERVER_KEY }}
         script: |
-          echo "${{ secrets.DOCKER_LOGIN_ACCESSTOKEN }}" | docker login -u "${{ secrets.DOCKER_LOGIN_USERNAME }}" --password-stdin
-          docker rm -f certi-server || true
-          docker pull woals2840/certi-server
-          docker run -d --restart unless-stopped --name certi-server -p 8080:8080 woals2840/certi-server:latest
+          sudo ./deploy.sh
