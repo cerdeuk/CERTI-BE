@@ -8,9 +8,7 @@ import org.sopt.certi_server.domain.acquisition.entity.enums.CardType;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionResponse;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionDetailResponse;
-import org.sopt.certi_server.domain.certification.entity.Category;
 import org.sopt.certi_server.domain.certification.entity.Certification;
-import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.service.UserService;
@@ -21,10 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.sopt.certi_server.domain.acquisition.entity.enums.CardType.*;
-import static org.sopt.certi_server.domain.acquisition.entity.enums.CardType.CARD_TOTAL;
 
 @Service
 @RequiredArgsConstructor

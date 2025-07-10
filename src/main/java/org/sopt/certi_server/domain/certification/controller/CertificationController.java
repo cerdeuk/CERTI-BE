@@ -2,8 +2,10 @@ package org.sopt.certi_server.domain.certification.controller;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.sopt.certi_server.domain.admin.dto.response.AdminCertificationListResponse;
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
+import org.sopt.certi_server.domain.certification.dto.response.CertificationListResponse;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.favorite.service.FavoriteService;
 import org.sopt.certi_server.global.error.code.SuccessCode;
@@ -23,6 +25,14 @@ public class CertificationController {
     @GetMapping(value = "/{certificationId}")
     public ResponseEntity<SuccessResponse<CertificationDetailResponse>> getCertification(@PathVariable Long certificationId){
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.getCertificationDetail(certificationId)));
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<SuccessResponse<CertificationListResponse>> searchCertification(
+            @AuthenticationPrincipal Long userId,
+            @RequestParam(value = "keyword") String keyword
+    ){
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.searchCertification(userId, keyword)));
     }
 
     @PostMapping

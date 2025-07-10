@@ -8,7 +8,6 @@ import org.sopt.certi_server.domain.admin.dto.response.*;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.entity.CertificationJob;
 import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
-import org.sopt.certi_server.domain.certification.repository.CertificationCategoryRepository;
 import org.sopt.certi_server.domain.certification.repository.CertificationJobRepository;
 import org.sopt.certi_server.domain.certification.repository.CertificationMajorRepository;
 import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
@@ -42,7 +41,6 @@ public class AdminService {
     private final CertificationRepository certificationRepository;
     private final AcquisitionRepository acquisitionRepository;
     private final FavoriteRepository favoriteRepository;
-    private final CertificationCategoryRepository certificationCategoryRepository;
     private final UserPreCertificationRepository userPreCertificationRepository;
 
 	@Transactional
@@ -128,7 +126,6 @@ public class AdminService {
         certificationMajorRepository.deleteAllByCertification(certification);
         acquisitionRepository.deleteAllByCertification(certification);
         favoriteRepository.deleteAllByCertification(certification);
-        certificationCategoryRepository.deleteAllByCertification(certification);
         userPreCertificationRepository.deleteAllByCertification(certification);
 
         certificationRepository.delete(certification);
