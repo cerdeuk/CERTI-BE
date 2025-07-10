@@ -82,6 +82,8 @@ public class AuthService {
                 })
                 .toList();
 
+        log.info(request.major());
+
         MajorImpl major = majorImplRepository.findMajorImplByName(request.major())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
 

@@ -1,13 +1,16 @@
 package org.sopt.certi_server.domain.certification.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
 @Entity
 @Getter
 @Table(name = "category")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
