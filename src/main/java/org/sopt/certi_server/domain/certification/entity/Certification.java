@@ -27,6 +27,7 @@ public class Certification extends BaseTimeEntity {
     @JoinColumn(name = "agency_id")
     private Agency agency;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
     @Enumerated(value = EnumType.STRING)

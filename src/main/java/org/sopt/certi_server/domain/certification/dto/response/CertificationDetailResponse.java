@@ -1,7 +1,7 @@
 package org.sopt.certi_server.domain.certification.dto.response;
 
-import org.sopt.certi_server.domain.certification.entity.Category;
 import org.sopt.certi_server.domain.certification.entity.Certification;
+import org.sopt.certi_server.domain.job.entity.Job;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,11 +18,11 @@ public record CertificationDetailResponse(
         String applicationMethod
 
 ) {
-    public static CertificationDetailResponse from(Certification certification, List<Category> categories){
+    public static CertificationDetailResponse from(Certification certification, List<Job> jobs){
         return new CertificationDetailResponse(
                 certification.getId(),
                 certification.getName(),
-                categories.stream().map(Category::getName).collect(Collectors.toList()),
+                jobs.stream().map(Job::getName).collect(Collectors.toList()),
                 certification.getAveragePeriod(),
                 certification.getCharge(),
                 certification.getAgency().getName(),

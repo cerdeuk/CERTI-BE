@@ -1,10 +1,7 @@
 package org.sopt.certi_server.domain.certification.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.sopt.certi_server.domain.certification.entity.Certification;
-import org.sopt.certi_server.domain.certification.entity.enums.CertificationType;
-import org.sopt.certi_server.domain.certification.entity.enums.TestType;
 
 import java.util.List;
 

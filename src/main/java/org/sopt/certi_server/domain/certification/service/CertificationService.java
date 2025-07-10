@@ -3,17 +3,13 @@ package org.sopt.certi_server.domain.certification.service;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationListResponse;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationSimple;
-import org.sopt.certi_server.domain.certification.entity.Agency;
-import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
+import org.sopt.certi_server.domain.certification.entity.*;
 import org.sopt.certi_server.domain.certification.entity.enums.CertificationType;
-import org.sopt.certi_server.domain.certification.repository.AgencyRepository;
-import org.sopt.certi_server.domain.certification.entity.Category;
+import org.sopt.certi_server.domain.certification.repository.*;
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
-import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.entity.enums.TestType;
-import org.sopt.certi_server.domain.certification.repository.CertificationMajorRepository;
-import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
+import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.major.entity.Major;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.service.UserService;
@@ -37,17 +33,20 @@ public class CertificationService {
 
     public CertificationDetailResponse getCertificationDetail(Long certificationId){
         Certification certification = getCertification(certificationId);
-        List<Category> categories = certificationRepository.getCategoriesByCertificationId(certificationId);
-        return CertificationDetailResponse.from(certification, categories);
+        List<Job> jobs = certificationRepository.getJobsByCertificationId(certificationId);
+        return CertificationDetailResponse.from(certification, jobs);
     }
 
     @Transactional
     public void createCertification(CertificationCreateRequest request) {
-        Agency findAgency = getAgencyById(request.agencyId());
+        Agency findAgency = getAgencyByName(request.agencyName());
         CertificationType certificationType = CertificationType.from(request.certificationType());
         TestType testType = TestType.from(request.testType());
+
         Certification newCertification = convertDtoToEntity(request, certificationType, testType, findAgency);
+
         certificationRepository.save(newCertification);
+
     }
 
     public Certification getCertification(Long certificationId) {
@@ -55,8 +54,8 @@ public class CertificationService {
             .orElseThrow(() -> new NotFoundException(ErrorCode.CERTIFICATION_NOT_FOUND));
     }
 
-    private Agency getAgencyById(Long id) {
-        return agencyRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorCode.AGENCY_NOT_FOUND));
+    private Agency getAgencyByName(String agencyName) {
+        return agencyRepository.findByName(agencyName).orElseThrow(() -> new NotFoundException(ErrorCode.AGENCY_NOT_FOUND));
     }
 
     private Certification convertDtoToEntity(CertificationCreateRequest request, CertificationType certificationType, TestType testType, Agency agency) {
@@ -69,17 +68,16 @@ public class CertificationService {
                 .charge(request.charge())
                 .description(request.description())
                 .testDateInformation(request.testDateInformation())
-                .nearestTestDate(LocalDate.parse(request.nearestTestDate()))
+                .nearestTestDate(request.nearestTestDate())
+                .tags(request.tags())
                 .applicationMethod(request.applicationMethod())
                 .applicationUrl(request.applicationUrl())
                 .build();
     }
 
     public CertificationMajor getCertificationMajor(Certification certification, Major major) {
-        CertificationMajor certificationMajor = certificationMajorRepository.findByCertificationAndMajor(certification, major)
-            .orElseGet(null);
-
-        return certificationMajor;
+        return certificationMajorRepository.findByCertificationAndMajor(certification, major)
+            .orElse(null);
     }
 
     public CertificationListResponse searchCertification(Long userId, String keyword) {
