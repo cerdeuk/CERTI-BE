@@ -7,7 +7,7 @@ import org.sopt.certi_server.domain.certification.entity.Certification;
 import java.util.List;
 
 @Getter
-public class CertificationSimple{
+public class CertificationSimple {
 
     private Long certificationId;
     private String certificationName;
@@ -23,8 +23,10 @@ public class CertificationSimple{
     ){
         this.certificationId = certification.getId();
         this.certificationName = certification.getName();
-        this.certificationType = certification.getCertificationType().getKoreanName();
-        this.testType = certification.getTestType().getType();
+        this.certificationType = certification.getCertificationType() != null ?
+            certification.getCertificationType().getKoreanName() : null;
+        this.testType = certification.getTestType() != null ?
+            certification.getTestType().getType() : null;
         this.tags = certification.getTags();
         this.favorite = favorite;
     }

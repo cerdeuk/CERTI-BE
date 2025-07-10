@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.certification.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ public record CertificationCreateRequest(
         Long charge,
         String description,
         String testDateInformation,
-        @NotEmpty(message = "가장 가까운 시험 날짜를 입력해주세요.")
+        @NotNull(message = "가장 가까운 시험 날짜를 입력해주세요.")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
         LocalDate nearestTestDate,
         List<String> tags,

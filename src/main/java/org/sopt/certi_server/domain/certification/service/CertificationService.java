@@ -1,6 +1,8 @@
 package org.sopt.certi_server.domain.certification.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.sopt.certi_server.domain.certification.dto.response.CertificationListResponse;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationSimple;
 import org.sopt.certi_server.domain.certification.entity.*;
@@ -10,6 +12,7 @@ import org.sopt.certi_server.domain.certification.dto.request.CertificationCreat
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.entity.enums.TestType;
 import org.sopt.certi_server.domain.job.entity.Job;
+import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.Major;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.service.UserService;
@@ -18,18 +21,23 @@ import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class CertificationService {
 
     private final CertificationRepository certificationRepository;
     private final AgencyRepository agencyRepository;
     private final CertificationMajorRepository certificationMajorRepository;
     private final UserService userService;
+    private final JobRepository jobRepository;
+    private final CertificationRepositoryCustom certificationRepositoryCustom;
+
 
     public CertificationDetailResponse getCertificationDetail(Long certificationId){
         Certification certification = getCertification(certificationId);
@@ -84,8 +92,23 @@ public class CertificationService {
 
         User user = userService.getUser(userId);
 
-        List<CertificationSimple> certificationSimples = certificationRepository.searchByKeyword(user, keyword);
+        List<CertificationSimple> certificationSimpleRespons = certificationRepository.searchByKeyword(user, keyword);
 
-        return CertificationListResponse.of(certificationSimples);
+        return CertificationListResponse.of(certificationSimpleRespons);
     }
+
+
+    public CertificationListResponse getCertificationList(final Long userId, final boolean isFavorite, final String jobName){
+        log.info("userId : " + userId + " isFavorite : " + isFavorite + " jobName : " + jobName);
+        User user = userService.getUser(userId);
+        Job job = jobRepository.findByName(jobName)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
+
+        log.info("job : " + job.getName() + "user" + user.getNickname());
+        List<CertificationSimple> certificationSimpleList = certificationRepositoryCustom.findByJobAndFavorite(user, isFavorite, job.getId());
+
+        return CertificationListResponse.of(certificationSimpleList);
+
+    }
+
 }
