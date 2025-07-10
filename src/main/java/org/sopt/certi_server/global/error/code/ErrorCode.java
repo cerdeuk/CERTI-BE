@@ -42,6 +42,7 @@ public enum ErrorCode {
 	/* 409 CONFLICT */
 
 	DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "E409001", "리소스 중복입니다"),
+	DUPLICATED_ACQUISITION(HttpStatus.CONFLICT, "E409002", "이미 취득한 자격증입니다"),
 
 	/* 500 INTERNAL SERVER ERROR */
 

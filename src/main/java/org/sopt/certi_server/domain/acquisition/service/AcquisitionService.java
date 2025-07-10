@@ -15,6 +15,7 @@ import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.service.UserService;
 import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.exception.BadRequestException;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,11 @@ public class AcquisitionService {
 		log.info("userId : ", userId);
 		Certification certification = certificationService.getCertification(certificationId);
 		User user = userService.getUser(userId);
+
+		//중복 여부 확인
+		if(acquisitionRepository.existsByUserAndCertification(user, certification)){
+			throw new BadRequestException(ErrorCode.DUPLICATED_ACQUISITION);
+		}
 
 		CardType cardType = acquisitionRepository.findFirstByUserOrderByCreatedTimeDesc(user)
 				.map(acquisition -> {
@@ -76,8 +82,8 @@ public class AcquisitionService {
 
 	public List<GetAcquisitionResponse> getAcquisitionList(final Long userId) {
 		User user = userService.getUser(userId);
-		List<Acquisition> userPriorCertificationList = acquisitionRepository.findByUserOrderByIdAsc(user);
-		List<GetAcquisitionResponse> responses = userPriorCertificationList.stream()
+		List<Acquisition> acquisitionList = acquisitionRepository.findByUserOrderByIdAsc(user);
+		List<GetAcquisitionResponse> responses = acquisitionList.stream()
 			.map(GetAcquisitionResponse::from)
 			.toList();
 
