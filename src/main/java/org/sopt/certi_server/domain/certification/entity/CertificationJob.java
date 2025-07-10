@@ -10,7 +10,12 @@ import org.sopt.certi_server.domain.major.entity.Major;
 
 @Entity
 @Getter
-@Table(name = "certification_job")
+@Table(
+        name = "certification_job",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"certification_id", "job_id"})
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CertificationJob {
 
@@ -29,12 +34,16 @@ public class CertificationJob {
 
     private float weight;
 
+    public static CertificationJob create(Certification certification, Job job, float weight) {
+        return new CertificationJob(certification, job, weight);
+    }
+
     public void updateJob(Job job) {
         this.job = job;
     }
 
     @Builder
-    public CertificationJob(Job job, Certification certification, float weight) {
+    public CertificationJob(Certification certification, Job job, float weight) {
         this.job = job;
         this.certification = certification;
         this.weight = weight;

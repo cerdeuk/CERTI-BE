@@ -20,6 +20,14 @@ public class Major {
 	@Column(name = "major_id", nullable = false)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String name;
+
+	public Major(String majorName) {
+		this.name = majorName;
+	}
+
+	public static Major create(String majorName){
+		return new Major(majorName);
+	}
 }

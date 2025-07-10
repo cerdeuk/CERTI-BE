@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CertificationRepository extends JpaRepository<Certification, Long> {
@@ -26,4 +27,6 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
        where c.name like concat('%', :keyword, '%') 
 """)
     List<CertificationSimple> searchByKeyword(User user, String keyword);
+
+    Optional<Certification> findByName(String certificationName);
 }

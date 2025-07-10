@@ -1,7 +1,6 @@
 package org.sopt.certi_server.domain.admin.controller;
 
-import org.sopt.certi_server.domain.admin.dto.request.CreateJobRequest;
-import org.sopt.certi_server.domain.admin.dto.request.CreateMajorRequest;
+import org.sopt.certi_server.domain.admin.dto.request.*;
 import org.sopt.certi_server.domain.admin.dto.response.AdminCertificationDetailResponse;
 import org.sopt.certi_server.domain.admin.dto.response.AdminCertificationListResponse;
 import org.sopt.certi_server.domain.admin.service.AdminService;
@@ -32,6 +31,36 @@ public class AdminController {
         certificationService.createCertification(request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
     }
+
+	@PostMapping(value = "/major")
+	public ResponseEntity<SuccessResponse<Void>> addMajor(@RequestBody MajorCreateRequest request){
+		adminService.addMajor(request);
+		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
+	}
+
+	@PostMapping(value = "/major-impl")
+	public ResponseEntity<SuccessResponse<Void>> addMajorImpl(@RequestBody MajorImplCreateRequest request){
+		adminService.addMajorImpl(request);
+		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
+	}
+
+	@PostMapping(value = "/certification-major")
+	public ResponseEntity<SuccessResponse<Void>> addCertificationMajor(@RequestBody CertificationMajorCreateRequest request){
+		adminService.addCertificationMajor(request);
+		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
+	}
+
+	@PostMapping(value = "/job")
+	public ResponseEntity<SuccessResponse<Void>> addJob(@RequestBody JobCreateRequest request){
+		adminService.addJob(request);
+		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
+	}
+
+	@PostMapping(value = "/certification-job")
+	public ResponseEntity<SuccessResponse<Void>> addCertificationJob(@RequestBody CertificationJobCreateRequest request){
+		adminService.addCertificationJob(request);
+		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
+	}
 
     @GetMapping(value = "/certification/{certificationId}")
     public ResponseEntity<SuccessResponse<AdminCertificationDetailResponse>> getCertificationDetail(@PathVariable Long certificationId){

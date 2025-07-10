@@ -15,10 +15,19 @@ public class MajorImpl {
     @Column(name = "major_impl_id", nullable = false)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "major_id")
     private Major major;
+
+    public MajorImpl(Major major, String majorImplName) {
+        this.major = major;
+        this.name = majorImplName;
+    }
+
+    public static MajorImpl create(Major major, String majorImplName) {
+        return new MajorImpl(major, majorImplName);
+    }
 }
