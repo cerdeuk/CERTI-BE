@@ -7,4 +7,6 @@ public interface SocialService {
     public LoginUriResponse getAuthorizationUri();
 
     public OAuthUserInformation getUserInfo(String code);
+
+    public OAuthUserInformation getUserInfoByAccessToken(String token);
 }
