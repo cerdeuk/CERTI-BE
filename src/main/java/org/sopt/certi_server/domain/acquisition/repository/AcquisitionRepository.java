@@ -21,4 +21,6 @@ public interface AcquisitionRepository extends JpaRepository<Acquisition, Long> 
 	Optional<Acquisition> findFirstByUserOrderByCreatedTimeDesc(User user);
 
 	void deleteAllByCertification(Certification certification);
+
+	boolean existsByUserAndCertification(User user, Certification certification);
 }

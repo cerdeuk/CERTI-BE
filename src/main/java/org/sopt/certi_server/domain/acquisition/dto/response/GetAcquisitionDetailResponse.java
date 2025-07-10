@@ -10,6 +10,7 @@ import java.util.List;
 
 @Builder
 public record GetAcquisitionDetailResponse(
+	Long acquisitionId,
 	String cardFrontImageUrl,
 	String cardBackImageUrl,
 	int index,
@@ -21,6 +22,7 @@ public record GetAcquisitionDetailResponse(
 ) {
 	public static GetAcquisitionDetailResponse from(Acquisition acquisition) {
 		return GetAcquisitionDetailResponse.builder()
+			.acquisitionId(acquisition.getId())
 			.cardFrontImageUrl(acquisition.getCardType().getCardFrontImageUrl())
 			.cardBackImageUrl(acquisition.getCardType().getCardBackImageUrl())
 			.index(acquisition.getCardType().getIndex())
