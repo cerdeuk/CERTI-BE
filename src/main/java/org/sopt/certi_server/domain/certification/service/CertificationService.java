@@ -31,15 +31,15 @@ import java.util.stream.Stream;
 @Slf4j
 public class CertificationService {
 
-    private final AgencyRepository agencyRepository;
-    private final MajorRepository majorRepository;
-    private final JobRepository jobRepository;
-    private final CertificationRepositoryCustomImpl certificationRepositoryCustomImpl;
-    private final CertificationRepository certificationRepository;
-    private final CertificationMajorRepository certificationMajorRepository;
-    private final CertificationJobRepository certificationJobRepository;
-    private final FavoriteRepository favoriteRepository;
-    private final UserService userService;
+	private final AgencyRepository agencyRepository;
+	private final MajorRepository majorRepository;
+	private final JobRepository jobRepository;
+	private final CertificationRepository certificationRepository;
+	private final CertificationMajorRepository certificationMajorRepository;
+	private final CertificationJobRepository certificationJobRepository;
+	private final CertificationRepositoryCustomImpl certificationRepositoryCustomImpl;
+	private final FavoriteRepository favoriteRepository;
+	private final UserService userService;
 
 
     public CertificationDetailResponse getCertificationDetail(Long certificationId){
