@@ -25,8 +25,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,10 +34,10 @@ public class CertificationService {
     private final AgencyRepository agencyRepository;
     private final MajorRepository majorRepository;
     private final JobRepository jobRepository;
+    private final CertificationRepositoryCustomImpl certificationRepositoryCustomImpl;
     private final CertificationRepository certificationRepository;
     private final CertificationMajorRepository certificationMajorRepository;
     private final CertificationJobRepository certificationJobRepository;
-    private final CertificationRepositoryCustom certificationRepositoryCustom;
     private final FavoriteRepository favoriteRepository;
     private final UserService userService;
 
@@ -191,7 +189,7 @@ public class CertificationService {
             .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
 
         log.info("job : " + job.getName() + "user" + user.getNickname());
-        List<CertificationSimple> certificationSimpleList = certificationRepositoryCustom.findByJobAndFavorite(user, isFavorite, job.getId());
+        List<CertificationSimple> certificationSimpleList = certificationRepositoryCustomImpl.findByJobAndFavorite(user, isFavorite, job.getId());
 
         return CertificationListResponse.of(certificationSimpleList);
 

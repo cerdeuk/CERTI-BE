@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CertificationRepository extends JpaRepository<Certification, Long> {
+public interface CertificationRepository extends JpaRepository<Certification, Long>, CertificationRepositoryCustom {
 
     @Query("select j from CertificationJob cj join cj.job j where cj.certification.id = :certificationId")
     List<Job> getJobsByCertificationId(Long certificationId);
