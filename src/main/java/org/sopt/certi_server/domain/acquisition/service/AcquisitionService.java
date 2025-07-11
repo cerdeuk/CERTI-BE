@@ -95,4 +95,9 @@ public class AcquisitionService {
 		acquisitionRepository.delete(userPriorCertification);
 	}
 
+	public List<Acquisition> getAllAcquisitions(User user){
+		List<Acquisition> acquisitionList = acquisitionRepository.findAllByUser(user);
+		return acquisitionList;
+	}
+
 }

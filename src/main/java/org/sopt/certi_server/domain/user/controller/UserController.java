@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
+@Slf4j
 public class UserController {
 	private final UserService userService;
 
@@ -27,6 +29,7 @@ public class UserController {
 	public ResponseEntity<SuccessResponse<GetUserResponse>> getHomeUser(
 		@AuthenticationPrincipal Long userId
 		){
+		log.info("getHomeUser: userId={}", userId);
 		GetUserResponse getUserResponse = userService.getHomeUser(userId);
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, getUserResponse));
 	}
