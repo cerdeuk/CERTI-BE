@@ -25,6 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -40,6 +41,7 @@ public class CertificationService {
 	private final CertificationRepositoryCustomImpl certificationRepositoryCustomImpl;
 	private final FavoriteRepository favoriteRepository;
 	private final UserService userService;
+
 
 
     public CertificationDetailResponse getCertificationDetail(Long certificationId){
