@@ -18,8 +18,8 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
 @OpenAPIDefinition(info = @Info(
-	title = "Daruda API",
-	description = "Daruda API 문서",
+	title = "Certi API",
+	description = "Certi API 문서",
 	version = "v1.0.0"))
 
 @Configuration
