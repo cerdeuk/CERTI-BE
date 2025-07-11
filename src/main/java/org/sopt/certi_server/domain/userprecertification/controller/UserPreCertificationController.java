@@ -27,12 +27,12 @@ public class UserPreCertificationController {
     }
 
     @PostMapping("/{certificationId}")
-    public ResponseEntity<SuccessResponse<Void>> addPreCertification(
+    public ResponseEntity<SuccessResponse<?>> addPreCertification(
             @AuthenticationPrincipal @NotNull(message = "인증되지 않은 사용자입니다.") Long userId,
             @PathVariable(name = "certificationId") Long certificationId
     ){
-        userPreCertificationService.createNewPreCertification(userId, certificationId);
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
+        boolean isPreCertificated = userPreCertificationService.createNewPreCertification(userId, certificationId);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE, isPreCertificated));
     }
 
     @DeleteMapping(value = "/{certificationId}")

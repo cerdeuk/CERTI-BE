@@ -23,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,7 +34,7 @@ public class CertificationService {
     private final CertificationMajorRepository certificationMajorRepository;
     private final UserService userService;
     private final JobRepository jobRepository;
-    private final CertificationRepositoryCustom certificationRepositoryCustom;
+    private final CertificationRepositoryCustomImpl certificationRepositoryCustomImpl;
 
 
     public CertificationDetailResponse getCertificationDetail(Long certificationId){
@@ -105,7 +103,7 @@ public class CertificationService {
             .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
 
         log.info("job : " + job.getName() + "user" + user.getNickname());
-        List<CertificationSimple> certificationSimpleList = certificationRepositoryCustom.findByJobAndFavorite(user, isFavorite, job.getId());
+        List<CertificationSimple> certificationSimpleList = certificationRepositoryCustomImpl.findByJobAndFavorite(user, isFavorite, job.getId());
 
         return CertificationListResponse.of(certificationSimpleList);
 

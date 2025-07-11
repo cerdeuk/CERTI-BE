@@ -20,13 +20,13 @@ public class AcquisitionController {
 	private final AcquisitionService acquisitionService;
 
 	@PostMapping("/{certificationId}")
-	public ResponseEntity<SuccessResponse<String>> addAcquisition(
+	public ResponseEntity<SuccessResponse<?>> addAcquisition(
 		@AuthenticationPrincipal Long userId,
 		@PathVariable(name = "certificationId") Long certificationId
 	){
-		String certificationName = acquisitionService.createAcquisition(userId, certificationId);
+		boolean isAcquired = acquisitionService.createAcquisition(userId, certificationId);
 
-		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE, certificationName));
+		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE, isAcquired));
 	}
 
 	@GetMapping("/{acquisitionId}")

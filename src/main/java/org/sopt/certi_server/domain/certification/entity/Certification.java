@@ -57,10 +57,13 @@ public class Certification extends BaseTimeEntity {
 
     private String applicationUrl;
 
+    @Column(name = "expiration_period", nullable = false)
+    private String expirationPeriod;
+
     @Builder
     public Certification(Long id, Agency agency, String name, CertificationType certificationType, TestType testType, String averagePeriod, Long charge,
         List<String> tags, String description, String testDateInformation, LocalDate nearestTestDate,
-        String applicationMethod, String applicationUrl) {
+        String applicationMethod, String applicationUrl, String expirationPeriod) {
         this.id = id;
         this.agency = agency;
         this.name = name;
@@ -74,6 +77,7 @@ public class Certification extends BaseTimeEntity {
         this.nearestTestDate = nearestTestDate;
         this.applicationMethod = applicationMethod;
         this.applicationUrl = applicationUrl;
+        this.expirationPeriod = expirationPeriod;
     }
 }
 
