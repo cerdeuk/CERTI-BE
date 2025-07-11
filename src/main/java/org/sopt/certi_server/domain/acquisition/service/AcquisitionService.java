@@ -33,14 +33,14 @@ public class AcquisitionService {
 
 
 	@Transactional
-	public String createAcquisition(final Long userId, final Long certificationId){
+	public boolean createAcquisition(final Long userId, final Long certificationId){
 		log.info("userId : ", userId);
 		Certification certification = certificationService.getCertification(certificationId);
 		User user = userService.getUser(userId);
 
 		//중복 여부 확인
 		if(acquisitionRepository.existsByUserAndCertification(user, certification)){
-			throw new BadRequestException(ErrorCode.DUPLICATED_ACQUISITION);
+			return false;
 		}
 
 		CardType cardType = acquisitionRepository.findFirstByUserOrderByCreatedTimeDesc(user)
@@ -58,7 +58,7 @@ public class AcquisitionService {
 
 		acquisitionRepository.save(acquisition);
 
-		return acquisition.getCertification().getName();
+		return true;
 	}
 
 	public Acquisition getAcquisition(final Long userId, final Long acquisitionId){
