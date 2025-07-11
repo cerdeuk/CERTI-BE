@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationListResponse;
+import org.sopt.certi_server.domain.certification.dto.response.CertificationRecommendationListResponse;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationSimple;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.favorite.service.FavoriteService;
@@ -56,7 +57,6 @@ public class CertificationController {
         }
     }
 
-
     @GetMapping
     public ResponseEntity<SuccessResponse<?>> getCertificationList(
         @AuthenticationPrincipal Long userId,
@@ -65,6 +65,14 @@ public class CertificationController {
     ){
         CertificationListResponse certificationListResponse = certificationService.getCertificationList(userId, isFavorite, job);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationListResponse));
+    }
+
+    @GetMapping("/recommend")
+    public ResponseEntity<SuccessResponse<CertificationRecommendationListResponse>> recommendCertification(
+        @AuthenticationPrincipal Long userId
+    ){
+        CertificationRecommendationListResponse certiRecommendListRes = certificationService.recommendCertifications(userId);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certiRecommendListRes));
     }
 
 }
