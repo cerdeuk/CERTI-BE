@@ -22,6 +22,8 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private static final String[] WHITELIST = {
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
         "/api/v1/auth/login-uri",
         "/api/v1/auth/login",
         "/api/v1/auth/sign-up",
