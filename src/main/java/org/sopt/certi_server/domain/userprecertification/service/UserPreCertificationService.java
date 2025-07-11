@@ -36,15 +36,21 @@ public class UserPreCertificationService {
     }
 
     @Transactional
-    public void createNewPreCertification(Long userId, Long certificationId) {
+    public boolean createNewPreCertification(Long userId, Long certificationId) {
         User user = userService.getUser(userId);
         Certification certification = certificationService.getCertification(certificationId);
+
+        if(userPreCertificationRepository.existsByUserAndCertification(user, certification)) {
+            return false;
+        }
 
         IconType iconType = userPreCertificationRepository.findFirstByUserOrderByCreatedTimeDesc(user)
                 .map(userPreCertification -> IconType.issueNextIconType(userPreCertification.getIconType().getIndex()))
                 .orElseGet(IconType::issueRandomIconType);
 
         userPreCertificationRepository.save(UserPreCertification.create(user, certification, iconType));
+
+        return true;
     }
 
     @Transactional

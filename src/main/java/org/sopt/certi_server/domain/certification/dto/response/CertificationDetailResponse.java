@@ -6,16 +6,23 @@ import org.sopt.certi_server.domain.job.entity.Job;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.Builder;
+
+@Builder
 public record CertificationDetailResponse(
         Long certificationId,
         String certificationName,
-        List<String> categories,
+        List<String> tags,
         String averagePeriod,
         Long charge,
         String agency,
-        String applicationUrl,
+        String testType,
         String description,
-        String applicationMethod
+        String testDateInformation,
+        String applicationMethod,
+        String applicationUrl,
+        String expirationPeriod
+
 
 ) {
     public static CertificationDetailResponse from(Certification certification, List<Job> jobs){
@@ -26,9 +33,12 @@ public record CertificationDetailResponse(
                 certification.getAveragePeriod(),
                 certification.getCharge(),
                 certification.getAgency().getName(),
-                certification.getApplicationUrl(),
+                certification.getTestType().getType(),
                 certification.getDescription(),
-                certification.getApplicationMethod()
+                certification.getTestDateInformation(),
+                certification.getApplicationMethod(),
+                certification.getApplicationUrl(),
+                certification.getExpirationPeriod()
         );
     }
 }
