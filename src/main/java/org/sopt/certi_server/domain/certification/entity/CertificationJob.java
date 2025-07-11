@@ -32,9 +32,9 @@ public class CertificationJob {
     @JoinColumn(name = "certification_id")
     private Certification certification;
 
-    private float weight;
+    private double weight;
 
-    public static CertificationJob create(Certification certification, Job job, float weight) {
+    public static CertificationJob create(Certification certification, Job job, double weight) {
         return new CertificationJob(certification, job, weight);
     }
 
@@ -43,7 +43,7 @@ public class CertificationJob {
     }
 
     @Builder
-    public CertificationJob(Certification certification, Job job, float weight) {
+    public CertificationJob(Certification certification, Job job, double weight) {
         this.job = job;
         this.certification = certification;
         this.weight = weight;
