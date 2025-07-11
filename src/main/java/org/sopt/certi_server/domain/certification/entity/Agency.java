@@ -19,4 +19,12 @@ public class Agency extends BaseTimeEntity {
     private String name;
 
     private String agencyUrl;
+
+    public Agency(String agencyName) {
+        this.name = agencyName;
+    }
+
+    public static Agency create(String agencyName) {
+        return new Agency(agencyName);
+    }
 }

@@ -5,9 +5,11 @@ import org.sopt.certi_server.domain.admin.dto.request.*;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.admin.dto.response.*;
+import org.sopt.certi_server.domain.certification.entity.Agency;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.entity.CertificationJob;
 import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
+import org.sopt.certi_server.domain.certification.repository.AgencyRepository;
 import org.sopt.certi_server.domain.certification.repository.CertificationJobRepository;
 import org.sopt.certi_server.domain.certification.repository.CertificationMajorRepository;
 import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
@@ -48,6 +50,7 @@ public class AdminService {
     private final UserPreCertificationRepository userPreCertificationRepository;
 	private final MajorRepository majorRepository;
 	private final MajorImplRepository majorImplRepository;
+	private final AgencyRepository agencyRepository;
 
 	@Transactional
 	public void createMajor(Long certificationId, CreateMajorRequest request) {
@@ -193,6 +196,15 @@ public class AdminService {
 			certificationJobRepository.save(CertificationJob.create(certification, job, request.weight()));
 		}catch (DataIntegrityViolationException e){
 			throw new DataIntegrityViolationException("이미 존재하는 (자격증 - 직무) 가중치 매핑입니다. \n" + e);
+		}
+	}
+
+	@Transactional
+	public void addAgency(AgencyCreateRequest request) {
+		try{
+			agencyRepository.save(Agency.create(request.agencyName()));
+		}catch (DataIntegrityViolationException e){
+			throw new DataIntegrityViolationException("이미 존재하는 인증기관입니다.");
 		}
 	}
 }
