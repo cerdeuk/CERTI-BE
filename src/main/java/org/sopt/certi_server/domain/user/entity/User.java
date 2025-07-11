@@ -1,5 +1,7 @@
 package org.sopt.certi_server.domain.user.entity;
 
+import static org.sopt.certi_server.domain.user.service.UserService.*;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -44,8 +46,6 @@ public class User extends BaseTimeEntity {
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
-    @Column(name = "percentage", nullable = false)
-    private int percentage;
 
     public User(String nickname, String email, String profileImageUrl){
         this.nickname = nickname;
@@ -59,7 +59,7 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(Long id, String universityName, String track, String grade, MajorImpl major, String nickname, String email,
-                String profileImageUrl, int percentage) {
+                String profileImageUrl) {
         this.id = id;
         this.universityName = universityName;
         this.track = TrackType.from(track);
@@ -68,6 +68,7 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
-        this.percentage = percentage;
     }
+
+
 }

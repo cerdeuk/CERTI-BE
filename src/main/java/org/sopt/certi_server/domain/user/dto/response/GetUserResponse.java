@@ -13,12 +13,12 @@ public record GetUserResponse(
 	String major,
 	int percentage
 ) {
-	public static GetUserResponse from(User user, MajorImpl majorImpl) {
+	public static GetUserResponse from(User user, MajorImpl majorImpl, int percentage) {
 		return GetUserResponse.builder()
 			.name(user.getNickname())
 			.university(user.getUniversityName())
 			.major(majorImpl.getName())
-			.percentage(user.getPercentage())
+			.percentage(percentage)
 			.build();
 	}
 }

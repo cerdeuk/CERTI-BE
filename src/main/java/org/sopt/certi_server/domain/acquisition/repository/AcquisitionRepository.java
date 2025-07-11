@@ -22,5 +22,9 @@ public interface AcquisitionRepository extends JpaRepository<Acquisition, Long> 
 
 	void deleteAllByCertification(Certification certification);
 
+	List<Acquisition> findAllByUser(User user);
+
 	boolean existsByUserAndCertification(User user, Certification certification);
+
+	int countByUser(User user);
 }
