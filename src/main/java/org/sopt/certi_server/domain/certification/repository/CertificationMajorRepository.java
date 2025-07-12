@@ -21,4 +21,12 @@ public interface CertificationMajorRepository extends JpaRepository<Certificatio
 
     void deleteAllByCertification(Certification certification);
 
+    @Query("""
+        select cm
+        from CertificationMajor cm
+        join fetch cm.certification c
+        join fetch c.tags
+        where cm.major.name in :majorNames
+""")
+    List<CertificationMajor> findByMajorNames(List<String> majorNames);
 }

@@ -1,0 +1,27 @@
+package org.sopt.certi_server.domain.certification.service;
+
+import org.junit.jupiter.api.Test;
+import org.sopt.certi_server.domain.certification.dto.response.CertificationRecommendationListResponse;
+import org.sopt.certi_server.domain.certification.dto.response.CertificationScoreDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+class CertificationServiceTest {
+
+    @Autowired
+    CertificationService certificationService;
+
+    @Test
+    void certification_recommandation_test(){
+        CertificationRecommendationListResponse certificationRecommendationListResponse = certificationService.recommendCertifications(3L);
+
+        System.out.println("certificationRecommendationListResponse.recommendationList().size() = " + certificationRecommendationListResponse.recommendationList().size());
+
+        for (CertificationScoreDto certificationScoreDto : certificationRecommendationListResponse.recommendationList()) {
+            System.out.println("certificationScoreDto = " + certificationScoreDto);
+        }
+    }
+}

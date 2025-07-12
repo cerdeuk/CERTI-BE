@@ -18,9 +18,17 @@ public interface CertificationJobRepository extends JpaRepository<CertificationJ
     @Query("select cj from CertificationJob cj join fetch cj.certification where cj.certification = :certification")
     List<CertificationJob> findAllByCertification(Certification certification);
 
-
     Optional<CertificationJob> findByCertificationAndJob(Certification certification, Job job);
 
     void deleteAllByCertification(Certification certification);
+
+    @Query("""
+        select cj
+        from CertificationJob cj
+        join fetch cj.certification c
+        join fetch c.tags
+        where cj.job.name in :jobNames
+""")
+    List<CertificationJob> findByJobNames(List<String> jobNames);
 
 }
