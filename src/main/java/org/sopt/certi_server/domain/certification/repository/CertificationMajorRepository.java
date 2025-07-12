@@ -24,7 +24,7 @@ public interface CertificationMajorRepository extends JpaRepository<Certificatio
     @Query("""
         select cm
         from CertificationMajor cm
-        join fetch cm.certification c
+        left join fetch cm.certification c
         join fetch c.tags
         where cm.major.name in :majorNames
 """)
@@ -34,7 +34,7 @@ public interface CertificationMajorRepository extends JpaRepository<Certificatio
     @Query("""
         select cm
         from CertificationMajor cm
-        join fetch cm.certification c
+        left join fetch cm.certification c
         join fetch c.tags
         where cm.major.id in :majorIds
 """)
