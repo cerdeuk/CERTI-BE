@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/careers")
+@Tag(name = "Career 컨트롤러", description = "경력사항과 관련된 API를 처리합니다.")
 public class CareerController {
 	private final CareerService careerService;
 
