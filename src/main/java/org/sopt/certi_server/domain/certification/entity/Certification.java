@@ -38,7 +38,7 @@ public class Certification extends BaseTimeEntity {
 
     private String averagePeriod;
 
-    private Long charge;
+    private String charge;
 
     @ElementCollection
     @CollectionTable(name = "tags")
@@ -55,13 +55,14 @@ public class Certification extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String applicationMethod;
 
+    @Column(columnDefinition = "TEXT")
     private String applicationUrl;
 
     @Column(name = "expiration_period", nullable = false)
     private String expirationPeriod;
 
     @Builder
-    public Certification(Long id, Agency agency, String name, CertificationType certificationType, TestType testType, String averagePeriod, Long charge,
+    public Certification(Long id, Agency agency, String name, CertificationType certificationType, TestType testType, String averagePeriod, String charge,
         List<String> tags, String description, String testDateInformation, LocalDate nearestTestDate,
         String applicationMethod, String applicationUrl, String expirationPeriod) {
         this.id = id;

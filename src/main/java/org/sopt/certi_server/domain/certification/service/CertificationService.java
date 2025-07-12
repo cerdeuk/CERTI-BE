@@ -168,6 +168,7 @@ public class CertificationService {
                 .testDateInformation(request.testDateInformation())
                 .nearestTestDate(request.nearestTestDate())
                 .tags(request.tags())
+                .expirationPeriod(request.expirationPeriod())
                 .applicationMethod(request.applicationMethod())
                 .applicationUrl(request.applicationUrl())
                 .build();

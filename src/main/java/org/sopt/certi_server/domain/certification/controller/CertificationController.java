@@ -40,12 +40,6 @@ public class CertificationController {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.searchCertification(userId, keyword)));
     }
 
-    @PostMapping
-    public ResponseEntity<SuccessResponse<Void>> addCertification(@RequestBody CertificationCreateRequest request){
-        certificationService.createCertification(request);
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
-    }
-
     @PostMapping(value = "/{certificationId}/favorite")
     public ResponseEntity<SuccessResponse<Void>> toggleFavorite(
             @AuthenticationPrincipal Long userId,

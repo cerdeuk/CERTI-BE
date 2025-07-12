@@ -16,7 +16,7 @@ public record AdminCertificationResponse(
         String certificationType,
         String testType,
         String averagePeriod,
-        Long charge,
+        String charge,
 
         List<String> tags,
         String description,

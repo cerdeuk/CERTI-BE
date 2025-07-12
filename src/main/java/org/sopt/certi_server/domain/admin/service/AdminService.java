@@ -18,7 +18,6 @@ import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.major.repository.MajorRepository;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
-import org.sopt.certi_server.domain.admin.repository.AdminRepository;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
@@ -38,7 +37,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AdminService {
-	private final AdminRepository adminRepository;
 	private final MajorService majorService;
 	private final CertificationService certificationService;
 	private final CertificationMajorRepository certificationMajorRepository;
@@ -52,49 +50,6 @@ public class AdminService {
 	private final MajorImplRepository majorImplRepository;
 	private final AgencyRepository agencyRepository;
 
-	@Transactional
-	public void createMajor(Long certificationId, CreateMajorRequest request) {
-		Major major = majorService.getMajorByName(request.majorName());
-		Certification certification = certificationService.getCertification(certificationId);
-
-
-		if(certificationService.getCertificationMajor(certification, major)!=null) {
-			throw new InvalidValueException(ErrorCode.BAD_REQUEST_DATA);
-		}
-
-		CertificationMajor certificationMajor = new CertificationMajor(certification, major, request.weight());
-		certificationMajorRepository.save(certificationMajor);
-	}
-
-	@Transactional
-	public void deleteMajor(Long certificationId, String majorName) {
-		Major major = majorService.getMajorByName(majorName);
-		Certification certification = certificationService.getCertification(certificationId);
-		CertificationMajor certificationMajor = certificationService.getCertificationMajor(certification, major);
-		certificationMajorRepository.delete(certificationMajor);
-	}
-
-	@Transactional
-	public void createJob(Long certificationId, CreateJobRequest createJobRequest) {
-		Certification certification = certificationService.getCertification(certificationId);
-		Job job = jobRepository.findByName(createJobRequest.jobName())
-			.orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
-		if(certificationJobRepository.findByCertificationAndJob(certification, job).isPresent()){
-			throw new InvalidValueException(ErrorCode.BAD_REQUEST_DATA);
-		}
-		CertificationJob certificationJob = new CertificationJob(certification, job, createJobRequest.weight());
-		certificationJobRepository.save(certificationJob);
-	}
-
-	@Transactional
-	public void deleteJob(Long certificationId, String jobName) {
-		Certification certification = certificationService.getCertification(certificationId);
-		Job job = jobRepository.findByName(jobName)
-			.orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
-		CertificationJob certificationJob = certificationJobRepository.findByCertificationAndJob(certification, job)
-			.orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
-		certificationJobRepository.delete(certificationJob);
-	}
     public AdminCertificationDetailResponse getCertificationDetail(Long certificationId) {
 
         Certification certification = certificationRepository.findById(certificationId)

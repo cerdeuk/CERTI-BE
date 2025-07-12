@@ -14,7 +14,7 @@ public record CertificationDetailResponse(
         String certificationName,
         List<String> tags,
         String averagePeriod,
-        Long charge,
+        String charge,
         String agencyName,
         String testType,
         String description,
