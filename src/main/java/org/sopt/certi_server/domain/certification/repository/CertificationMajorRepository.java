@@ -29,4 +29,14 @@ public interface CertificationMajorRepository extends JpaRepository<Certificatio
         where cm.major.name in :majorNames
 """)
     List<CertificationMajor> findByMajorNames(List<String> majorNames);
+
+
+    @Query("""
+        select cm
+        from CertificationMajor cm
+        join fetch cm.certification c
+        join fetch c.tags
+        where cm.major.id in :majorIds
+""")
+    List<CertificationMajor> findByMajorIds(List<Long> majorIds);
 }

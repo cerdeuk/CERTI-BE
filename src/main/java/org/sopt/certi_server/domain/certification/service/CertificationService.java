@@ -80,9 +80,9 @@ public class CertificationService {
             log.info("job = {}", userJob.getName());
         }
 
-        List<CertificationMajor> certificationMajors = certificationMajorRepository.findByMajorNames(
+        List<CertificationMajor> certificationMajors = certificationMajorRepository.findByMajorIds(
                 userMajors.stream()
-                        .map(Major::getName)
+                        .map(Major::getId)
                         .toList()
         );
         log.info("=============전공 - 자격증 매핑================");
@@ -91,9 +91,9 @@ public class CertificationService {
             log.info("certification = {}", certificationMajor.getCertification().getName());
         }
 
-        List<CertificationJob> certificationJobs = certificationJobRepository.findByJobNames(
+        List<CertificationJob> certificationJobs = certificationJobRepository.findByJobIds(
                 userJobs.stream()
-                        .map(Job::getName)
+                        .map(Job::getId)
                         .toList()
         );
         log.info("=============직무 - 자격증 매핑================");
