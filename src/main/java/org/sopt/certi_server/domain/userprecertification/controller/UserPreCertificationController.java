@@ -1,5 +1,7 @@
 package org.sopt.certi_server.domain.userprecertification.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -16,12 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1/home/pre-certification")
 @RequiredArgsConstructor
-@Tag(name = "UserPreCertificationController 컨트롤러", description = "취득예젇과 관련된 API를 처리합니다.")
+@Tag(name = "UserPreCertificationController 컨트롤러", description = "취득예정과 관련된 API를 처리합니다.")
 public class UserPreCertificationController {
 
      private final UserPreCertificationService userPreCertificationService;
 
     @GetMapping
+    @Operation(summary = "취득예정 자격증 리스트 조회 API", description = "취득예정 자격증 리스트를 조회합니다")
     public ResponseEntity<SuccessResponse<PreCertificationSimpleListResponse>> getPreCertificationListData(
             @AuthenticationPrincipal @NotNull(message = "인증되지 않은 사용자입니다.") Long userId
     ){
@@ -29,8 +32,10 @@ public class UserPreCertificationController {
     }
 
     @PostMapping("/{certificationId}")
+    @Operation(summary = "취득예정 자격증 추가 API", description = "취득예정 자격증을 추가합니다")
     public ResponseEntity<SuccessResponse<?>> addPreCertification(
             @AuthenticationPrincipal @NotNull(message = "인증되지 않은 사용자입니다.") Long userId,
+            @Parameter(description = "certification Id", example = "1")
             @PathVariable(name = "certificationId") Long certificationId
     ){
         boolean isPreCertificated = userPreCertificationService.createNewPreCertification(userId, certificationId);
@@ -38,8 +43,10 @@ public class UserPreCertificationController {
     }
 
     @DeleteMapping(value = "/{certificationId}")
+    @Operation(summary = "취득예정 자격증 삭제 API", description = "취득예정 자격증을 삭제합니다")
     public ResponseEntity<SuccessResponse<Void>> deletePreCertification(
             @AuthenticationPrincipal @NotNull(message = "인증되지 않은 사용자입니다.") Long userId,
+            @Parameter(description = "certification Id", example = "1")
             @PathVariable Long certificationId
     ){
         userPreCertificationService.deletePreCertification(userId, certificationId);

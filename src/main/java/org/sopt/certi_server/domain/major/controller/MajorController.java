@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +24,9 @@ public class MajorController {
 	private final MajorService majorService;
 
 	@GetMapping("/search")
+	@Operation(summary = "학과 검색 API", description = "학과를 검색합니다")
 	public ResponseEntity<SuccessResponse<GetMajorListResponse>> searchMajor(
+		@Parameter(description = "keyword", example = "컴퓨터공학과")
 		@RequestParam(name = "keyword") String keyword
 	){
 		GetMajorListResponse getMajorListResponse = majorService.getMajorList(keyword);

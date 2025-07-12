@@ -2,6 +2,8 @@ package org.sopt.certi_server.domain.certification.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -28,27 +30,35 @@ public class CertificationController {
     private final FavoriteService favoriteService;
 
     @GetMapping(value = "/{certificationId}")
-    public ResponseEntity<SuccessResponse<CertificationDetailResponse>> getCertification(@PathVariable Long certificationId){
+    @Operation(summary = "자격증 조회 API", description = "자격증을 조회합니다")
+    public ResponseEntity<SuccessResponse<CertificationDetailResponse>> getCertification(
+        @Parameter(description = "certificatio Id", example = "1")
+        @PathVariable Long certificationId){
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.getCertificationDetail(certificationId)));
     }
 
     @GetMapping(value = "/search")
+    @Operation(summary = "자격증 검색 API", description = "자격증을 검색합니다")
     public ResponseEntity<SuccessResponse<CertificationListResponse>> searchCertification(
             @AuthenticationPrincipal Long userId,
+            @Parameter(description = "keyword", example = "정보처리기사")
             @RequestParam(value = "keyword") String keyword
     ){
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.searchCertification(userId, keyword)));
     }
 
     @PostMapping
+    @Operation(summary = "자격증 추가 API", description = "자격증을 추가합니다")
     public ResponseEntity<SuccessResponse<Void>> addCertification(@RequestBody CertificationCreateRequest request){
         certificationService.createCertification(request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
     }
 
     @PostMapping(value = "/{certificationId}/favorite")
+    @Operation(summary = "자격증 즐겨찾기 API", description = "자격증을 즐겨찾기합니다")
     public ResponseEntity<SuccessResponse<Void>> toggleFavorite(
             @AuthenticationPrincipal Long userId,
+            @Parameter(description = "certification Id", example = "1")
             @PathVariable Long certificationId
     ){
         boolean isCreated = favoriteService.toggleFavorite(userId, certificationId);
@@ -60,6 +70,7 @@ public class CertificationController {
     }
 
     @GetMapping
+    @Operation(summary = "카테고리별 자격증 조회 API", description = "카테고리별로 자격증을 조회합니다")
     public ResponseEntity<SuccessResponse<?>> getCertificationList(
         @AuthenticationPrincipal Long userId,
         @RequestParam(value = "isFavorite") Boolean isFavorite,
@@ -70,6 +81,7 @@ public class CertificationController {
     }
 
     @GetMapping("/recommend")
+    @Operation(summary = "자격증 추천 API", description = "추천 자격증을 조회합니다")
     public ResponseEntity<SuccessResponse<CertificationRecommendationListResponse>> recommendCertification(
         @AuthenticationPrincipal Long userId
     ){

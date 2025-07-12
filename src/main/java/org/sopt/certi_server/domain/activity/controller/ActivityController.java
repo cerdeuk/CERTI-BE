@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class ActivityController {
 	private final ActivityService activityService;
 
 	@PostMapping
+	@Operation(summary = "대내외활동 추가 API", description = "대내외 활동을 추가합니다")
 	public ResponseEntity<SuccessResponse> createActivity(
 		@AuthenticationPrincipal Long userId,
 		@Valid @RequestBody CreateActivityRequest request) {
@@ -39,6 +42,7 @@ public class ActivityController {
 	}
 
 	@GetMapping
+	@Operation(summary = "대내외활동 리스트 조회 API", description = "대내외 활동 리스트를 조회합니다")
 	public ResponseEntity<SuccessResponse<GetActivityListResponse>> getAllActivities(
 		@AuthenticationPrincipal Long userId
 	){
@@ -49,8 +53,10 @@ public class ActivityController {
 	}
 
 	@DeleteMapping("/{activity-id}")
+	@Operation(summary = "대내외 활동 삭제 API", description = "대내외 활동을 삭제합니다")
 	public ResponseEntity<SuccessResponse> deleteActivity(
 		@AuthenticationPrincipal Long userId,
+		@Parameter(description = "activity Id", example = "1")
 		@PathVariable(name = "activity-id") Long activityId
 	){
 		activityService.deleteActivity(activityId, userId);

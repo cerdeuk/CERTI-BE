@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class CareerController {
 	private final CareerService careerService;
 
 	@GetMapping
+	@Operation(summary = "경력사항 리스트 조회 API", description = "사용자의 경력사항 리스트를 조회합니다")
 	public ResponseEntity<SuccessResponse<GetCareersReponse>> getCareers(
 		@AuthenticationPrincipal Long userId
 		){
@@ -40,6 +42,7 @@ public class CareerController {
 	}
 
 	@PostMapping
+	@Operation(summary = "경력사항 추가 API", description = "사용자의 경력사항을 추가합니다")
 	public ResponseEntity<SuccessResponse> createCareer(
 		@AuthenticationPrincipal Long userId,
 		@Valid @RequestBody CreateCareerRequest request
@@ -49,6 +52,7 @@ public class CareerController {
 	}
 
 	@DeleteMapping("/{career-id}")
+	@Operation(summary = "경력사항 삭제 API", description = "사용자의 경력사항을 삭제합니다")
 	public ResponseEntity<SuccessResponse> deleteCareer(
 		@AuthenticationPrincipal Long userId,
 		@PathVariable("career-id") Long careerId
