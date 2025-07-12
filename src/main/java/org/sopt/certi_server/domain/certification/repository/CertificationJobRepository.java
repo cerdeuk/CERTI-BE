@@ -25,7 +25,7 @@ public interface CertificationJobRepository extends JpaRepository<CertificationJ
     @Query("""
         select cj
         from CertificationJob cj
-        join fetch cj.certification c
+        left join fetch cj.certification c
         join fetch c.tags
         where cj.job.name in :jobNames
 """)
@@ -34,7 +34,7 @@ public interface CertificationJobRepository extends JpaRepository<CertificationJ
     @Query("""
         select cj
         from CertificationJob cj
-        join fetch cj.certification c
+        left join fetch cj.certification c
         join fetch c.tags
         where cj.job.id in :jobIds
 """)

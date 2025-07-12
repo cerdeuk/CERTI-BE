@@ -72,12 +72,14 @@ public class CertificationService {
         List<Major> userMajors = majorRepository.findAllByUser(user);
         log.info("=============사용자 전공================");
         for (Major userMajor : userMajors) {
-            log.info("major = {}", userMajor.getName());
+            log.info("id = {}", userMajor.getId());
+            log.info("major name = {}", userMajor.getName());
         }
         List<Job> userJobs = jobRepository.findAllByUser(user);
         log.info("=============사용자 직무================");
         for (Job userJob : userJobs) {
-            log.info("job = {}", userJob.getName());
+            log.info("id = {}", userJob.getId());
+            log.info("job name = {}", userJob.getName());
         }
 
         List<CertificationMajor> certificationMajors = certificationMajorRepository.findByMajorIds(
