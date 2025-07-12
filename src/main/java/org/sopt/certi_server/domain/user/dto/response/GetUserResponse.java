@@ -16,7 +16,7 @@ public record GetUserResponse(
 	public static GetUserResponse from(User user, MajorImpl majorImpl, int percentage) {
 		return GetUserResponse.builder()
 			.name(user.getNickname())
-			.university(user.getUniversityName())
+			.university(user.getUniversity().getName())
 			.major(majorImpl.getName())
 			.percentage(percentage)
 			.build();

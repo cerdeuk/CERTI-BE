@@ -20,7 +20,7 @@ public record SignUpResponse(
         return new SignUpResponse(
                 user.getId(),
                 user.getNickname(),
-                user.getUniversityName(),
+                user.getUniversity().getName(),
                 user.getTrack().getName(),
                 major.getName(),
                 jobs.stream()

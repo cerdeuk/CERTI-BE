@@ -38,6 +38,7 @@ public enum ErrorCode {
 	CERTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, " E404009", "자격증이 존재하지 않습니다"),
 	AGENCY_NOT_FOUND(HttpStatus.NOT_FOUND, "E404010", "존재하지 않는 인증기관입니다."),
 	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "E404011", "존재하지 않는 카테고리입니다."),
+	UNIVERSITY_NOT_FOUND(HttpStatus.NOT_FOUND, "E404012", "존재하지 않는 대학교입니다"),
 
 
 	/* 409 CONFLICT */
