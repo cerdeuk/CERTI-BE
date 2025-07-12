@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +23,9 @@ public class UniversityController {
 	private final UniversityService universityService;
 
 	@GetMapping("/search")
+	@Operation(summary = "대학교 검색 API", description = "온보딩 과정 중 대학교 검색을 합니다.")
 	public ResponseEntity<SuccessResponse<?>> searchUniversity(
+		@Parameter(description = "검색할 키워드")
 		@RequestParam(name = "keyword") String keyword
 	){
 		GetUniversityListResponse getUniversityListResponse = universityService.getUniversityList(keyword);

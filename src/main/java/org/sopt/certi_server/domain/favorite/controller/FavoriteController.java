@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.favorite.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.favorite.dto.response.FavoriteCertificationSimpleListResponse;
@@ -22,6 +23,7 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @GetMapping
+    @Operation(summary = "즐겨찾기한 자격증 리스트 조회 API", description = "즐겨찾기한 자격증 리스트를 조회합니다")
     public ResponseEntity<SuccessResponse<FavoriteCertificationSimpleListResponse>> getFavoriteCertifications(
             @AuthenticationPrincipal Long userId
     ){

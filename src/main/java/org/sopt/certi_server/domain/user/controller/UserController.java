@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ public class UserController {
 	private final UserService userService;
 
 	@GetMapping
+	@Operation(summary = "사용자 정보 조회 API", description = "홈화면에서의 사용자 정보를 조회합니다.")
 	public ResponseEntity<SuccessResponse<GetUserResponse>> getHomeUser(
 		@AuthenticationPrincipal Long userId
 		){
@@ -37,6 +39,7 @@ public class UserController {
 	}
 
 	@GetMapping("/job")
+	@Operation(summary = "희망직무 조회 API", description = "사용자의 희망직무를 조회합니다")
 	public ResponseEntity<SuccessResponse<GetJobResponse>> getUserJob(
 		@AuthenticationPrincipal Long userId
 	){
@@ -44,6 +47,7 @@ public class UserController {
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, jobResponse));
 	}
 	@PostMapping("/job")
+	@Operation(summary = "희망직무 수정 API", description = "사용자의 희망직무를 수정합니다.")
 	public ResponseEntity<SuccessResponse> updateUserJob(
 		@AuthenticationPrincipal Long userId,
 		@RequestBody UpdateJobRequest updateJobRequest
