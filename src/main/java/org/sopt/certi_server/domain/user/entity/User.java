@@ -23,7 +23,7 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(targetEntity = University.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "univeirsity_id", nullable = false)
+    @JoinColumn(name = "university_id", nullable = false)
     private University university;
 
     @Column(name = "track")
