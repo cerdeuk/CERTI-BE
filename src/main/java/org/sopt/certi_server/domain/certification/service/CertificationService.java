@@ -18,6 +18,8 @@ import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.service.UserService;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,7 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Slf4j
+@CacheConfig(cacheManager = "redisCacheManager")
 public class CertificationService {
 
 	private final AgencyRepository agencyRepository;
@@ -44,6 +46,7 @@ public class CertificationService {
 
 
 
+    @Cacheable(value = "certification", key = "#certificationId")
     public CertificationDetailResponse getCertificationDetail(Long certificationId){
         Certification certification = getCertification(certificationId);
         List<Job> jobs = certificationRepository.getJobsByCertificationId(certificationId);
@@ -61,6 +64,7 @@ public class CertificationService {
         certificationRepository.save(newCertification);
 
     }
+
 
     public CertificationRecommendationListResponse recommendCertifications(Long userId){
         User user = userService.getUser(userId);
@@ -185,12 +189,10 @@ public class CertificationService {
 
 
     public CertificationListResponse getCertificationList(final Long userId, final boolean isFavorite, final String jobName){
-        log.info("userId : " + userId + " isFavorite : " + isFavorite + " jobName : " + jobName);
         User user = userService.getUser(userId);
         Job job = jobRepository.findByName(jobName)
             .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
 
-        log.info("job : " + job.getName() + "user" + user.getNickname());
         List<CertificationSimple> certificationSimpleList = certificationRepositoryCustomImpl.findByJobAndFavorite(user, isFavorite, job.getId());
 
         return CertificationListResponse.of(certificationSimpleList);
