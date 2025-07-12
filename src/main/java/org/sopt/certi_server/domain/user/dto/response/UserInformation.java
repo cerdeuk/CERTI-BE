@@ -10,7 +10,7 @@ public record UserInformation(
 ) {
     public static UserInformation from(
             KakaoUserInformationResponse information
-    ){
+    ) {
         return new UserInformation(
                 information.kakaoAccount().email(),
                 information.kakaoAccount().profile().nickname(),

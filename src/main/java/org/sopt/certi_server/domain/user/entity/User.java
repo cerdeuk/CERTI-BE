@@ -1,13 +1,10 @@
 package org.sopt.certi_server.domain.user.entity;
 
-import static org.sopt.certi_server.domain.user.service.UserService.*;
-
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.user.entity.enums.Grade;
 import org.sopt.certi_server.domain.user.entity.enums.TrackType;
@@ -18,7 +15,8 @@ import org.sopt.certi_server.global.entity.BaseTimeEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -48,14 +46,10 @@ public class User extends BaseTimeEntity {
     private String profileImageUrl;
 
 
-    public User(String nickname, String email, String profileImageUrl){
+    public User(String nickname, String email, String profileImageUrl) {
         this.nickname = nickname;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
-    }
-
-    public static User createUser(String nickname, String email, String profileImageUrl){
-        return new User(nickname, email, profileImageUrl);
     }
 
     @Builder
@@ -69,6 +63,10 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public static User createUser(String nickname, String email, String profileImageUrl) {
+        return new User(nickname, email, profileImageUrl);
     }
 
 

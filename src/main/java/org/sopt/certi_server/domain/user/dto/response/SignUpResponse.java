@@ -16,7 +16,7 @@ public record SignUpResponse(
         JwtResponse jwtResponse
 ) {
 
-    public static SignUpResponse of(User user, MajorImpl major, List<Job> jobs, JwtResponse jwtResponse){
+    public static SignUpResponse of(User user, MajorImpl major, List<Job> jobs, JwtResponse jwtResponse) {
         return new SignUpResponse(
                 user.getId(),
                 user.getNickname(),
@@ -27,6 +27,6 @@ public record SignUpResponse(
                         .map(Job::getName)
                         .toList(),
                 jwtResponse
-                );
+        );
     }
 }

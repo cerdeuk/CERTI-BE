@@ -33,7 +33,7 @@ public class JwtProvider {
         return generateToken(Map.of(USER_EMAIL, email), jwtProperties.getPreSignupTokenExpirationTime());
     }
 
-    public String generateToken(Map<String, Object> claims, long expirationTime){
+    public String generateToken(Map<String, Object> claims, long expirationTime) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expirationTime);
         return Jwts.builder()

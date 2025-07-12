@@ -10,7 +10,6 @@ import org.sopt.certi_server.global.error.dto.SuccessResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +25,7 @@ public class FavoriteController {
     @Operation(summary = "즐겨찾기한 자격증 리스트 조회 API", description = "즐겨찾기한 자격증 리스트를 조회합니다")
     public ResponseEntity<SuccessResponse<FavoriteCertificationSimpleListResponse>> getFavoriteCertifications(
             @AuthenticationPrincipal Long userId
-    ){
+    ) {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, favoriteService.getFavoriteCertificationsByUserId(userId)));
     }
 

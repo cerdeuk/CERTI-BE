@@ -19,12 +19,12 @@ public enum Grade {
     private final String grade;
 
     public static Grade from(String grade) {
-        if(grade == null){
+        if (grade == null) {
             throw new NotFoundException(ErrorCode.GRADE_NOT_FOUND);
         }
         return Arrays.stream(Grade.values())
-            .filter(g -> g.grade.equals(grade))
-            .findFirst()
-            .orElseThrow(() -> new NotFoundException(ErrorCode.GRADE_NOT_FOUND));
+                .filter(g -> g.grade.equals(grade))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(ErrorCode.GRADE_NOT_FOUND));
     }
 }

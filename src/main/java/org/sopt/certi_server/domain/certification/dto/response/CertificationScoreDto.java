@@ -11,13 +11,12 @@ public record CertificationScoreDto(
         String testType,
         List<String> tags,
         int recommendationScore,
-        boolean isFavorite)
-{
+        boolean isFavorite) {
     public static CertificationScoreDto from(
             Certification certification,
             int recommendationScore,
             boolean isFavorite
-    ){
+    ) {
         return new CertificationScoreDto(
                 certification.getId(),
                 certification.getName(),

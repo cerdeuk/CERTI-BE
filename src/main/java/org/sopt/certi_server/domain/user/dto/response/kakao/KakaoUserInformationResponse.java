@@ -12,7 +12,7 @@ public record KakaoUserInformationResponse(
     public record KakaoAccount(
             @JsonProperty("profile") KakaoProfile profile,
             String email
-    ){
+    ) {
 
     }
 
@@ -20,7 +20,7 @@ public record KakaoUserInformationResponse(
     public record KakaoProfile(
             String nickname,
             String profileImageUrl
-    ){
+    ) {
 
     }
 }

@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
@@ -18,7 +17,8 @@ import org.sopt.certi_server.global.entity.BaseTimeEntity;
         uniqueConstraints = @UniqueConstraint(name = "uq_user_cert", columnNames = {"user_id", "certification_id"})
 )
 public class Favorite extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "favorite_id")
     private Long id;
 

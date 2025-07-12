@@ -2,7 +2,6 @@ package org.sopt.certi_server.global.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,7 @@ import java.io.PrintWriter;
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
         try {
@@ -34,7 +34,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     }
 
     public void handleUnauthorizedException(HttpServletResponse response, Exception ex) throws IOException {
-        UnauthorizedException ue = (UnauthorizedException)ex;
+        UnauthorizedException ue = (UnauthorizedException) ex;
         ErrorCode errorCode = ue.getErrorCode();
         HttpStatus httpStatus = errorCode.getHttpStatus();
         setResponse(response, httpStatus, errorCode);

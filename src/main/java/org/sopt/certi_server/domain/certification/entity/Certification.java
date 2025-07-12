@@ -19,7 +19,8 @@ import java.util.List;
 @Table(name = "certification")
 public class Certification extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "certification_id")
     private Long id;
 
@@ -63,8 +64,8 @@ public class Certification extends BaseTimeEntity {
 
     @Builder
     public Certification(Long id, Agency agency, String name, CertificationType certificationType, TestType testType, String averagePeriod, String charge,
-        List<String> tags, String description, String testDateInformation, LocalDate nearestTestDate,
-        String applicationMethod, String applicationUrl, String expirationPeriod) {
+                         List<String> tags, String description, String testDateInformation, LocalDate nearestTestDate,
+                         String applicationMethod, String applicationUrl, String expirationPeriod) {
         this.id = id;
         this.agency = agency;
         this.name = name;

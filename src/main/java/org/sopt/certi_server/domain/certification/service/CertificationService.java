@@ -2,13 +2,15 @@ package org.sopt.certi_server.domain.certification.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.sopt.certi_server.domain.certification.dto.response.*;
-import org.sopt.certi_server.domain.certification.entity.*;
-import org.sopt.certi_server.domain.certification.entity.enums.CertificationType;
-import org.sopt.certi_server.domain.certification.repository.*;
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
+import org.sopt.certi_server.domain.certification.dto.response.*;
+import org.sopt.certi_server.domain.certification.entity.Agency;
+import org.sopt.certi_server.domain.certification.entity.Certification;
+import org.sopt.certi_server.domain.certification.entity.CertificationJob;
+import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
+import org.sopt.certi_server.domain.certification.entity.enums.CertificationType;
 import org.sopt.certi_server.domain.certification.entity.enums.TestType;
+import org.sopt.certi_server.domain.certification.repository.*;
 import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
@@ -35,39 +37,39 @@ import java.util.stream.Stream;
 @Slf4j
 public class CertificationService {
 
-	private final AgencyRepository agencyRepository;
-	private final MajorRepository majorRepository;
-	private final JobRepository jobRepository;
-	private final CertificationRepository certificationRepository;
-	private final CertificationMajorRepository certificationMajorRepository;
-	private final CertificationJobRepository certificationJobRepository;
-	private final CertificationRepositoryCustomImpl certificationRepositoryCustomImpl;
-	private final FavoriteRepository favoriteRepository;
-	private final UserService userService;
+    private final AgencyRepository agencyRepository;
+    private final MajorRepository majorRepository;
+    private final JobRepository jobRepository;
+    private final CertificationRepository certificationRepository;
+    private final CertificationMajorRepository certificationMajorRepository;
+    private final CertificationJobRepository certificationJobRepository;
+    private final CertificationRepositoryCustomImpl certificationRepositoryCustomImpl;
+    private final FavoriteRepository favoriteRepository;
+    private final UserService userService;
 
 
-
-    @Cacheable(value = "certification", key = "#certificationId")
-    public CertificationDetailResponse getCertificationDetail(Long certificationId){
+    @Cacheable(
+            value = "certification",
+            key = "#certificationId"
+    )
+    public CertificationDetailResponse getCertificationDetail(final Long certificationId) {
         Certification certification = getCertification(certificationId);
-        List<Job> jobs = certificationRepository.getJobsByCertificationId(certificationId);
+        List<Job> jobs = jobRepository.getJobsByCertificationId(certificationId);
         return CertificationDetailResponse.from(certification, jobs);
     }
 
     @Transactional
     public void createCertification(CertificationCreateRequest request) {
-        Agency findAgency = getAgencyByName(request.agencyName());
-        CertificationType certificationType = CertificationType.from(request.certificationType());
-        TestType testType = TestType.from(request.testType());
+        Agency findAgency = agencyRepository.findByName(request.agencyName())
+                .orElseThrow(() -> new NotFoundException(ErrorCode.AGENCY_NOT_FOUND));
 
-        Certification newCertification = convertDtoToEntity(request, certificationType, testType, findAgency);
+        Certification newCertification = convertDtoToEntity(request);
 
         certificationRepository.save(newCertification);
-
     }
 
 
-    public CertificationRecommendationListResponse recommendCertifications(Long userId){
+    public CertificationRecommendationListResponse recommendCertifications(final Long userId) {
         User user = userService.getUser(userId);
         List<Major> userMajors = majorRepository.findAllByUser(user);
         log.info("=============사용자 전공================");
@@ -108,7 +110,7 @@ public class CertificationService {
         return getCertificationRecommendationListResponse(certificationMajors, certificationJobs, user);
     }
 
-    private CertificationRecommendationListResponse getCertificationRecommendationListResponse(List<CertificationMajor> certificationMajors, List<CertificationJob> certificationJobs, User user) {
+    private CertificationRecommendationListResponse getCertificationRecommendationListResponse(final List<CertificationMajor> certificationMajors, final List<CertificationJob> certificationJobs, final User user) {
         Map<Long, List<CertificationMajor>> certificationMajorMapGroupingByCertification = certificationMajors.stream()
                 .collect(Collectors.groupingBy(
                         cm -> cm.getCertification().getId()
@@ -137,7 +139,7 @@ public class CertificationService {
                     double jobScore = reverseProductScore(certificationJobListByCertId.stream()
                             .map(CertificationJob::getWeight));
 
-                    int finalScore = (int)((majorScore * 0.4 + jobScore * 0.6) * 100);
+                    int finalScore = (int) ((majorScore * 0.4 + jobScore * 0.6) * 100);
 
                     return CertificationScoreDto.from(certification, finalScore, favoriteRepository.existsByUserAndCertification(user, certification));
 
@@ -155,21 +157,25 @@ public class CertificationService {
                 .reduce(1.0, (a, b) -> a * b);
     }
 
-    public Certification getCertification(Long certificationId) {
+    public Certification getCertification(final Long certificationId) {
         return certificationRepository.findById(certificationId)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.CERTIFICATION_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.CERTIFICATION_NOT_FOUND));
     }
 
-    private Agency getAgencyByName(String agencyName) {
-        return agencyRepository.findByName(agencyName).orElseThrow(() -> new NotFoundException(ErrorCode.AGENCY_NOT_FOUND));
-    }
 
-    private Certification convertDtoToEntity(CertificationCreateRequest request, CertificationType certificationType, TestType testType, Agency agency) {
+    private Certification convertDtoToEntity(CertificationCreateRequest request) {
+        Agency findAgency = agencyRepository.findByName(request.agencyName())
+                .orElseThrow(() -> new NotFoundException(ErrorCode.AGENCY_NOT_FOUND));
+
+        CertificationType findCertificationType = CertificationType.from(request.certificationType());
+
+        TestType findTestType = TestType.from(request.testType());
+
         return Certification.builder()
-                .agency(agency)
+                .agency(findAgency)
                 .name(request.certificationName())
-                .certificationType(certificationType)
-                .testType(testType)
+                .certificationType(findCertificationType)
+                .testType(findTestType)
                 .averagePeriod(request.averagePeriod())
                 .charge(request.charge())
                 .description(request.description())
@@ -182,25 +188,18 @@ public class CertificationService {
                 .build();
     }
 
-    public CertificationMajor getCertificationMajor(Certification certification, Major major) {
-        return certificationMajorRepository.findByCertificationAndMajor(certification, major)
-            .orElse(null);
-    }
-
-    public CertificationListResponse searchCertification(Long userId, String keyword) {
+    public List<CertificationSimple> searchCertification(final Long userId, final String keyword) {
 
         User user = userService.getUser(userId);
 
-        List<CertificationSimple> certificationSimpleRespons = certificationRepository.searchByKeyword(user, keyword);
-
-        return CertificationListResponse.of(certificationSimpleRespons);
+        return certificationRepository.searchByKeyword(user, keyword);
     }
 
 
-    public CertificationListResponse getCertificationList(final Long userId, final boolean isFavorite, final String jobName){
+    public CertificationListResponse getCertificationList(final Long userId, final boolean isFavorite, final String jobName) {
         User user = userService.getUser(userId);
         Job job = jobRepository.findByName(jobName)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
 
         List<CertificationSimple> certificationSimpleList = certificationRepositoryCustomImpl.findByJobAndFavorite(user, isFavorite, job.getId());
 

@@ -2,10 +2,8 @@ package org.sopt.certi_server.domain.certification.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.major.entity.Major;
 
 @Entity
@@ -20,7 +18,8 @@ import org.sopt.certi_server.domain.major.entity.Major;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CertificationMajor {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "certification_major_id")
     private Long id;
 
@@ -34,18 +33,18 @@ public class CertificationMajor {
 
     private double weight;
 
+    public CertificationMajor(Certification certification, Major major, double weight) {
+        this.major = major;
+        this.certification = certification;
+        this.weight = weight;
+    }
+
     public static CertificationMajor create(Certification certification, Major major, double weight) {
         return new CertificationMajor(certification, major, weight);
     }
 
     public void updateMajor(Major major) {
         this.major = major;
-    }
-
-    public CertificationMajor(Certification certification, Major major, double weight) {
-        this.major = major;
-        this.certification = certification;
-        this.weight = weight;
     }
 
 }

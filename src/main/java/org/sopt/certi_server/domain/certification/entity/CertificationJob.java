@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.sopt.certi_server.domain.job.entity.Job;
-import org.sopt.certi_server.domain.major.entity.Major;
 
 @Entity
 @Getter
@@ -34,18 +33,18 @@ public class CertificationJob {
 
     private double weight;
 
+    @Builder
+    public CertificationJob(Certification certification, Job job, double weight) {
+        this.job = job;
+        this.certification = certification;
+        this.weight = weight;
+    }
+
     public static CertificationJob create(Certification certification, Job job, double weight) {
         return new CertificationJob(certification, job, weight);
     }
 
     public void updateJob(Job job) {
         this.job = job;
-    }
-
-    @Builder
-    public CertificationJob(Certification certification, Job job, double weight) {
-        this.job = job;
-        this.certification = certification;
-        this.weight = weight;
     }
 }

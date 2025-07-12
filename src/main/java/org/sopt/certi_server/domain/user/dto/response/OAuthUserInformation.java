@@ -10,7 +10,7 @@ public record OAuthUserInformation(
 ) {
     public static OAuthUserInformation from(
             KakaoUserInformationResponse information
-    ){
+    ) {
         return new OAuthUserInformation(
                 information.kakaoAccount().email(),
                 information.kakaoAccount().profile().nickname(),

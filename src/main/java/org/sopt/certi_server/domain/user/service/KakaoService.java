@@ -2,10 +2,10 @@ package org.sopt.certi_server.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoOAuthResponse;
-import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoUserInformationResponse;
 import org.sopt.certi_server.domain.user.dto.response.LoginUriResponse;
 import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
+import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoOAuthResponse;
+import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoUserInformationResponse;
 import org.sopt.certi_server.global.client.KakaoApiFeignClient;
 import org.sopt.certi_server.global.client.KakaoOAuthFeignClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class KakaoService implements SocialService{
+public class KakaoService implements SocialService {
 
     private final KakaoApiFeignClient kakaoApiFeignClient;
     private final KakaoOAuthFeignClient kakaoOAuthFeignClient;
@@ -49,26 +49,26 @@ public class KakaoService implements SocialService{
 
     @Override
     public OAuthUserInformation getUserInfoByAccessToken(String accessToken) {
-        try{
+        try {
             KakaoUserInformationResponse information = kakaoApiFeignClient.getInformation("Bearer " + accessToken);
             log.info(information.kakaoAccount().profile().nickname());
             log.info(information.kakaoAccount().email());
             return OAuthUserInformation.from(information);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("kakao user data 획득 실패: {}", e.getMessage());
             throw e;
         }
     }
 
-    public KakaoOAuthResponse getOAuthToken(String code){
-        try{
+    public KakaoOAuthResponse getOAuthToken(String code) {
+        try {
             return kakaoOAuthFeignClient.getToken(
                     "authorization_code",
                     kakaoClientId,
                     kakaoRedirectUri,
                     code
-                    );
-        }catch (Exception e){
+            );
+        } catch (Exception e) {
             log.error("kakao oauth token 발급 실패: {}", e.getMessage());
             throw e;
         }

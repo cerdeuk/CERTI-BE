@@ -2,12 +2,6 @@ package org.sopt.certi_server.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.sopt.certi_server.domain.job.entity.Job;
-import org.sopt.certi_server.domain.job.repository.JobRepository;
-import org.sopt.certi_server.domain.major.entity.MajorImpl;
-import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
-import org.sopt.certi_server.domain.user.dto.request.SignupRequest;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
@@ -21,7 +15,6 @@ import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
 import org.sopt.certi_server.domain.user.entity.UserMajorImpl;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
-import org.sopt.certi_server.domain.user.entity.enums.TrackType;
 import org.sopt.certi_server.domain.user.repository.UserJobRepository;
 import org.sopt.certi_server.domain.user.repository.UserMajorImplRepository;
 import org.sopt.certi_server.domain.user.repository.UserRepository;
@@ -49,7 +42,7 @@ public class AuthService {
     private final KakaoService kakaoService;
     private final UniversityService universityService;
 
-    public AuthResponse login(OAuthUserInformation userInfo){
+    public AuthResponse login(OAuthUserInformation userInfo) {
         return userRepository.findByEmail(userInfo.email())
                 .map(this::handleExistingUser)
                 .orElseGet(() -> handleNewUser(userInfo));
@@ -104,13 +97,13 @@ public class AuthService {
     }
 
     public SocialService getSocialServiceByType(SocialType socialType) {
-        return switch (socialType){
+        return switch (socialType) {
             case KAKAO -> kakaoService;
             case APPLE -> null;
         };
     }
 
-    private User convertDtoToEntity(SignupRequest request){
+    private User convertDtoToEntity(SignupRequest request) {
         MajorImpl majorImpl = majorImplRepository.findMajorImplByName(request.major())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
 

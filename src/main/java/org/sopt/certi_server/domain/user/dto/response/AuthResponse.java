@@ -11,11 +11,11 @@ public record AuthResponse(
         JwtResponse tokenResponse,
         OAuthUserInformation userInformation
 ) {
-    public static AuthResponse ofNotRegisteredUser(String preSignupToken, OAuthUserInformation information){
+    public static AuthResponse ofNotRegisteredUser(String preSignupToken, OAuthUserInformation information) {
         return new AuthResponse(null, null, true, preSignupToken, null, information);
     }
 
-    public static AuthResponse ofRegisteredUser(Long userId, String nickName, JwtResponse token){
+    public static AuthResponse ofRegisteredUser(Long userId, String nickName, JwtResponse token) {
         return new AuthResponse(userId, nickName, false, null, token, null);
     }
 }

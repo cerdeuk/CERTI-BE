@@ -1,7 +1,5 @@
 package org.sopt.certi_server.domain.certification.repository;
 
-import java.util.Optional;
-
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
 import org.sopt.certi_server.domain.major.entity.Major;
@@ -14,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface CertificationMajorRepository extends JpaRepository<CertificationMajor, Long> {
-	Optional<CertificationMajor> findByCertificationAndMajor(Certification certification, Major major);
+    Optional<CertificationMajor> findByCertificationAndMajor(Certification certification, Major major);
 
     @Query("select cm from CertificationMajor cm join fetch cm.major where cm.certification = :certification")
     List<CertificationMajor> findAllByCertification(Certification certification);
@@ -22,21 +20,21 @@ public interface CertificationMajorRepository extends JpaRepository<Certificatio
     void deleteAllByCertification(Certification certification);
 
     @Query("""
-        select cm
-        from CertificationMajor cm
-        join fetch cm.certification c
-        left join fetch c.tags
-        where cm.major.name in :majorNames
-""")
+                    select cm
+                    from CertificationMajor cm
+                    join fetch cm.certification c
+                    left join fetch c.tags
+                    where cm.major.name in :majorNames
+            """)
     List<CertificationMajor> findByMajorNames(List<String> majorNames);
 
 
     @Query("""
-        select cm
-        from CertificationMajor cm
-        join fetch cm.certification c
-        left join fetch c.tags
-        where cm.major.id in :majorIds
-""")
+                    select cm
+                    from CertificationMajor cm
+                    join fetch cm.certification c
+                    left join fetch c.tags
+                    where cm.major.id in :majorIds
+            """)
     List<CertificationMajor> findByMajorIds(List<Long> majorIds);
 }
