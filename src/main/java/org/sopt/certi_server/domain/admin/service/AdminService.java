@@ -37,8 +37,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AdminService {
-	private final MajorService majorService;
-	private final CertificationService certificationService;
 	private final CertificationMajorRepository certificationMajorRepository;
 	private final JobRepository jobRepository;
 	private final CertificationJobRepository certificationJobRepository;
@@ -94,6 +92,15 @@ public class AdminService {
 
         certificationRepository.delete(certification);
     }
+
+	@Transactional
+	public void addAgency(AgencyCreateRequest request){
+		try{
+			agencyRepository.save(Agency.create(request.agencyName(), request.agencyUrl()));
+		}catch(DataIntegrityViolationException e){
+			throw new DataIntegrityViolationException("Agency에 대한 데이터 무결성 제약을 위반했습니다. \n" + e);
+		}
+	}
 
 	@Transactional
 	public void addMajor(MajorCreateRequest request) {
@@ -154,12 +161,4 @@ public class AdminService {
 		}
 	}
 
-	@Transactional
-	public void addAgency(AgencyCreateRequest request) {
-		try{
-			agencyRepository.save(Agency.create(request.agencyName()));
-		}catch (DataIntegrityViolationException e){
-			throw new DataIntegrityViolationException("이미 존재하는 인증기관입니다.");
-		}
-	}
 }
