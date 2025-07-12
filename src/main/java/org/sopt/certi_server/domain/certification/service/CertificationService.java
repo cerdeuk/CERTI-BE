@@ -32,6 +32,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @CacheConfig(cacheManager = "redisCacheManager")
+@Slf4j
 public class CertificationService {
 
 	private final AgencyRepository agencyRepository;
@@ -69,26 +70,38 @@ public class CertificationService {
     public CertificationRecommendationListResponse recommendCertifications(Long userId){
         User user = userService.getUser(userId);
         List<Major> userMajors = majorRepository.findAllByUser(user);
-        System.out.println("사용자 전공 개수 = " + userMajors.size());
-        System.out.println("userMajors.get(0).getName() = " + userMajors.get(0).getName());
+        log.info("=============사용자 전공================");
+        for (Major userMajor : userMajors) {
+            log.info("major = {}", userMajor.getName());
+        }
         List<Job> userJobs = jobRepository.findAllByUser(user);
+        log.info("=============사용자 직무================");
+        for (Job userJob : userJobs) {
+            log.info("job = {}", userJob.getName());
+        }
 
         List<CertificationMajor> certificationMajors = certificationMajorRepository.findByMajorNames(
                 userMajors.stream()
                         .map(Major::getName)
                         .toList()
         );
-        System.out.println("사용자 전공 연관 자격증 매핑 개수 = " + certificationMajors.size());
-
-        System.out.println("certificationMajors.size() = " + certificationMajors.size());
+        log.info("=============전공 - 자격증 매핑================");
+        for (CertificationMajor certificationMajor : certificationMajors) {
+            log.info("major = {}", certificationMajor.getMajor().getName());
+            log.info("certification = {}", certificationMajor.getCertification().getName());
+        }
 
         List<CertificationJob> certificationJobs = certificationJobRepository.findByJobNames(
                 userJobs.stream()
                         .map(Job::getName)
                         .toList()
         );
+        log.info("=============직무 - 자격증 매핑================");
+        for (CertificationJob certificationJob : certificationJobs) {
+            log.info("major = {}", certificationJob.getJob().getName());
+            log.info("certification = {}", certificationJob.getCertification().getName());
+        }
 
-        System.out.println("certificationJobs.size() = " + certificationJobs.size());
 
         return getCertificationRecommendationListResponse(certificationMajors, certificationJobs, user);
     }
@@ -99,13 +112,11 @@ public class CertificationService {
                         cm -> cm.getCertification().getId()
                 ));
 
-        System.out.println("certificationMajorMapGroupingByCertification.size() = " + certificationMajorMapGroupingByCertification.size());
 
         Map<Long, List<CertificationJob>> certificationJobMapGroupingByCertification = certificationJobs.stream()
                 .collect(Collectors.groupingBy(
                         cj -> cj.getCertification().getId()
                 ));
-        System.out.println("certificationJobMapGroupingByCertification.size() = " + certificationJobMapGroupingByCertification.size());
 
         Set<Long> allCertificationIds = new HashSet<>();
         allCertificationIds.addAll(certificationMajorMapGroupingByCertification.keySet());
@@ -114,20 +125,15 @@ public class CertificationService {
         List<CertificationScoreDto> recommendationList = allCertificationIds.stream()
                 .map(certificationId -> {
                     List<CertificationMajor> certificationMajorListByCertId = certificationMajorMapGroupingByCertification.getOrDefault(certificationId, List.of());
-                    System.out.println("자격증 연관 전공 매핑 개수 = " + certificationMajorListByCertId.size());
                     List<CertificationJob> certificationJobListByCertId = certificationJobMapGroupingByCertification.getOrDefault(certificationId, List.of());
                     Certification certification = certificationMajorListByCertId.isEmpty() ? certificationJobListByCertId.get(0).getCertification() : certificationMajorListByCertId.get(0).getCertification();
 
-                    System.out.println("==============" + certification.getName() + "==================");
 
                     double majorScore = reverseProductScore(certificationMajorListByCertId.stream()
                             .map(CertificationMajor::getWeight));
 
                     double jobScore = reverseProductScore(certificationJobListByCertId.stream()
                             .map(CertificationJob::getWeight));
-                    System.out.println("jobScore = " + jobScore);
-                    System.out.println("majorScore = " + majorScore);
-                    System.out.println("================================");
 
                     int finalScore = (int)((majorScore * 0.4 + jobScore * 0.6) * 100);
 
