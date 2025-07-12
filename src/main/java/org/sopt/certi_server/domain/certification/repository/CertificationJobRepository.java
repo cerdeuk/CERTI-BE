@@ -31,4 +31,14 @@ public interface CertificationJobRepository extends JpaRepository<CertificationJ
 """)
     List<CertificationJob> findByJobNames(List<String> jobNames);
 
+    @Query("""
+        select cj
+        from CertificationJob cj
+        join fetch cj.certification c
+        join fetch c.tags
+        where cj.job.id in :jobIds
+""")
+    List<CertificationJob> findByJobIds(List<Long> jobIds);
+
+
 }
