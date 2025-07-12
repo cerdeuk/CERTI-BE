@@ -85,38 +85,4 @@ public class AdminController {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_DELETE));
     }
 
-	@PostMapping("/{certificationId}/major")
-	public ResponseEntity<SuccessResponse> addMajor(
-		@PathVariable Long certificationId,
-		@RequestBody CreateMajorRequest request){
-		adminService.createMajor(certificationId, request);
-		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
-	}
-
-	@DeleteMapping("/{certificationId}/major")
-	public ResponseEntity<SuccessResponse> deleteMajor(
-		@PathVariable Long certificationId,
-		@RequestBody String majorName
-	){
-		adminService.deleteMajor(certificationId, majorName);
-		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_DELETE));
-	}
-
-	@PostMapping("/{certificationId}/job")
-	public ResponseEntity<SuccessResponse> addJob(
-		@PathVariable Long certificationId,
-		@RequestBody CreateJobRequest createJobRequest
-	){
-		adminService.createJob(certificationId, createJobRequest);
-		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
-	}
-
-	@DeleteMapping("/{certificationId}/job")
-	public ResponseEntity<SuccessResponse> deleteJob(
-		@PathVariable Long certificationId,
-		@RequestBody String jobName
-	){
-		adminService.deleteJob(certificationId, jobName);
-		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_DELETE));
-	}
 }

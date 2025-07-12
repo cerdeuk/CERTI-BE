@@ -14,13 +14,14 @@ public record CertificationCreateRequest(
         @NotEmpty(message = "자격증 종류는 필수입니다.") String certificationType,
         @NotEmpty(message = "시험 종류는 필수입니다.") String testType,
         String averagePeriod,
-        Long charge,
+        String charge,
         String description,
         String testDateInformation,
         @NotNull(message = "가장 가까운 시험 날짜를 입력해주세요.")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
         LocalDate nearestTestDate,
         List<String> tags,
+        String expirationPeriod,
         String applicationMethod,
         String applicationUrl
 ) {

@@ -47,13 +47,6 @@ public class CertificationController {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.searchCertification(userId, keyword)));
     }
 
-    @PostMapping
-    @Operation(summary = "자격증 추가 API", description = "자격증을 추가합니다")
-    public ResponseEntity<SuccessResponse<Void>> addCertification(@RequestBody CertificationCreateRequest request){
-        certificationService.createCertification(request);
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
-    }
-
     @PostMapping(value = "/{certificationId}/favorite")
     @Operation(summary = "자격증 즐겨찾기 API", description = "자격증을 즐겨찾기합니다")
     public ResponseEntity<SuccessResponse<Void>> toggleFavorite(
