@@ -15,7 +15,7 @@ public record CertificationDetailResponse(
         List<String> tags,
         String averagePeriod,
         Long charge,
-        String agency,
+        String agencyName,
         String testType,
         String description,
         String testDateInformation,

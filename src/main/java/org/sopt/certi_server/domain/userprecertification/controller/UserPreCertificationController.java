@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.userprecertification.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1/home/pre-certification")
 @RequiredArgsConstructor
+@Tag(name = "UserPreCertificationController 컨트롤러", description = "취득예젇과 관련된 API를 처리합니다.")
 public class UserPreCertificationController {
 
      private final UserPreCertificationService userPreCertificationService;

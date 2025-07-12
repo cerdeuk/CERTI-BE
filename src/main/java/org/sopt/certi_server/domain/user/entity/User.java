@@ -22,8 +22,9 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "university_name")
-    private String universityName;
+    @ManyToOne(targetEntity = University.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_id", nullable = false)
+    private University university;
 
     @Column(name = "track")
     @Enumerated(value = EnumType.STRING)
@@ -58,10 +59,10 @@ public class User extends BaseTimeEntity {
     }
 
     @Builder
-    public User(Long id, String universityName, String track, String grade, MajorImpl major, String nickname, String email,
+    public User(Long id, University university, String track, String grade, MajorImpl major, String nickname, String email,
                 String profileImageUrl) {
         this.id = id;
-        this.universityName = universityName;
+        this.university = university;
         this.track = TrackType.from(track);
         this.grade = Grade.from(grade);
         this.major = major;

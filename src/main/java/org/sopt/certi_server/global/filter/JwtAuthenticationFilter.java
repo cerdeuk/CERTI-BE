@@ -31,7 +31,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         "/api/v1/auth/sign-up",
         "/api/v1/auth/sign-in",
         "/api/v1/auth/reissue",
-        "/api/v1/admin/**"
+        "/api/v1/admin/**",
+        "/api/v1/university/**"
+
     );
 
     private final JwtExtractor jwtExtractor;

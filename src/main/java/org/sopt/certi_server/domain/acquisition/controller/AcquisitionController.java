@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.acquisition.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionResponse;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionDetailResponse;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/acquisition")
+@Tag(name = "Acquisition 컨트롤러", description = "취득한 자격증과 관련된 API를 처리합니다.")
 public class AcquisitionController {
 	private final AcquisitionService acquisitionService;
 

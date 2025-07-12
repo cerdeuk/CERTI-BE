@@ -47,6 +47,7 @@ public class AuthService {
     private final UserMajorImplRepository userMajorImplRepository;
     private final JwtService jwtService;
     private final KakaoService kakaoService;
+    private final UniversityService universityService;
 
     public AuthResponse login(OAuthUserInformation userInfo){
         return userRepository.findByEmail(userInfo.email())
@@ -121,7 +122,7 @@ public class AuthService {
                 .track(request.track())
                 .grade(request.grade())
                 .major(majorImpl)
-                .universityName(request.university())
+                .university(universityService.getUniversityByName(request.university()))
                 .build();
     }
 

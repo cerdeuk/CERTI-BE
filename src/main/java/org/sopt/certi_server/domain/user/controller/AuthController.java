@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.user.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
+@Tag(name = "Auth 컨트롤러", description = "로그인과 관련된 API를 처리합니다.")
 public class AuthController {
 
     private final AuthService authService;

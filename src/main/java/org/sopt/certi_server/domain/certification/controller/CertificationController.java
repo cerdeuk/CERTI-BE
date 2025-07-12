@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.certification.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/certification")
+@Tag(name = "Certification 컨트롤러", description = "자격증과 관련된 API를 처리합니다.")
 public class CertificationController {
 
     private final CertificationService certificationService;
