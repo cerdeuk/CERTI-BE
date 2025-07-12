@@ -97,7 +97,7 @@ public class UserService {
 
         int total = acqCount + careerCount + activityCount;
 
-        if(total > 1 && total < 14){
+        if(total > 0 && total < 14){
             return total * 7 + 5;
         }
 
