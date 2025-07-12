@@ -3,6 +3,7 @@ package org.sopt.certi_server.domain.user.service;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.acquisition.service.AcquisitionService;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -92,12 +94,16 @@ public class UserService {
 
     public int calculateResumeProgress(User user){
         int acqCount = acquisitionRepository.countByUser(user);
+        log.info(acqCount + " acquisitions");
         int careerCount = careerRepository.countByUser(user);
+        log.info(careerCount + " careers");
         int activityCount = activityRepository.countByUser(user);
+        log.info(activityCount + " activities");
 
         int total = acqCount + careerCount + activityCount;
+        log.info(total + " total acquisitions");
 
-        if(total > 0 && total < 14){
+        if(total >= 0 && total < 14){
             return total * 7 + 5;
         }
 
