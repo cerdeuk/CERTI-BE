@@ -3,6 +3,8 @@ package org.sopt.certi_server.global.jwt.core;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.UnauthorizedException;
 import org.springframework.stereotype.Component;
 
@@ -43,6 +45,12 @@ public class JwtValidator {
     public void validatePreSignupToken(String token) {
         if (isExpired(token) || !hasEmail(token)) {
             throw new UnauthorizedException();
+        }
+    }
+
+    public void validateRefreshToken(String token) {
+        if (isExpired(token) || !hasUserId(token)) {
+            throw new UnauthorizedException(ErrorCode.REFRESH_TOKEN_EXPIRED);
         }
     }
 }
