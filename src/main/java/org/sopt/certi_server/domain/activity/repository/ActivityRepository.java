@@ -12,4 +12,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> findByUser(User user);
 
     int countByUser(User user);
+
+	void deleteALlByUser(User user);
 }
