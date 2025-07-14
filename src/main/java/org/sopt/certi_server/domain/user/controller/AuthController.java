@@ -17,6 +17,7 @@ import org.sopt.certi_server.global.annotation.DisableSwaggerSecurity;
 import org.sopt.certi_server.global.error.code.SuccessCode;
 import org.sopt.certi_server.global.error.dto.SuccessResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -80,6 +81,15 @@ public class AuthController {
             @RequestHeader("Authorization") @NotEmpty(message = "해당 api에는 authorization 헤더가 필수입니다.") String authorization
     ) {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, authService.reIssueToken(authorization)));
+    }
+
+    @DeleteMapping("/withdraw")
+    @Operation(summary = "회원탈퇴 API", description = "회원 탈퇴를 진행합니다")
+    public ResponseEntity<SuccessResponse> withdraw(
+        @AuthenticationPrincipal Long userId
+    ){
+        authService.withdraw(userId);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_DELETE));
     }
 
 

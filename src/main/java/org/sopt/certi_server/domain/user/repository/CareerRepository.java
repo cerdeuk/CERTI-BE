@@ -19,4 +19,6 @@ public interface CareerRepository extends JpaRepository<Career, Long> {
     Optional<Career> findByUserIdAndId(Long userId, Long id);
 
     int countByUser(User user);
+
+	void deleteAllByUser(User user);
 }
