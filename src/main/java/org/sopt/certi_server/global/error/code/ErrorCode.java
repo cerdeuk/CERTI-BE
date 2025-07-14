@@ -14,11 +14,13 @@ public enum ErrorCode {
     MISSING_HEADER(HttpStatus.BAD_REQUEST, "E400004", "필수 요청 헤더가 누락되었습니다."),
     TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "E400005", "요청 값 타입이 올바르지 않습니다"),
     DATA_INTEGRITY_VIOLATION(HttpStatus.BAD_REQUEST, "E400006", "데이터 무결성 제약 조건을 위반했습니다"),
-    TEST_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "E400006", "요청 테스트 타입이 올바르지 않습니다"),
-    JOB_SIZE_ERROR(HttpStatus.BAD_REQUEST, "E400007", "희망 분야는 1~3개까지 선택가능합니다"),
+    TEST_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "E400007", "요청 테스트 타입이 올바르지 않습니다"),
+    JOB_SIZE_ERROR(HttpStatus.BAD_REQUEST, "E400008", "희망 분야는 1~3개까지 선택가능합니다"),
+    MISMATCH_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "E400009", "리프레시 토큰이 일치하지 않습니다"),
 
     /* 401 */
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "E401001", "리소스 접근 권한이 없습니다."),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "E401002", "리프레시 토큰이 만료되었습니다"),
 
     /* 403  FORBIDDEN */
 
@@ -39,7 +41,8 @@ public enum ErrorCode {
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "E404011", "존재하지 않는 카테고리입니다."),
     UNIVERSITY_NOT_FOUND(HttpStatus.NOT_FOUND, "E404012", "존재하지 않는 대학교입니다"),
     ACQUISITION_NOT_FOUND(HttpStatus.NOT_FOUND, "E404013", "존재하지 않는 취득 정보입니다."),
-    PRECERTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "E404013", "존재하지 않는 취득예정 정보입니다."),
+    PRECERTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "E404014", "존재하지 않는 취득예정 정보입니다."),
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "E404015", "존재하지 않는 리프레시 토큰입니다"),
 
 
     /* 409 CONFLICT */

@@ -27,4 +27,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     void deleteAllByCertification(Certification certification);
 
     boolean existsByUserAndCertification(User user, Certification certification);
+
+	void deleteAllByUser(User user);
 }

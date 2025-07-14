@@ -2,6 +2,9 @@ package org.sopt.certi_server.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
+import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
@@ -15,12 +18,15 @@ import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
 import org.sopt.certi_server.domain.user.entity.UserMajorImpl;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
+import org.sopt.certi_server.domain.user.repository.CareerRepository;
 import org.sopt.certi_server.domain.user.repository.UserJobRepository;
 import org.sopt.certi_server.domain.user.repository.UserMajorImplRepository;
 import org.sopt.certi_server.domain.user.repository.UserRepository;
+import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.sopt.certi_server.global.jwt.domain.service.JwtService;
+import org.sopt.certi_server.global.jwt.domain.service.TokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +47,12 @@ public class AuthService {
     private final JwtService jwtService;
     private final KakaoService kakaoService;
     private final UniversityService universityService;
+    private final TokenService tokenService;
+    private final UserService userService;
+    private final UserPreCertificationRepository userPreCertificationRepository;
+    private final AcquisitionRepository acquisitionRepository;
+    private final FavoriteRepository favoriteRepository;
+    private final CareerRepository careerRepository;
 
     public AuthResponse login(OAuthUserInformation userInfo) {
         return userRepository.findByEmail(userInfo.email())
@@ -84,6 +96,8 @@ public class AuthService {
         userMajorImplRepository.save(UserMajorImpl.createUserMajorImpl(newUser, major));
 
         JwtResponse token = jwtService.issueToken(newUser.getId());
+        tokenService.saveRefreshToken(newUser.getId(), token.refreshToken());
+
         return SignUpResponse.of(
                 newUser,
                 major,
@@ -117,6 +131,37 @@ public class AuthService {
                 .major(majorImpl)
                 .university(universityService.getUniversityByName(request.university()))
                 .build();
+    }
+
+    @Transactional
+    public void withdraw(final Long userId){
+        User user = userService.getUser(userId);
+
+        //희망 직무 삭제
+        userJobRepository.deleteAllByUser(user);
+
+        //사용자 전공 삭제
+        userMajorImplRepository.deleteAllByUser(user);
+
+        //사용자 취득 자격증 삭제
+        userPreCertificationRepository.deleteAllByUser(user);
+
+        //사용자 취득 예정 자격증 삭제
+        acquisitionRepository.deleteAllByUser(user);
+
+        //즐겨찾기 항목 삭제
+        favoriteRepository.deleteAllByUser(user);
+
+        //경력 사항 삭제
+        careerRepository.deleteAllByUser(user);
+
+        //토큰 삭제
+        tokenService.deleteRefreshToken(userId);
+
+        //사용자 탈퇴
+        userRepository.delete(user);
+
+        log.info("정상적으로 탈퇴되었습니다");
     }
 
 }

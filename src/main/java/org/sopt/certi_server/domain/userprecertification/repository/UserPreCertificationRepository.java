@@ -29,4 +29,6 @@ public interface UserPreCertificationRepository extends JpaRepository<UserPreCer
     boolean existsByUserAndCertification(User user, Certification certification);
 
     Optional<UserPreCertification> findByUserAndCertification(User user, Certification certification);
+
+	void deleteAllByUser(User user);
 }
