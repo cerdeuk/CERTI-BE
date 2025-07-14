@@ -6,12 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.user.dto.response.JwtResponse;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.BadRequestException;
-import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.sopt.certi_server.global.jwt.core.JwtExtractor;
 import org.sopt.certi_server.global.jwt.core.JwtProvider;
 import org.sopt.certi_server.global.jwt.core.JwtValidator;
 import org.sopt.certi_server.global.jwt.domain.entity.Token;
-import org.sopt.certi_server.global.jwt.domain.repository.TokenRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -53,7 +51,7 @@ public class JwtService {
         Token findRefreshToken = tokenService.getTokenByUserId(userId);
 
         if(!findRefreshToken.getRefreshToken().equals(refreshToken)) {
-            throw new BadRequestException(ErrorCode.MISSMATCH_REFRESH_TOKEN);
+            throw new BadRequestException(ErrorCode.MISMATCH_REFRESH_TOKEN);
         }
         log.info("Refresh 토큰 검증 성공");
 
