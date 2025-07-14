@@ -16,7 +16,12 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "certification")
+@Table(
+        name = "certification",
+        indexes = {
+                @Index(name = "certification_name_idx", columnList = "name")
+        }
+)
 public class Certification extends BaseTimeEntity {
 
     @Id

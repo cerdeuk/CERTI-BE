@@ -12,7 +12,12 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "activity")
+@Table(
+        name = "activity",
+        indexes = {
+                @Index(name = "user_id_idx", columnList = "user_id")
+        }
+)
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

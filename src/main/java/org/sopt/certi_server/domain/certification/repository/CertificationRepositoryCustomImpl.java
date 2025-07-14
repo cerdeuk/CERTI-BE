@@ -27,7 +27,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
         JPQLQuery<Certification> certificationQuery = jpaQueryFactory
                 .select(certification)
                 .from(certification)
-                .leftJoin(favorite).on(favorite.certification.eq(certification).and(favorite.user.eq(user)))
+                .leftJoin(favorite).on(favorite.user.eq(user).and(favorite.certification.eq(certification)))
                 .join(certificationJob).on(certificationJob.certification.eq(certification))
                 .where(certificationJob.job.id.eq(jobId));
 

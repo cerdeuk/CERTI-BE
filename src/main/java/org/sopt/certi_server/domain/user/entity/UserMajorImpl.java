@@ -8,7 +8,14 @@ import org.sopt.certi_server.domain.major.entity.MajorImpl;
 
 @Getter
 @Entity
-@Table(name = "user_major_impl")
+@Table(
+        name = "user_major_impl",
+        indexes = {
+                @Index(name = "user_id_idx", columnList = "user_id"),
+                @Index(name = "major_impl_id_idx", columnList = "major_impl_id"),
+                @Index(name = "user_id_major_impl_id_idx", columnList = "major_impl_id, user_id")
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserMajorImpl {
     @Id

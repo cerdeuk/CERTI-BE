@@ -17,6 +17,9 @@ import org.sopt.certi_server.global.entity.BaseTimeEntity;
         name = "user_pre_certification",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"user_id", "certification_id"})
+        },
+        indexes = {
+                @Index(name = "user_id_idx", columnList = "user_id")
         }
 )
 public class UserPreCertification extends BaseTimeEntity {
