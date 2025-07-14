@@ -1,13 +1,9 @@
 package org.sopt.certi_server.domain.certification.controller;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-
-import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationListResponse;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationRecommendationListResponse;
@@ -19,6 +15,8 @@ import org.sopt.certi_server.global.error.dto.SuccessResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,8 +30,8 @@ public class CertificationController {
     @GetMapping(value = "/{certificationId}")
     @Operation(summary = "자격증 조회 API", description = "자격증을 조회합니다")
     public ResponseEntity<SuccessResponse<CertificationDetailResponse>> getCertification(
-        @Parameter(description = "certificatio Id", example = "1")
-        @PathVariable Long certificationId){
+            @Parameter(description = "certificatio Id", example = "1")
+            @PathVariable Long certificationId) {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.getCertificationDetail(certificationId)));
     }
 
@@ -43,8 +41,9 @@ public class CertificationController {
             @AuthenticationPrincipal Long userId,
             @Parameter(description = "keyword", example = "정보처리기사")
             @RequestParam(value = "keyword") String keyword
-    ){
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.searchCertification(userId, keyword)));
+    ) {
+        List<CertificationSimple> certificationSimpleList = certificationService.searchCertification(userId, keyword);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, CertificationListResponse.of(certificationSimpleList)));
     }
 
     @PostMapping(value = "/{certificationId}/favorite")
@@ -53,11 +52,11 @@ public class CertificationController {
             @AuthenticationPrincipal Long userId,
             @Parameter(description = "certification Id", example = "1")
             @PathVariable Long certificationId
-    ){
+    ) {
         boolean isCreated = favoriteService.toggleFavorite(userId, certificationId);
-        if(isCreated){
+        if (isCreated) {
             return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
-        }else{
+        } else {
             return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_DELETE));
         }
     }
@@ -65,10 +64,10 @@ public class CertificationController {
     @GetMapping
     @Operation(summary = "카테고리별 자격증 조회 API", description = "카테고리별로 자격증을 조회합니다")
     public ResponseEntity<SuccessResponse<?>> getCertificationList(
-        @AuthenticationPrincipal Long userId,
-        @RequestParam(value = "isFavorite") Boolean isFavorite,
-        @RequestParam(value = "jobs") String job
-    ){
+            @AuthenticationPrincipal Long userId,
+            @RequestParam(value = "isFavorite") Boolean isFavorite,
+            @RequestParam(value = "jobs") String job
+    ) {
         CertificationListResponse certificationListResponse = certificationService.getCertificationList(userId, isFavorite, job);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationListResponse));
     }
@@ -76,8 +75,8 @@ public class CertificationController {
     @GetMapping("/recommend")
     @Operation(summary = "자격증 추천 API", description = "추천 자격증을 조회합니다")
     public ResponseEntity<SuccessResponse<CertificationRecommendationListResponse>> recommendCertification(
-        @AuthenticationPrincipal Long userId
-    ){
+            @AuthenticationPrincipal Long userId
+    ) {
         CertificationRecommendationListResponse certiRecommendListRes = certificationService.recommendCertifications(userId);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certiRecommendListRes));
     }

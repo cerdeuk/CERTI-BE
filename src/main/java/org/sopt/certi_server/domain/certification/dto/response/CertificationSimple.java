@@ -20,13 +20,13 @@ public class CertificationSimple {
     public CertificationSimple(
             Certification certification,
             boolean favorite
-    ){
+    ) {
         this.certificationId = certification.getId();
         this.certificationName = certification.getName();
         this.certificationType = certification.getCertificationType() != null ?
-            certification.getCertificationType().getKoreanName() : null;
+                certification.getCertificationType().getKoreanName() : null;
         this.testType = certification.getTestType() != null ?
-            certification.getTestType().getType() : null;
+                certification.getTestType().getType() : null;
         this.tags = certification.getTags();
         this.favorite = favorite;
     }

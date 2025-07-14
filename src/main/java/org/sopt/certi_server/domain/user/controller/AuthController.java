@@ -14,11 +14,8 @@ import org.sopt.certi_server.domain.user.entity.enums.SocialType;
 import org.sopt.certi_server.domain.user.service.AuthService;
 import org.sopt.certi_server.domain.user.service.SocialService;
 import org.sopt.certi_server.global.annotation.DisableSwaggerSecurity;
-import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.code.SuccessCode;
 import org.sopt.certi_server.global.error.dto.SuccessResponse;
-import org.sopt.certi_server.global.error.exception.ForbiddenException;
-import org.sopt.certi_server.global.error.exception.UnauthorizedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +30,7 @@ public class AuthController {
     @DisableSwaggerSecurity
     @GetMapping(value = "/login-uri")
     @Operation(summary = "소셜 로그인 URL 반환", description = "소셜 로그인 URL을 반환합니다.")
-    public ResponseEntity<SuccessResponse<LoginUriResponse>> processLoginUri(@Valid LoginUriRequest request){
+    public ResponseEntity<SuccessResponse<LoginUriResponse>> processLoginUri(@Valid LoginUriRequest request) {
         SocialType socialType = SocialType.from(request.socialType());
         SocialService socialService = authService.getSocialServiceByType(socialType);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, socialService.getAuthorizationUri()));
@@ -42,8 +39,8 @@ public class AuthController {
     @DisableSwaggerSecurity
     @PostMapping(value = "/login")
     @Operation(summary = "소셜 로그인",
-        description = "소셜 로그인에서 발급받은 인가코드를 통해, 로그인을 진행합니다.")
-    public ResponseEntity<SuccessResponse<AuthResponse>> processLogin(@Valid @RequestBody LoginRequest request){
+            description = "소셜 로그인에서 발급받은 인가코드를 통해, 로그인을 진행합니다.")
+    public ResponseEntity<SuccessResponse<AuthResponse>> processLogin(@Valid @RequestBody LoginRequest request) {
         SocialType socialType = SocialType.from(request.socialType());
         SocialService socialService = authService.getSocialServiceByType(socialType);
 
@@ -56,8 +53,8 @@ public class AuthController {
     @DisableSwaggerSecurity
     @PostMapping(value = "/sign-in")
     @Operation(summary = "소셜 로그인",
-        description = "소셜 로그인에서 발급받은 인가코드를 통해, 로그인을 진행합니다.")
-    public ResponseEntity<SuccessResponse<AuthResponse>> processSignIn(@Valid @RequestBody SignInRequest request){
+            description = "소셜 로그인에서 발급받은 인가코드를 통해, 로그인을 진행합니다.")
+    public ResponseEntity<SuccessResponse<AuthResponse>> processSignIn(@Valid @RequestBody SignInRequest request) {
         SocialType socialType = SocialType.from(request.socialType());
         SocialService socialService = authService.getSocialServiceByType(socialType);
 
@@ -72,7 +69,7 @@ public class AuthController {
     public ResponseEntity<SuccessResponse<SignUpResponse>> processSignup(
             @RequestHeader("Authorization") @NotEmpty(message = "임시 토큰이 누락되었습니다.") String authorization,
             @Valid @RequestBody SignupRequest request
-    ){
+    ) {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE, authService.register(authorization, request)));
     }
 
@@ -81,7 +78,7 @@ public class AuthController {
     @Operation(summary = "Access Token 재발급", description = "Refresh Token을 통해 Access Token을 재발급합니다.")
     public ResponseEntity<SuccessResponse<JwtResponse>> processReissue(
             @RequestHeader("Authorization") @NotEmpty(message = "해당 api에는 authorization 헤더가 필수입니다.") String authorization
-    ){
+    ) {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, authService.reIssueToken(authorization)));
     }
 

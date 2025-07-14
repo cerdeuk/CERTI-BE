@@ -24,15 +24,15 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final List<String> EXCLUDE_URL = Arrays.asList(
-        "/swagger-ui/**",
-        "/v3/api-docs/**",
-        "/api/v1/auth/login-uri",
-        "/api/v1/auth/login",
-        "/api/v1/auth/sign-up",
-        "/api/v1/auth/sign-in",
-        "/api/v1/auth/reissue",
-        "/api/v1/admin/**",
-        "/api/v1/university/**"
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/api/v1/auth/login-uri",
+            "/api/v1/auth/login",
+            "/api/v1/auth/sign-up",
+            "/api/v1/auth/sign-in",
+            "/api/v1/auth/reissue",
+            "/api/v1/admin/**",
+            "/api/v1/university/**"
 
     );
 
@@ -45,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = jwtExtractor.extractToken(authorization);
         boolean tokenExpired = jwtValidator.isExpired(token);
 
-        if(tokenExpired){
+        if (tokenExpired) {
             throw new UnauthorizedException();
         }
 

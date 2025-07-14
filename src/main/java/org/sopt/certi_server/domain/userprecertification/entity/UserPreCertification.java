@@ -20,7 +20,8 @@ import org.sopt.certi_server.global.entity.BaseTimeEntity;
         }
 )
 public class UserPreCertification extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

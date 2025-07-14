@@ -1,7 +1,5 @@
 package org.sopt.certi_server.domain.certification.repository;
 
-import java.util.Optional;
-
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.entity.CertificationJob;
 import org.sopt.certi_server.domain.job.entity.Job;
@@ -23,21 +21,21 @@ public interface CertificationJobRepository extends JpaRepository<CertificationJ
     void deleteAllByCertification(Certification certification);
 
     @Query("""
-        select cj
-        from CertificationJob cj
-        join fetch cj.certification c
-        left join fetch c.tags
-        where cj.job.name in :jobNames
-""")
+                    select cj
+                    from CertificationJob cj
+                    join fetch cj.certification c
+                    left join fetch c.tags
+                    where cj.job.name in :jobNames
+            """)
     List<CertificationJob> findByJobNames(List<String> jobNames);
 
     @Query("""
-        select cj
-        from CertificationJob cj
-        join fetch cj.certification c
-        left join fetch c.tags
-        where cj.job.id in :jobIds
-""")
+                    select cj
+                    from CertificationJob cj
+                    join fetch cj.certification c
+                    left join fetch c.tags
+                    where cj.job.id in :jobIds
+            """)
     List<CertificationJob> findByJobIds(List<Long> jobIds);
 
 

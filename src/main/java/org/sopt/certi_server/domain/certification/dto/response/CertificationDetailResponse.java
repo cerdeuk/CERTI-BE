@@ -1,12 +1,11 @@
 package org.sopt.certi_server.domain.certification.dto.response;
 
+import lombok.Builder;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.job.entity.Job;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import lombok.Builder;
 
 @Builder
 public record CertificationDetailResponse(
@@ -25,7 +24,7 @@ public record CertificationDetailResponse(
 
 
 ) {
-    public static CertificationDetailResponse from(Certification certification, List<Job> jobs){
+    public static CertificationDetailResponse from(Certification certification, List<Job> jobs) {
         return new CertificationDetailResponse(
                 certification.getId(),
                 certification.getName(),

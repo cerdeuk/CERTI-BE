@@ -4,7 +4,7 @@ import java.util.List;
 
 public record CertificationRecommendationListResponse(List<CertificationScoreDto> recommendationList) {
 
-    public static CertificationRecommendationListResponse of(List<CertificationScoreDto> recommendationList){
+    public static CertificationRecommendationListResponse of(List<CertificationScoreDto> recommendationList) {
         return new CertificationRecommendationListResponse(recommendationList);
     }
 }

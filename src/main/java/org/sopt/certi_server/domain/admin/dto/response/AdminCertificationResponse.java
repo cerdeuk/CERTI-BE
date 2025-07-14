@@ -1,11 +1,9 @@
 package org.sopt.certi_server.domain.admin.dto.response;
 
-import jakarta.persistence.Column;
 import lombok.Builder;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -28,7 +26,7 @@ public record AdminCertificationResponse(
 ) {
 
 
-    public static AdminCertificationResponse from(Certification certification){
+    public static AdminCertificationResponse from(Certification certification) {
         return AdminCertificationResponse.builder()
                 .certificationId(certification.getId())
                 .certificationName(certification.getName())

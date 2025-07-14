@@ -6,8 +6,6 @@ import org.sopt.certi_server.domain.certification.dto.response.CertificationScor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class CertificationServiceTest {
 
@@ -15,7 +13,7 @@ class CertificationServiceTest {
     CertificationService certificationService;
 
     @Test
-    void certification_recommandation_test(){
+    void certification_recommandation_test() {
         CertificationRecommendationListResponse certificationRecommendationListResponse = certificationService.recommendCertifications(3L);
 
         System.out.println("certificationRecommendationListResponse.recommendationList().size() = " + certificationRecommendationListResponse.recommendationList().size());

@@ -3,9 +3,9 @@ package org.sopt.certi_server.domain.acquisition.dto.response;
 import java.util.List;
 
 public record GetAcquisitionListResponse(
-	List<GetAcquisitionResponse> getAcquisitionResponses
+        List<GetAcquisitionResponse> getAcquisitionResponses
 ) {
-	public static GetAcquisitionListResponse of(List<GetAcquisitionResponse> priorCertificaitonResponses) {
-		return new GetAcquisitionListResponse(priorCertificaitonResponses);
-	}
+    public static GetAcquisitionListResponse of(List<GetAcquisitionResponse> priorCertificaitonResponses) {
+        return new GetAcquisitionListResponse(priorCertificaitonResponses);
+    }
 }

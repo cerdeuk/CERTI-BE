@@ -2,9 +2,9 @@ package org.sopt.certi_server.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.sopt.certi_server.global.jwt.core.JwtExtractor;
 import org.sopt.certi_server.global.filter.ExceptionHandlerFilter;
 import org.sopt.certi_server.global.filter.JwtAuthenticationFilter;
+import org.sopt.certi_server.global.jwt.core.JwtExtractor;
 import org.sopt.certi_server.global.jwt.core.JwtValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,22 +15,21 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
     private static final String[] WHITELIST = {
-        "/swagger-ui/**",
-        "/v3/api-docs/**",
-        "/api/v1/auth/login-uri",
-        "/api/v1/auth/login",
-        "/api/v1/auth/sign-up",
-        "/api/v1/auth/sign-in",
-        "/api/v1/auth/reissue",
-        "/api/v1/admin/**",
-        "/api/v1/university/**"
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/api/v1/auth/login-uri",
+            "/api/v1/auth/login",
+            "/api/v1/auth/sign-up",
+            "/api/v1/auth/sign-in",
+            "/api/v1/auth/reissue",
+            "/api/v1/admin/**",
+            "/api/v1/university/**"
     };
 
 
@@ -40,7 +39,7 @@ public class SecurityConfig {
     private final CorsConfig corsConfig;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // csrf disable
         http
                 .csrf(AbstractHttpConfigurer::disable);
@@ -56,12 +55,12 @@ public class SecurityConfig {
         // 경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers(HttpMethod.OPTIONS)
-                    .permitAll() //OPTION추가
-                    .requestMatchers(WHITELIST)
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated());
+                        .requestMatchers(HttpMethod.OPTIONS)
+                        .permitAll() //OPTION추가
+                        .requestMatchers(WHITELIST)
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated());
 
         http
                 .addFilter(corsConfig.corsFilter())
