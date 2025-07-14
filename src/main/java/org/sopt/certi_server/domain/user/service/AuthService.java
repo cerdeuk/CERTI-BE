@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
+import org.sopt.certi_server.domain.activity.repository.ActivityRepository;
 import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
@@ -53,6 +54,7 @@ public class AuthService {
     private final AcquisitionRepository acquisitionRepository;
     private final FavoriteRepository favoriteRepository;
     private final CareerRepository careerRepository;
+    private final ActivityRepository activityRepository;
 
     public AuthResponse login(OAuthUserInformation userInfo) {
         return userRepository.findByEmail(userInfo.email())
@@ -154,6 +156,9 @@ public class AuthService {
 
         //경력 사항 삭제
         careerRepository.deleteAllByUser(user);
+
+        //대내외 활동 삭제
+        activityRepository.deleteALlByUser(user);
 
         //토큰 삭제
         tokenService.deleteRefreshToken(userId);
