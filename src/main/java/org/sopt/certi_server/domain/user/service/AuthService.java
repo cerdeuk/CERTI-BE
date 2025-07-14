@@ -53,13 +53,13 @@ public class AuthService {
         return AuthResponse.ofNotRegisteredUser(preSignupToken, userInfo);
     }
 
-    private AuthResponse handleExistingUser(User user) {
+    private AuthResponse handleExistingUser(final User user) {
         JwtResponse jwtResponse = jwtService.issueToken(user.getId());
         return AuthResponse.ofRegisteredUser(user.getId(), user.getNickname(), jwtResponse);
     }
 
     @Transactional
-    public SignUpResponse register(String authorization, SignupRequest request) {
+    public SignUpResponse register(final String authorization, SignupRequest request) {
         log.info(authorization);
         jwtService.validatePreSignupToken(authorization);
 

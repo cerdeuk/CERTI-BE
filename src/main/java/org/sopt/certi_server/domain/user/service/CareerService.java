@@ -57,7 +57,6 @@ public class CareerService {
         Career career = careerRepository.findByUserIdAndId(userId, careerId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
 
-        log.info("Deleting career " + careerId);
         careerRepository.delete(career);
     }
 }
