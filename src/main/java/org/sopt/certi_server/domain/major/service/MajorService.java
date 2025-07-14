@@ -20,18 +20,11 @@ public class MajorService {
     private final MajorImplRepository majorImplRepository;
     private final MajorRepository majorRepository;
 
-    public GetMajorListResponse getMajorList(final String keyword) {
+    public List<String> getMajorList(final String keyword) {
         List<MajorImpl> majorList = majorImplRepository.findByNameContainingIgnoreCase(keyword);
-        List<String> majorNameList = majorList.stream()
+        return majorList.stream()
                 .map(MajorImpl::getName)
                 .toList();
-        return GetMajorListResponse.of(majorNameList);
     }
 
-    public Major getMajorByName(final String majorName) {
-        Major major = majorRepository.findByName(majorName)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
-
-        return major;
-    }
 }

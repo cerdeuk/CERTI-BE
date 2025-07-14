@@ -26,8 +26,7 @@ public class UniversityService {
     }
 
     public University getUniversityByName(String name) {
-        University university = universityRepository.findByName(name)
+        return universityRepository.findByName(name)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.UNIVERSITY_NOT_FOUND));
-        return university;
     }
 }

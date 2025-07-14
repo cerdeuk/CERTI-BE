@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/major")
@@ -27,7 +29,7 @@ public class MajorController {
             @Parameter(description = "keyword", example = "컴퓨터공학과")
             @RequestParam(name = "keyword") String keyword
     ) {
-        GetMajorListResponse getMajorListResponse = majorService.getMajorList(keyword);
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, getMajorListResponse));
+        List<String> majorList = majorService.getMajorList(keyword);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, GetMajorListResponse.of(majorList)));
     }
 }

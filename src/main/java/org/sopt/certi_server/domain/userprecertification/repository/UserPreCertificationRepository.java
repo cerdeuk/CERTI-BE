@@ -24,10 +24,9 @@ public interface UserPreCertificationRepository extends JpaRepository<UserPreCer
 
     Optional<UserPreCertification> findFirstByUserOrderByCreatedTimeDesc(User user);
 
-    void deleteByUserAndCertification(User user, Certification certification);
-
     void deleteAllByCertification(Certification certification);
 
     boolean existsByUserAndCertification(User user, Certification certification);
 
+    Optional<UserPreCertification> findByUserAndCertification(User user, Certification certification);
 }

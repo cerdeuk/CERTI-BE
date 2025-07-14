@@ -39,6 +39,7 @@ public enum ErrorCode {
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "E404011", "존재하지 않는 카테고리입니다."),
     UNIVERSITY_NOT_FOUND(HttpStatus.NOT_FOUND, "E404012", "존재하지 않는 대학교입니다"),
     ACQUISITION_NOT_FOUND(HttpStatus.NOT_FOUND, "E404013", "존재하지 않는 취득 정보입니다."),
+    PRECERTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "E404013", "존재하지 않는 취득예정 정보입니다."),
 
 
     /* 409 CONFLICT */

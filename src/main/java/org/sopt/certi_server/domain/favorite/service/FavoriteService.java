@@ -35,7 +35,6 @@ public class FavoriteService {
 
     @Transactional
     public boolean toggleFavorite(Long userId, Long certificationId) {
-        log.info("userId = " + userId + ", certificationId = " + certificationId);
         User user = userService.getUser(userId);
         Certification certification = certificationService.getCertification(certificationId);
 

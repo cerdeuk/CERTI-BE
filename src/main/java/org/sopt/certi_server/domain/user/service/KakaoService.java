@@ -25,11 +25,14 @@ public class KakaoService implements SocialService {
     @Value("${kakao.redirect-uri}")
     private String kakaoRedirectUri;
 
+    private static final String KAKAO_AUTH_URI = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=";
+    private static final String REDIRECT_URI = "&redirect_uri=";
+
     @Override
     public LoginUriResponse getAuthorizationUri() {
-        String uri = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" +
+        String uri = KAKAO_AUTH_URI +
                 kakaoClientId +
-                "&redirect_uri=" +
+                REDIRECT_URI +
                 kakaoRedirectUri;
 
         return LoginUriResponse.of(uri);

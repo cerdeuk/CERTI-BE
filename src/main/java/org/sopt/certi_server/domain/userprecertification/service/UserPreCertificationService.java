@@ -10,6 +10,8 @@ import org.sopt.certi_server.domain.userprecertification.dto.response.PreCertifi
 import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
 import org.sopt.certi_server.domain.userprecertification.entity.enums.IconType;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
+import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,7 @@ public class UserPreCertificationService {
     }
 
     @Transactional
-    public boolean createNewPreCertification(Long userId, Long certificationId) {
+    public boolean createNewPreCertification(final Long userId, final Long certificationId) {
         User user = userService.getUser(userId);
         Certification certification = certificationService.getCertification(certificationId);
 
@@ -50,6 +52,10 @@ public class UserPreCertificationService {
     public void deletePreCertification(Long userId, Long certificationId) {
         User user = userService.getUser(userId);
         Certification certification = certificationService.getCertification(certificationId);
-        userPreCertificationRepository.deleteByUserAndCertification(user, certification);
+
+        UserPreCertification userPreCertification = userPreCertificationRepository.findByUserAndCertification(user, certification)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.PRECERTIFICATION_NOT_FOUND));
+
+        userPreCertificationRepository.delete(userPreCertification);
     }
 }
