@@ -12,7 +12,6 @@ import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
-import org.sopt.certi_server.domain.user.entity.UserMajorImpl;
 import org.sopt.certi_server.domain.user.repository.CareerRepository;
 import org.sopt.certi_server.domain.user.repository.UserJobRepository;
 import org.sopt.certi_server.domain.user.repository.UserMajorImplRepository;
@@ -45,11 +44,14 @@ public class UserService {
 
     public GetUserResponse getHomeUser(final Long userId) {
         User user = getUser(userId);
-        UserMajorImpl userMajor = userMajorImplRepository.findByUserId(userId);
-        MajorImpl majorImpl = majorImplRepository.findById(userMajor.getMajorImpl().getId())
-                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+        List<MajorImpl> majorList = majorImplRepository.findMajorImplByUser(user);
+
+        if(majorList.isEmpty()){
+            throw new NotFoundException(ErrorCode.MAJOR_NOT_FOUND);
+        }
+
         int percentage = calculateResumeProgress(user);
-        return GetUserResponse.from(user, majorImpl, percentage);
+        return GetUserResponse.from(user, majorList.get(0), percentage);
     }
 
     public GetJobResponse getUserJob(final Long userId) {

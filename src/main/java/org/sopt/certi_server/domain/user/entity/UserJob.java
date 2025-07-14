@@ -9,7 +9,12 @@ import org.sopt.certi_server.domain.job.entity.Job;
 
 @Entity
 @Getter
-@Table(name = "user_job")
+@Table(
+        name = "user_job",
+        indexes = {
+                @Index(name = "user_id_idx", columnList = "user_id")
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserJob {
     @Id

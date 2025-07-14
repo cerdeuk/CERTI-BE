@@ -8,7 +8,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "major_impl")
+@Table(
+        name = "major_impl",
+        indexes = {
+                @Index(name = "major_impl_name_idx", columnList = "name")
+        }
+)
 public class MajorImpl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
