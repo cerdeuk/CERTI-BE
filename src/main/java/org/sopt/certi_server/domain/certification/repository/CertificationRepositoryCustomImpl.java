@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.certification.repository;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import org.sopt.certi_server.domain.user.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,24 +27,28 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
         QFavorite favorite = QFavorite.favorite;
         QCertificationJob certificationJob = QCertificationJob.certificationJob;
 
-        JPQLQuery<Certification> certificationQuery = jpaQueryFactory
-                .select(certification)
+        // 자격증과 즐겨찾기를 함께 조회
+        List<Tuple> results = jpaQueryFactory
+                .select(certification, favorite)
                 .from(certification)
                 .leftJoin(favorite).on(favorite.user.eq(user).and(favorite.certification.eq(certification)))
                 .join(certificationJob).on(certificationJob.certification.eq(certification))
-                .where(certificationJob.job.id.eq(jobId));
+                .where(certificationJob.job.id.eq(jobId))
+                .fetch();
 
-        if (isFavorite) {
-            certificationQuery.where(favorite.isNotNull());
-        } else {
-            certificationQuery.where();
-        }
 
-        return certificationQuery.fetch().stream()
-                .map(cert -> new CertificationSimple(
-                        cert,
-                        isFavorite
-                ))
+        return results.stream()
+                .map(tuple -> {
+                    Certification findCertification = tuple.get(certification);
+                    boolean isFav = tuple.get(favorite) != null;
+
+                    if(isFavorite && !isFav){
+                        return null;
+                    }
+
+                    return new CertificationSimple(findCertification, isFav);
+                })
+                .filter(Objects::nonNull)
                 .toList();
     }
 }
