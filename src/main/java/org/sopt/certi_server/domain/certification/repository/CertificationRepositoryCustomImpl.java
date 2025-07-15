@@ -33,7 +33,8 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
                 .from(certification)
                 .leftJoin(favorite).on(favorite.user.eq(user).and(favorite.certification.eq(certification)))
                 .join(certificationJob).on(certificationJob.certification.eq(certification))
-                .where(certificationJob.job.id.eq(jobId))
+                .where(certificationJob.job.id.eq(jobId)
+                        .and(isFavorite ? favorite.isNotNull() : null))
                 .fetch();
 
 
@@ -41,10 +42,6 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
                 .map(tuple -> {
                     Certification findCertification = tuple.get(certification);
                     boolean isFav = tuple.get(favorite) != null;
-
-                    if(isFavorite && !isFav){
-                        return null;
-                    }
 
                     if(findCertification == null){
                         return null;
