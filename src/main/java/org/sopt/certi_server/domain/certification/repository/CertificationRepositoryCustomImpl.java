@@ -46,6 +46,10 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
                         return null;
                     }
 
+                    if(findCertification == null){
+                        return null;
+                    }
+
                     return new CertificationSimple(findCertification, isFav);
                 })
                 .filter(Objects::nonNull)

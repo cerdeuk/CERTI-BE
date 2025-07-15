@@ -43,6 +43,7 @@ public enum ErrorCode {
     ACQUISITION_NOT_FOUND(HttpStatus.NOT_FOUND, "E404013", "존재하지 않는 취득 정보입니다."),
     PRECERTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "E404014", "존재하지 않는 취득예정 정보입니다."),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "E404015", "존재하지 않는 리프레시 토큰입니다"),
+    MISSING_HANDLER(HttpStatus.NOT_FOUND, "E404016", "URL을 찾을 수 없습니다."),
 
 
     /* 409 CONFLICT */
