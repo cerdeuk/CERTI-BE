@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.user.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -7,8 +8,10 @@ import java.time.LocalDate;
 
 public record CreateCareerRequest(
         @NotNull(message = "근무 시작일은 필수 입력값입니다.")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
         LocalDate startAt,
         @NotNull(message = "근무 종료일은 필수 입력값입니다")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
         LocalDate endAt,
         @NotNull(message = "근무 회사는 필수 입력값입니다")
         String place,
