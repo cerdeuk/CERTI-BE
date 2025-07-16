@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.sopt.certi_server.domain.certification.entity.enums.CertificationType;
 import org.sopt.certi_server.domain.certification.entity.enums.TestType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
@@ -48,6 +49,7 @@ public class Certification extends BaseTimeEntity {
 
     @ElementCollection
     @CollectionTable(name = "tags")
+    @BatchSize(size = 50)
     private List<String> tags = new ArrayList<>();
 
     @Column(columnDefinition = "TEXT")
