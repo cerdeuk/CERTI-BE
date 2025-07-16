@@ -114,13 +114,18 @@ public class CertificationService {
                     List<Tuple> certificationMajors = certificationMajorMap.get(certId);
                     List<Tuple> certificationJobs = certificationJobMap.get(certId);
 
-                    Certification certification = certificationMajors.isEmpty() ? certificationJobs.get(0).get(QCertificationJob.certificationJob).getCertification() : certificationMajors.get(0).get(QCertificationMajor.certificationMajor).getCertification();
-                    Favorite favorite = certificationMajors.isEmpty() ? certificationJobs.get(0).get(QFavorite.favorite) : certificationMajors.get(0).get(QFavorite.favorite);
+                    Certification certification = certificationMajors == null ?
+                            Objects.requireNonNull(certificationJobs.get(0).get(QCertificationJob.certificationJob)).getCertification() :
+                            Objects.requireNonNull(certificationMajors.get(0).get(QCertificationMajor.certificationMajor)).getCertification();
+
+                    Favorite favorite = certificationMajors == null ?
+                            certificationJobs.get(0).get(QFavorite.favorite) :
+                            certificationMajors.get(0).get(QFavorite.favorite);
 
                     double majorScore = certificationMajors != null ? reverseProductScore(certificationMajors.stream()
-                            .map(tuple -> tuple.get(QCertificationMajor.certificationMajor).getWeight())) : 0;
+                            .map(tuple -> Objects.requireNonNull(tuple.get(QCertificationMajor.certificationMajor)).getWeight())) : 0;
                     double jobScore = certificationJobs != null ? reverseProductScore(certificationJobs.stream()
-                            .map(tuple -> tuple.get(QCertificationJob.certificationJob).getWeight())) : 0;
+                            .map(tuple -> Objects.requireNonNull(tuple.get(QCertificationJob.certificationJob)).getWeight())) : 0;
 
                     int finalScore = (int) ((majorScore * 0.4 + jobScore * 0.6) * 100);
 
