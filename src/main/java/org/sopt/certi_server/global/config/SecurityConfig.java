@@ -30,7 +30,8 @@ public class SecurityConfig {
             "/api/v1/auth/reissue",
             "/api/v1/admin/**",
             "/api/v1/university/**",
-            "/api/v1/major/**"
+            "/api/v1/major/**",
+            "/actuator/**"
     };
 
 

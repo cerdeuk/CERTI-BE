@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'spring-blue'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['13.124.173.172:8080']
+
+  - job_name: 'spring-green'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['13.124.173.172:8081']
