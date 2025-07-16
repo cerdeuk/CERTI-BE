@@ -1,16 +1,16 @@
 package org.sopt.certi_server.domain.certification.service;
 
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.dto.response.*;
-import org.sopt.certi_server.domain.certification.entity.Agency;
-import org.sopt.certi_server.domain.certification.entity.Certification;
-import org.sopt.certi_server.domain.certification.entity.CertificationJob;
-import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
+import org.sopt.certi_server.domain.certification.entity.*;
 import org.sopt.certi_server.domain.certification.entity.enums.CertificationType;
 import org.sopt.certi_server.domain.certification.entity.enums.TestType;
 import org.sopt.certi_server.domain.certification.repository.*;
+import org.sopt.certi_server.domain.favorite.entity.Favorite;
+import org.sopt.certi_server.domain.favorite.entity.QFavorite;
 import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
@@ -60,16 +60,13 @@ public class CertificationService {
 
     @Transactional
     public void createCertification(CertificationCreateRequest request) {
-        Agency findAgency = agencyRepository.findByName(request.agencyName())
-                .orElseThrow(() -> new NotFoundException(ErrorCode.AGENCY_NOT_FOUND));
-
         Certification newCertification = convertDtoToEntity(request);
 
         certificationRepository.save(newCertification);
     }
 
 
-    public CertificationRecommendationListResponse recommendCertifications(final Long userId) {
+    public CertificationRecommendationListResponse recommendCertifications(Long userId){
         User user = userService.getUser(userId);
         List<Major> userMajors = majorRepository.findAllByUser(user);
         log.info("=============사용자 전공================");
@@ -84,71 +81,57 @@ public class CertificationService {
             log.info("job name = {}", userJob.getName());
         }
 
-        List<CertificationMajor> certificationMajors = certificationMajorRepository.findByMajorIds(
+        List<Tuple> certificationMajorAndFavoriteTupleList = certificationMajorRepository.findByMajorIds(
                 userMajors.stream()
                         .map(Major::getId)
-                        .toList()
+                        .toList(),
+                userId
         );
-        log.info("=============전공 - 자격증 매핑================");
-        for (CertificationMajor certificationMajor : certificationMajors) {
-            log.info("major = {}", certificationMajor.getMajor().getName());
-            log.info("certification = {}", certificationMajor.getCertification().getName());
-        }
 
-        List<CertificationJob> certificationJobs = certificationJobRepository.findByJobIds(
+        List<Tuple> certificationJobAndFavoriteTupleList = certificationJobRepository.findByJobIds(
                 userJobs.stream()
                         .map(Job::getId)
-                        .toList()
+                        .toList(),
+                userId
         );
-        log.info("=============직무 - 자격증 매핑================");
-        for (CertificationJob certificationJob : certificationJobs) {
-            log.info("major = {}", certificationJob.getJob().getName());
-            log.info("certification = {}", certificationJob.getCertification().getName());
-        }
 
-
-        return getCertificationRecommendationListResponse(certificationMajors, certificationJobs, user);
-    }
-
-    private CertificationRecommendationListResponse getCertificationRecommendationListResponse(final List<CertificationMajor> certificationMajors, final List<CertificationJob> certificationJobs, final User user) {
-        Map<Long, List<CertificationMajor>> certificationMajorMapGroupingByCertification = certificationMajors.stream()
+        Map<Long, List<Tuple>> certificationMajorMap = certificationMajorAndFavoriteTupleList.stream()
                 .collect(Collectors.groupingBy(
-                        cm -> cm.getCertification().getId()
+                        tuple -> Objects.requireNonNull(tuple.get(QCertificationMajor.certificationMajor)).getCertification().getId()
                 ));
 
-
-        Map<Long, List<CertificationJob>> certificationJobMapGroupingByCertification = certificationJobs.stream()
+        Map<Long, List<Tuple>> certificationJobMap = certificationJobAndFavoriteTupleList.stream()
                 .collect(Collectors.groupingBy(
-                        cj -> cj.getCertification().getId()
+                        tuple -> Objects.requireNonNull(tuple.get(QCertificationJob.certificationJob)).getCertification().getId()
                 ));
 
-        Set<Long> allCertificationIds = new HashSet<>();
-        allCertificationIds.addAll(certificationMajorMapGroupingByCertification.keySet());
-        allCertificationIds.addAll(certificationJobMapGroupingByCertification.keySet());
+        Set<Long> allCertIds = new HashSet<>();
+        allCertIds.addAll(certificationMajorMap.keySet());
+        allCertIds.addAll(certificationJobMap.keySet());
 
-        List<CertificationScoreDto> recommendationList = allCertificationIds.stream()
-                .map(certificationId -> {
-                    List<CertificationMajor> certificationMajorListByCertId = certificationMajorMapGroupingByCertification.getOrDefault(certificationId, List.of());
-                    List<CertificationJob> certificationJobListByCertId = certificationJobMapGroupingByCertification.getOrDefault(certificationId, List.of());
-                    Certification certification = certificationMajorListByCertId.isEmpty() ? certificationJobListByCertId.get(0).getCertification() : certificationMajorListByCertId.get(0).getCertification();
+        List<CertificationScoreDto> recommendationList = allCertIds.stream()
+                .map(certId -> {
+                    List<Tuple> certificationMajors = certificationMajorMap.get(certId);
+                    List<Tuple> certificationJobs = certificationJobMap.get(certId);
 
+                    Certification certification = certificationMajors.isEmpty() ? certificationJobs.get(0).get(QCertificationJob.certificationJob).getCertification() : certificationMajors.get(0).get(QCertificationMajor.certificationMajor).getCertification();
+                    Favorite favorite = certificationMajors.isEmpty() ? certificationJobs.get(0).get(QFavorite.favorite) : certificationMajors.get(0).get(QFavorite.favorite);
 
-                    double majorScore = reverseProductScore(certificationMajorListByCertId.stream()
-                            .map(CertificationMajor::getWeight));
-
-                    double jobScore = reverseProductScore(certificationJobListByCertId.stream()
-                            .map(CertificationJob::getWeight));
+                    double majorScore = certificationMajors != null ? reverseProductScore(certificationMajors.stream()
+                            .map(tuple -> tuple.get(QCertificationMajor.certificationMajor).getWeight())) : 0;
+                    double jobScore = certificationJobs != null ? reverseProductScore(certificationJobs.stream()
+                            .map(tuple -> tuple.get(QCertificationJob.certificationJob).getWeight())) : 0;
 
                     int finalScore = (int) ((majorScore * 0.4 + jobScore * 0.6) * 100);
 
-                    return CertificationScoreDto.from(certification, finalScore, favoriteRepository.existsByUserAndCertification(user, certification));
-
+                    return CertificationScoreDto.from(certification, finalScore, favorite != null);
                 })
                 .sorted(Comparator.comparing(CertificationScoreDto::recommendationScore).reversed())
                 .limit(6)
                 .toList();
 
         return CertificationRecommendationListResponse.of(recommendationList);
+
     }
 
     private double reverseProductScore(Stream<Double> weightStream) {

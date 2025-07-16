@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CertificationJobRepository extends JpaRepository<CertificationJob, Long> {
+public interface CertificationJobRepository extends JpaRepository<CertificationJob, Long>, CertificationJobRepositoryCustom {
 
     @Query("select cj from CertificationJob cj join fetch cj.certification where cj.certification = :certification")
     List<CertificationJob> findAllByCertification(Certification certification);

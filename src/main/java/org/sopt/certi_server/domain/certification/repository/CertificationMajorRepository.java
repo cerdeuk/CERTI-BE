@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CertificationMajorRepository extends JpaRepository<CertificationMajor, Long> {
+public interface CertificationMajorRepository extends JpaRepository<CertificationMajor, Long>, CertificationMajorRepositoryCustom {
     Optional<CertificationMajor> findByCertificationAndMajor(Certification certification, Major major);
 
     @Query("select cm from CertificationMajor cm join fetch cm.major where cm.certification = :certification")
