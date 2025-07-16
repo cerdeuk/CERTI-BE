@@ -1,3 +1,7 @@
+# 🎓 Certi
+
+> “자격증, 나에게 딱 맞는 시작을 Certi로!”
+
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/9161dc59-cc60-43e7-9a0b-ef4eca15e96a" />
 
 자격증 고민부터 이력서 완성까지, 한 번에 도와주는
