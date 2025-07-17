@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.sopt.certi_server.domain.acquisition.entity.enums.CardType;
+import org.sopt.certi_server.domain.acquisition.entity.enums.SmallCardType;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
@@ -36,13 +37,17 @@ public class Acquisition extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private CardType cardType;
 
+    @Enumerated(value = EnumType.STRING)
+    private SmallCardType smallCardType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public Acquisition(Certification certification, CardType cardType, User user) {
+    public Acquisition(Certification certification, CardType cardType, User user, SmallCardType smallCardType) {
         this.certification = certification;
+        this.smallCardType = smallCardType;
         this.cardType = cardType;
         this.user = user;
     }

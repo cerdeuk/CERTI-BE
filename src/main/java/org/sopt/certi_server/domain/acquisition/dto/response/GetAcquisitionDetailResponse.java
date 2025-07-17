@@ -1,6 +1,8 @@
 package org.sopt.certi_server.domain.acquisition.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.Builder;
 import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
 
@@ -8,6 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record GetAcquisitionDetailResponse(
         Long acquisitionId,
         String cardFrontImageUrl,
