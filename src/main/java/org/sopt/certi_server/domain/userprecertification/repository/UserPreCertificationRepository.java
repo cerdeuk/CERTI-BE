@@ -21,7 +21,7 @@ public interface UserPreCertificationRepository extends JpaRepository<UserPreCer
             where upc.user.id = :userId
             order by upc.certification.nearestTestDate asc
             """)
-    List<UserPreCertification> getPreCertificationsByUserId(Long userId);
+    List<UserPreCertification> findPreCertificationsByUserIdOrderByNearestTestDate(Long userId);
 
     Optional<UserPreCertification> findFirstByUserOrderByCreatedTimeDesc(User user);
 
