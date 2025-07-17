@@ -14,7 +14,11 @@ import java.util.Optional;
 public interface AcquisitionRepository extends JpaRepository<Acquisition, Long> {
     Optional<Acquisition> findByUserAndId(User user, Long acquisitionId);
 
-    @Query("select ac from Acquisition ac join fetch ac.certification where ac.user = :user")
+    @Query("select ac "
+        + "from Acquisition ac "
+        + "join fetch ac.certification "
+        + "where ac.user = :user "
+        + "order by ac.createdTime asc")
     List<Acquisition> findByUserOrderByIdAsc(User user);
 
     Optional<Acquisition> findFirstByUserOrderByCreatedTimeDesc(User user);
