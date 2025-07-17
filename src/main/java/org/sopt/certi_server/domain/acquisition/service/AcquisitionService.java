@@ -11,6 +11,8 @@ import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.service.UserService;
+import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
+import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.ForbiddenException;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
@@ -28,6 +30,7 @@ import static org.sopt.certi_server.domain.acquisition.entity.enums.CardType.iss
 @Slf4j
 public class AcquisitionService {
     private final AcquisitionRepository acquisitionRepository;
+    private final UserPreCertificationRepository userPreCertificationRepository;
     private final UserService userService;
     private final CertificationService certificationService;
 
@@ -56,6 +59,11 @@ public class AcquisitionService {
                 .build();
 
         acquisitionRepository.save(acquisition);
+
+        //취득 예정 자격증에서 삭제
+        UserPreCertification findUserPreCertification = userPreCertificationRepository.findByUserAndCertification(user, certification)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.PRECERTIFICATION_NOT_FOUND));
+        userPreCertificationRepository.delete(findUserPreCertification);
 
         return true;
     }
