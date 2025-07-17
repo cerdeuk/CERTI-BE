@@ -19,7 +19,7 @@ public interface UserPreCertificationRepository extends JpaRepository<UserPreCer
             join fetch upc.certification c 
             left join fetch c.agency
             where upc.user.id = :userId
-            order by upc.certification.nearestTestDate desc
+            order by upc.certification.nearestTestDate asc
             """)
     List<UserPreCertification> getPreCertificationsByUserId(Long userId);
 
