@@ -1,6 +1,7 @@
 package org.sopt.certi_server.domain.userprecertification.service;
 
 import lombok.RequiredArgsConstructor;
+import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.user.entity.User;
@@ -11,6 +12,8 @@ import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertifica
 import org.sopt.certi_server.domain.userprecertification.entity.enums.IconType;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.exception.BusinessException;
+import org.sopt.certi_server.global.error.exception.ForbiddenException;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,7 @@ public class UserPreCertificationService {
     private final UserService userService;
     private final CertificationService certificationService;
     private final UserPreCertificationRepository userPreCertificationRepository;
+    private final AcquisitionRepository acquisitionRepository;
 
     public PreCertificationSimpleListResponse getPreCertificationListDataByUserId(Long userId) {
         return new PreCertificationSimpleListResponse(userPreCertificationRepository.getPreCertificationsByUserId(userId).stream()
@@ -34,6 +38,10 @@ public class UserPreCertificationService {
     public boolean createNewPreCertification(final Long userId, final Long certificationId) {
         User user = userService.getUser(userId);
         Certification certification = certificationService.getCertification(certificationId);
+
+        if(acquisitionRepository.existsByUserAndCertification(user, certification)){
+            throw new BusinessException(ErrorCode.DUPLICATED_ACQUISITION);
+        }
 
         if (userPreCertificationRepository.existsByUserAndCertification(user, certification)) {
             return false;
