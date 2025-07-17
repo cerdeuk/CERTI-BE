@@ -1,6 +1,7 @@
 package org.sopt.certi_server.domain.userprecertification.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class UserPreCertificationService {
 
     private final UserService userService;
@@ -40,6 +42,7 @@ public class UserPreCertificationService {
         Certification certification = certificationService.getCertification(certificationId);
 
         if(acquisitionRepository.existsByUserAndCertification(user, certification)){
+            log.info("이미 취득한 자격증에 대해 취득 예정 시도");
             throw new BusinessException(ErrorCode.DUPLICATED_ACQUISITION);
         }
 

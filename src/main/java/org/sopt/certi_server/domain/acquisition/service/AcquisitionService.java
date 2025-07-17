@@ -61,11 +61,12 @@ public class AcquisitionService {
         acquisitionRepository.save(acquisition);
 
         if(userPreCertificationRepository.existsByUserAndCertification(user, certification)) {
+            log.info("취득 예정 정보 존재함");
             UserPreCertification userPreCertification = userPreCertificationRepository.findByUserAndCertification(user, certification)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PRECERTIFICATION_NOT_FOUND));
             userPreCertificationRepository.delete(userPreCertification);
+            log.info("취득 예정 정보 삭제");
         }
-
 
         return true;
     }
