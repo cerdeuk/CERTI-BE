@@ -60,13 +60,7 @@ public class AcquisitionService {
 
         acquisitionRepository.save(acquisition);
 
-        //취득 예정 자격증에서 삭제
-        if(userPreCertificationRepository.existsByUserAndCertification(user, certification)) {
-            UserPreCertification findUserPreCertification = userPreCertificationRepository.findByUserAndCertification(user, certification)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.PRECERTIFICATION_NOT_FOUND));
-            userPreCertificationRepository.delete(findUserPreCertification);
 
-        }
         return true;
     }
 
