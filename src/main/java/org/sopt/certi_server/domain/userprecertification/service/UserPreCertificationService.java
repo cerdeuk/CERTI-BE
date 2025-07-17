@@ -25,7 +25,7 @@ public class UserPreCertificationService {
     private final UserPreCertificationRepository userPreCertificationRepository;
 
     public PreCertificationSimpleListResponse getPreCertificationListDataByUserId(Long userId) {
-        return new PreCertificationSimpleListResponse(userPreCertificationRepository.getPreCertificationsByUserId(userId).stream()
+        return new PreCertificationSimpleListResponse(userPreCertificationRepository.findPreCertificationsByUserIdOrderByNearestTestDate(userId).stream()
             .map(PreCertificationSimple::from)
             .toList());
     }
