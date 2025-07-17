@@ -35,6 +35,7 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
                 .join(certificationJob).on(certificationJob.certification.eq(certification))
                 .where(certificationJob.job.id.eq(jobId)
                         .and(isFavorite ? favorite.isNotNull() : null))
+                .orderBy(certification.id.desc())
                 .fetch();
 
 
