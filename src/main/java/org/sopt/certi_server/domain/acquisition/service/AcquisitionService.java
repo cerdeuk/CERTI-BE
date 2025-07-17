@@ -83,7 +83,7 @@ public class AcquisitionService {
 
     public List<GetAcquisitionResponse> getAcquisitionList(final Long userId) {
         User user = userService.getUser(userId);
-        List<Acquisition> acquisitionList = acquisitionRepository.findByUserOrderByIdAsc(user);
+        List<Acquisition> acquisitionList = acquisitionRepository.findByUserOrderByIdDesc(user);
 
         return acquisitionList.stream()
                 .map(GetAcquisitionResponse::from)

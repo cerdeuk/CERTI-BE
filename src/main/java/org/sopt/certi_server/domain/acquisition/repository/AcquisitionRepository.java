@@ -18,8 +18,8 @@ public interface AcquisitionRepository extends JpaRepository<Acquisition, Long> 
         + "from Acquisition ac "
         + "join fetch ac.certification "
         + "where ac.user = :user "
-        + "order by ac.createdTime asc")
-    List<Acquisition> findByUserOrderByIdAsc(User user);
+        + "order by ac.createdTime desc")
+    List<Acquisition> findByUserOrderByIdDesc(User user);
 
     Optional<Acquisition> findFirstByUserOrderByCreatedTimeDesc(User user);
 
