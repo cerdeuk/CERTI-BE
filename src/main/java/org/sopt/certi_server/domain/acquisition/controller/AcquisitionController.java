@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionDetailResponse;
+import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionListDetailResponse;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionListResponse;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionResponse;
 import org.sopt.certi_server.domain.acquisition.service.AcquisitionService;
@@ -61,7 +62,7 @@ public class AcquisitionController {
     public ResponseEntity<SuccessResponse<GetAcquisitionListResponse>> getAllAcquisitions(
             @AuthenticationPrincipal Long userId
     ) {
-        List<GetAcquisitionResponse> getAcquisitionResponses = acquisitionService.getAcquisitionList(userId);
+        List<GetAcquisitionListDetailResponse> getAcquisitionResponses = acquisitionService.getAcquisitionList(userId);
         GetAcquisitionListResponse getAcquisitionListResponse = GetAcquisitionListResponse.of(getAcquisitionResponses);
 
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, getAcquisitionListResponse));

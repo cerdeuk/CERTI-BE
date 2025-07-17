@@ -3,9 +3,11 @@ package org.sopt.certi_server.domain.acquisition.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionDetailResponse;
+import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionListDetailResponse;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionResponse;
 import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
 import org.sopt.certi_server.domain.acquisition.entity.enums.CardType;
+import org.sopt.certi_server.domain.acquisition.entity.enums.SmallCardType;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.sopt.certi_server.domain.acquisition.entity.enums.CardType.issueNextCardType;
+import static org.sopt.certi_server.domain.acquisition.entity.enums.SmallCardType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -51,11 +54,18 @@ public class AcquisitionService {
                     return issueNextCardType(index);
                 }).orElseGet(CardType::issueRandomCardType);
 
+        SmallCardType smallCardType = acquisitionRepository.findFirstByUserOrderByCreatedTimeDesc(user)
+            .map(acquisition -> {
+                int index = acquisition.getSmallCardType().getIndex();
+                return issueNextSmallCardType(index);
+            }).orElseGet(SmallCardType::issueRandomSmallCardType);
+
 
         Acquisition acquisition = Acquisition.builder()
                 .user(user)
                 .certification(certification)
                 .cardType(cardType)
+                .smallCardType(smallCardType)
                 .build();
 
         acquisitionRepository.save(acquisition);
@@ -81,12 +91,12 @@ public class AcquisitionService {
         return GetAcquisitionDetailResponse.from(acquisition);
     }
 
-    public List<GetAcquisitionResponse> getAcquisitionList(final Long userId) {
+    public List<GetAcquisitionListDetailResponse> getAcquisitionList(final Long userId) {
         User user = userService.getUser(userId);
         List<Acquisition> acquisitionList = acquisitionRepository.findByUserOrderByIdDesc(user);
 
         return acquisitionList.stream()
-                .map(GetAcquisitionResponse::from)
+                .map(GetAcquisitionListDetailResponse::from)
                 .toList();
     }
 
