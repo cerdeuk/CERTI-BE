@@ -19,4 +19,4 @@
 
 | <img width="270" height="425" alt="Image" src="https://github.com/user-attachments/assets/64fa83b8-6f2c-4ec0-9db9-b345a0452d71" />| <img width="270" height="425" alt="Image" src="https://github.com/user-attachments/assets/7068d89e-106d-48d2-b31a-206df86bad87" /> | 
 |:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
-[곽재민] (Lead)] (https://github.com/woals2840)  | [이성민] (https://github.com/seongmin0229) |
+[곽재민] (Lead) (https://github.com/woals2840)  | [이성민] (https://github.com/seongmin0229) |
