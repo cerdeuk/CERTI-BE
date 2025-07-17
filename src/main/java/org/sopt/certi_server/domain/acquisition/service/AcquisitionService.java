@@ -60,6 +60,12 @@ public class AcquisitionService {
 
         acquisitionRepository.save(acquisition);
 
+        if(userPreCertificationRepository.existsByUserAndCertification(user, certification)) {
+            UserPreCertification userPreCertification = userPreCertificationRepository.findByUserAndCertification(user, certification)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.PRECERTIFICATION_NOT_FOUND));
+            userPreCertificationRepository.delete(userPreCertification);
+        }
+
 
         return true;
     }
