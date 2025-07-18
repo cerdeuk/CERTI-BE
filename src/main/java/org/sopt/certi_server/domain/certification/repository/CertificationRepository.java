@@ -26,4 +26,7 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
     List<CertificationSimple> searchByKeyword(User user, String keyword);
 
     Optional<Certification> findByName(String certificationName);
+
+    @Query("SELECT c FROM Certification c LEFT JOIN FETCH c.tags WHERE c.id = :id")
+    Optional<Certification> findByIdWithTags(Long id);
 }

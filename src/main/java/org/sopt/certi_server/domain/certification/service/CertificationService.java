@@ -144,7 +144,7 @@ public class CertificationService {
     }
 
     public Certification getCertification(final Long certificationId) {
-        return certificationRepository.findById(certificationId)
+        return certificationRepository.findByIdWithTags(certificationId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CERTIFICATION_NOT_FOUND));
     }
 
