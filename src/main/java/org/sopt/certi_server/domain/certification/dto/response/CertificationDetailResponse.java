@@ -24,11 +24,11 @@ public record CertificationDetailResponse(
 
 
 ) {
-    public static CertificationDetailResponse from(Certification certification, List<Job> jobs) {
+    public static CertificationDetailResponse from(Certification certification) {
         return new CertificationDetailResponse(
                 certification.getId(),
                 certification.getName(),
-                jobs.stream().map(Job::getName).collect(Collectors.toList()),
+                certification.getTags(),
                 certification.getAveragePeriod(),
                 certification.getCharge(),
                 certification.getAgency().getName(),
