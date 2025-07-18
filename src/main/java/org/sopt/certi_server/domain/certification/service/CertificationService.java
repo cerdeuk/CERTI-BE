@@ -44,7 +44,6 @@ public class CertificationService {
     private final CertificationMajorRepository certificationMajorRepository;
     private final CertificationJobRepository certificationJobRepository;
     private final CertificationRepositoryCustomImpl certificationRepositoryCustomImpl;
-    private final FavoriteRepository favoriteRepository;
     private final UserService userService;
 
 
@@ -54,8 +53,7 @@ public class CertificationService {
     )
     public CertificationDetailResponse getCertificationDetail(final Long certificationId) {
         Certification certification = getCertification(certificationId);
-        List<Job> jobs = jobRepository.getJobsByCertificationId(certificationId);
-        return CertificationDetailResponse.from(certification, jobs);
+        return CertificationDetailResponse.from(certification);
     }
 
     @Transactional
