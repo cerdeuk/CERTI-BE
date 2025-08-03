@@ -28,7 +28,7 @@ public record CertificationDetailResponse(
         return new CertificationDetailResponse(
                 certification.getId(),
                 certification.getName(),
-                certification.getTags(),
+                certification.getTags().stream().toList(),
                 certification.getAveragePeriod(),
                 certification.getCharge(),
                 certification.getAgency().getName(),
