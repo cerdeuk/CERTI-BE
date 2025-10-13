@@ -57,13 +57,13 @@ public class AuthService {
     private final ActivityRepository activityRepository;
 
     public AuthResponse login(OAuthUserInformation userInfo) {
-        return userRepository.findByEmail(userInfo.email())
+        return userRepository.findBySocialTypeAndSocialId(userInfo.socialType(), userInfo.socialId())
                 .map(this::handleExistingUser)
                 .orElseGet(() -> handleNewUser(userInfo));
     }
 
     private AuthResponse handleNewUser(OAuthUserInformation userInfo) {
-        String preSignupToken = jwtService.generatePreSignupToken(userInfo.email());
+        String preSignupToken = jwtService.generatePreSignupToken(userInfo.socialId());
         return AuthResponse.ofNotRegisteredUser(preSignupToken, userInfo);
     }
 
@@ -132,6 +132,8 @@ public class AuthService {
                 .grade(request.grade())
                 .major(majorImpl)
                 .university(universityService.getUniversityByName(request.university()))
+                .socialType(request.userInformation().socialType())
+                .socialId(request.userInformation().socialId())
                 .build();
     }
 

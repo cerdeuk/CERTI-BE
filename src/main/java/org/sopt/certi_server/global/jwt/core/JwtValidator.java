@@ -31,19 +31,13 @@ public class JwtValidator {
         return claims.get("userId") != null;
     }
 
-    public boolean hasEmail(String token) {
+    public boolean hasSocialId(String token){
         Claims claims = jwtExtractor.extractClaims(token);
-        return claims.get("userEmail") != null;
-    }
-
-    public void validateAccessToken(String token) {
-        if (isExpired(token) || !hasUserId(token)) {
-            throw new UnauthorizedException();
-        }
+        return claims.get("socialId") != null;
     }
 
     public void validatePreSignupToken(String token) {
-        if (isExpired(token) || !hasEmail(token)) {
+        if (isExpired(token) || !hasSocialId(token)) {
             throw new UnauthorizedException();
         }
     }
