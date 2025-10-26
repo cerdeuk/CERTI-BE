@@ -1,5 +1,5 @@
 # baseimage -> 컨테이너의 내 애플리케이션이 돌아갈 수 있는 환경을 제공해주는 이미지
-FROM openjdk:17-jdk
+FROM eclipse-temurin:17-jdk
 
 RUN ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
