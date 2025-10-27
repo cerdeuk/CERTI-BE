@@ -16,7 +16,7 @@ import java.util.Map;
 public class JwtProvider {
 
     private static final String USER_ID = "userId";
-    private static final String USER_EMAIL = "userEmail";
+    private static final String SOCIAL_ID = "socialId";
 
     private final JwtProperties jwtProperties;
     private final SecretKey secretKey;
@@ -29,8 +29,8 @@ public class JwtProvider {
         return generateToken(Map.of(USER_ID, userId), jwtProperties.getRefreshTokenExpirationTime());
     }
 
-    public String generatePreSignupToken(String email) {
-        return generateToken(Map.of(USER_EMAIL, email), jwtProperties.getPreSignupTokenExpirationTime());
+    public String generatePreSignupToken(Long socialId){
+        return generateToken(Map.of(SOCIAL_ID, socialId), jwtProperties.getPreSignupTokenExpirationTime());
     }
 
     public String generateToken(Map<String, Object> claims, long expirationTime) {

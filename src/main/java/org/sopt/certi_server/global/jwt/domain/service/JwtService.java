@@ -28,8 +28,8 @@ public class JwtService {
         return JwtResponse.of(accessToken, refreshToken);
     }
 
-    public String generatePreSignupToken(String email) {
-        return jwtProvider.generatePreSignupToken(email);
+    public String generatePreSignupToken(Long socialId){
+        return jwtProvider.generatePreSignupToken(socialId);
     }
 
     /**
