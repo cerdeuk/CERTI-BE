@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.comment.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
@@ -27,6 +28,13 @@ public class CertificationComment {
     private String content;
 
     @Column(name = "like_count")
-    private Long likeCount;
+    private Long likeCount = 0L;
+
+    @Builder
+    private CertificationComment(User user, Certification certification, String content){
+        this.user = user;
+        this.certification = certification;
+        this.content = content;
+    }
 
 }
