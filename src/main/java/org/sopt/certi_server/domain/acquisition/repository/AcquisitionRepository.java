@@ -5,6 +5,7 @@ import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,4 +33,12 @@ public interface AcquisitionRepository extends JpaRepository<Acquisition, Long> 
     int countByUser(User user);
 
 	void deleteAllByUser(User user);
+
+    @Query("SELECT ac FROM Acquisition ac " +
+            "JOIN FETCH ac.user u " +
+            "WHERE ac.certification.id = :certificationId AND ac.user IN :users")
+    List<Acquisition> findByCertificationUserIn(
+            @Param("certificationId") Long certificationId,
+            @Param("users") List<User> users
+    );
 }
