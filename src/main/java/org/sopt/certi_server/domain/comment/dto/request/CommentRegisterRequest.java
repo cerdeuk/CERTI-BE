@@ -1,4 +1,4 @@
-package org.sopt.certi_server.domain.comment.dto;
+package org.sopt.certi_server.domain.comment.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

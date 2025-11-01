@@ -5,6 +5,7 @@ import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,4 +33,12 @@ public interface UserPreCertificationRepository extends JpaRepository<UserPreCer
     Optional<UserPreCertification> findByUserAndCertification(User user, Certification certification);
 
 	void deleteAllByUser(User user);
+
+    @Query("SELECT upc FROM UserPreCertification upc " +
+            "JOIN FETCH upc.user u " +
+            "WHERE upc.certification.id = :certificationId AND upc.user IN :users")
+    List<UserPreCertification> findByCertificationUserIn(
+            @Param("certificationId") Long certificationId,
+            @Param("users") List<User> users
+    );
 }
