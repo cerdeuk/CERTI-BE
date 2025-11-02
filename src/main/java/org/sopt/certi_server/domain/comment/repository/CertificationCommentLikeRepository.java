@@ -16,6 +16,12 @@ public interface CertificationCommentLikeRepository extends JpaRepository<Certif
     Optional<CertificationCommentLike> findByUserAndCertificationComment(User user, CertificationComment certificationComment);
 
     /**
+     * 유저와 댓글에 해당하는 좋아요가 있는지 boolean값을 반환
+     */
+    boolean existsByUserAndCertificationComment(User user, CertificationComment certificationComment);
+
+
+    /**
      * 부모 댓글이 삭제될 때, 참조하는 '좋아요' 기록을 모두 삭제 (FK 제약조건 위반 방지)
      */
     void deleteAllByCertificationComment(CertificationComment certificationComment);

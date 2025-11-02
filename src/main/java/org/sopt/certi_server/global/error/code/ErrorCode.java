@@ -45,6 +45,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "E404015", "존재하지 않는 리프레시 토큰입니다"),
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "E404016", "존재하지 않는 댓글입니다."),
     MISSING_HANDLER(HttpStatus.NOT_FOUND, "E404017", "URL을 찾을 수 없습니다."),
+    COMMENT_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "E404018", "이미 취소된 좋아요입니다."),
 
 
     /* 409 CONFLICT */

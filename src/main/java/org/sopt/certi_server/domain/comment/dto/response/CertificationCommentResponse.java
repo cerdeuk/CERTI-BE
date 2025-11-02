@@ -8,6 +8,7 @@ import java.util.List;
 public record CertificationCommentResponse(
     Long userId,
     String nickName,
+    String content,
     String userMajor,
     List<String> userJob,
     String state,
@@ -24,6 +25,7 @@ public record CertificationCommentResponse(
         return new CertificationCommentResponse(
             certificationComment.getUser().getId(),
             certificationComment.getUser().getNickname(),
+            certificationComment.getContent(),
             certificationComment.getUser().getMajor().getName(),
             userJob,
             state,
