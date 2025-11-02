@@ -16,6 +16,6 @@ public interface UserJobRepository extends JpaRepository<UserJob, Long> {
     @Query("SELECT uj FROM UserJob uj " +
             "JOIN FETCH uj.job j " +
             "JOIN FETCH uj.user u " +
-            "WHERE uj.user.id IN :users")
+            "WHERE uj.user IN :users")
     List<UserJob> findWithJobByUserIn(@Param("users") List<User> users);
 }

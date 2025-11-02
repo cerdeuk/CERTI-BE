@@ -45,17 +45,15 @@ public class CertificationCommentService {
      * 댓글 등록 메서드
      *
      * @param userId
-     * @param certificationId
      * @param request
      */
     @Transactional
     public void registerComment(
             final Long userId,
-            final Long certificationId,
             final CommentRegisterRequest request
     ){
         User user = userService.getUser(userId);
-        Certification certification = certificationService.getCertification(certificationId);
+        Certification certification = certificationService.getCertification(request.certificationId());
         CertificationComment newCertificationComment = CertificationComment.builder()
                 .user(user)
                 .certification(certification)
@@ -169,11 +167,13 @@ public class CertificationCommentService {
                 () -> new NotFoundException(ErrorCode.COMMENT_NOT_FOUND)
         );
 
-        CertificationCommentLike commentLike = certificationCommentLikeRepository.findByUserAndCertificationComment(user, comment)
-                .orElseGet(null);
+        boolean isExist = certificationCommentLikeRepository.existsByUserAndCertificationComment(user, comment);
 
-        if(Objects.nonNull(commentLike)){
+        if(isExist){
             // 좋아요 취소
+            CertificationCommentLike commentLike = certificationCommentLikeRepository.findByUserAndCertificationComment(user, comment).orElseThrow(
+                    () -> new NotFoundException(ErrorCode.COMMENT_LIKE_NOT_FOUND)
+            );
             certificationCommentLikeRepository.delete(commentLike);
             certificationCommentRepository.decrementLikeCount(commentId);
         }else{
