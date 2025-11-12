@@ -41,6 +41,7 @@ public class CertificationCommentController {
 
     @GetMapping
     public ResponseEntity<SuccessResponse<Page<CertificationCommentResponse>>> getCommentList(
+        @AuthenticationPrincipal Long userId,
         @RequestParam(value = "certificationId") Long certificationId,
         @PageableDefault(
                 page = 0,
@@ -49,7 +50,7 @@ public class CertificationCommentController {
                 direction = Sort.Direction.DESC
         ) final Pageable pageable
     ){
-        Page<CertificationCommentResponse> responsePage = certificationCommentService.getCommentsByCertification(certificationId, pageable);
+        Page<CertificationCommentResponse> responsePage = certificationCommentService.getCommentsByCertification(userId, certificationId, pageable);
 
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, responsePage));
     }
