@@ -10,16 +10,18 @@ public record CertificationCommentResponse(
     String nickName,
     String content,
     String userMajor,
-    List<String> userJob,
+    String userJob,
     String state,
     Long likeCount,
     LocalDateTime createdTime,
-    LocalDateTime lastModifiedTime
+    LocalDateTime lastModifiedTime,
+    boolean isLike
 ) {
     public static CertificationCommentResponse from(
             CertificationComment certificationComment,
             String state,
-            List<String> userJob
+            String userJob,
+            boolean isLike
     ) {
 
         return new CertificationCommentResponse(
@@ -31,7 +33,8 @@ public record CertificationCommentResponse(
             state,
             certificationComment.getLikeCount(),
             certificationComment.getCreatedTime(),
-            certificationComment.getLastModifiedTime()
+            certificationComment.getLastModifiedTime(),
+            isLike
         );
     }
 }

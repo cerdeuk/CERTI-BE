@@ -54,6 +54,17 @@ public class CertificationCommentService {
     ){
         User user = userService.getUser(userId);
         Certification certification = certificationService.getCertification(request.certificationId());
+
+        boolean acquisitionExists = acquisitionRepository.existsByUserAndCertification(user, certification);
+        boolean userPreExists = userPreCertificationRepository.existsByUserAndCertification(user, certification);
+
+
+        // 취득 예정, 취득 상태가 아닌 사용자는 댓글을 달 수 없음
+        if(!acquisitionExists && !userPreExists){
+            throw new UnauthorizedException(ErrorCode.UNAUTHORIZED);
+        }
+
+
         CertificationComment newCertificationComment = CertificationComment.builder()
                 .user(user)
                 .certification(certification)
@@ -72,6 +83,7 @@ public class CertificationCommentService {
      * @return
      */
     public Page<CertificationCommentResponse> getCommentsByCertification(
+            final Long userId,
             final Long certificationId,
             final Pageable pageble
     ){
@@ -91,6 +103,16 @@ public class CertificationCommentService {
 
         // 사용자 취득 완료 정보 조회
         List<Acquisition> acquisitions = acquisitionRepository.findByCertificationUserIn(certificationId, users);
+
+        // 조회 API 호출자가 해당 댓글에 좋아요 눌렀는지 여부
+        User caller = userService.getUser(userId);
+        Certification certification = certificationService.getCertification(certificationId);
+
+        List<Long> likeCommentIds = certificationCommentLikeRepository.findLikedCommentIdsByCertificationAndUser(caller, certification);
+
+        // O(n) 조회를 위해 Set으로 변환
+        Set<Long> likeCommentIdsSet = new HashSet<>(likeCommentIds);
+
 
         // DTO 조립을 위한 Map 생성 (O(1) 조회를 위함)
 
@@ -116,8 +138,9 @@ public class CertificationCommentService {
         // [5단계] DTO 최종 조립
         return commentPage.map(comment -> {
             User user = comment.getUser();
+            boolean isLike = likeCommentIdsSet.contains(comment.getId());
             if (user == null) { // (알수없음) 탈퇴 사용자 처리
-                return CertificationCommentResponse.from(comment, null, null);
+                return CertificationCommentResponse.from(comment, null, null, isLike);
             }
 
             // 4-1. Job Map에서 조회
@@ -126,7 +149,7 @@ public class CertificationCommentService {
             // 4-2. State Map에서 조회
             String state = userStateMap.get(user.getId()); // 없으면 null
 
-            return CertificationCommentResponse.from(comment, state, jobNames);
+            return CertificationCommentResponse.from(comment, state, jobNames.get(0), isLike);
         });
     }
 

@@ -135,6 +135,14 @@ class CertificationCommentServiceTest {
             // Given
             Long userId = testUser.getId();
             Long certificationId = testCertification.getId();
+
+
+            // 사용자는 해당 자격증에 취득을 한 상태
+            acquisitionRepository.save(Acquisition.builder()
+                    .user(testUser)
+                    .certification(testCertification)
+                    .build());
+
             CommentRegisterRequest request = new CommentRegisterRequest("새 댓글 내용", certificationId);
 
             // When
@@ -268,6 +276,7 @@ class CertificationCommentServiceTest {
         @DisplayName("[성공] N+1 없이 직무, 취득 상태를 모두 포함하여 조회한다.")
         void getComments_Success_WithAllData() {
             // Given
+            Long userId = testUser.getId();
             Long certificationId = testCertification.getId();
             Pageable pageable = PageRequest.of(0, 10);
 
@@ -280,8 +289,14 @@ class CertificationCommentServiceTest {
             // 3. 취득 완료 정보 DB에 저장
             acquisitionRepository.save(Acquisition.builder().user(testUser).certification(testCertification).build());
 
+            // 4. 좋아요 마킹
+            certificationCommentLikeRepository.save(CertificationCommentLike.builder()
+                    .user(testUser)
+                    .certificationComment(testComment)
+                    .build());
+
             // When
-            Page<CertificationCommentResponse> responsePage = certificationCommentService.getCommentsByCertification(certificationId, pageable);
+            Page<CertificationCommentResponse> responsePage = certificationCommentService.getCommentsByCertification(userId, certificationId, pageable);
 
             // Then
             // 1. DTO가 올바르게 조립되었는지 검증
@@ -289,7 +304,7 @@ class CertificationCommentServiceTest {
             CertificationCommentResponse responseDto = responsePage.getContent().get(0);
 
             // 2. Map<Long, List<String>> userJobMap 검증
-            assertThat(responseDto.userJob()).containsExactly("IT/인터넷");
+            assertThat(responseDto.userJob()).isEqualTo("IT/인터넷");
 
             // 3. Map<Long, String> userStateMap 검증
             // (PreCert를 저장 안 했으므로 "취득 완료"만 나옴)
@@ -298,6 +313,9 @@ class CertificationCommentServiceTest {
             // 4. 기본 정보 검증
             assertThat(responseDto.nickName()).isEqualTo(testUser.getNickname());
             assertThat(responseDto.content()).isEqualTo(testComment.getContent());
+
+            // 5. 좋아요 마킹 되어있는지 검증
+            assertThat(responseDto.isLike()).isTrue();
         }
     }
 }
