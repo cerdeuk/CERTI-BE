@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record CertificationCommentResponse(
+    Long commentId,
     Long userId,
     String nickName,
     String content,
@@ -25,6 +26,7 @@ public record CertificationCommentResponse(
     ) {
 
         return new CertificationCommentResponse(
+            certificationComment.getId(),
             certificationComment.getUser().getId(),
             certificationComment.getUser().getNickname(),
             certificationComment.getContent(),

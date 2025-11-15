@@ -5,6 +5,7 @@ import org.sopt.certi_server.domain.comment.dto.request.CommentRegisterRequest;
 import org.sopt.certi_server.domain.comment.dto.response.CertificationCommentResponse;
 import org.sopt.certi_server.domain.comment.service.CertificationCommentService;
 import org.sopt.certi_server.global.error.code.SuccessCode;
+import org.sopt.certi_server.global.error.dto.PageResponse;
 import org.sopt.certi_server.global.error.dto.SuccessResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +41,7 @@ public class CertificationCommentController {
     }
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<Page<CertificationCommentResponse>>> getCommentList(
+    public ResponseEntity<SuccessResponse<PageResponse<CertificationCommentResponse>>> getCommentList(
         @AuthenticationPrincipal Long userId,
         @RequestParam(value = "certificationId") Long certificationId,
         @PageableDefault(
@@ -52,7 +53,9 @@ public class CertificationCommentController {
     ){
         Page<CertificationCommentResponse> responsePage = certificationCommentService.getCommentsByCertification(userId, certificationId, pageable);
 
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, responsePage));
+        PageResponse<CertificationCommentResponse> responsePageDto = PageResponse.from(responsePage);
+
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, responsePageDto));
     }
 
     @PostMapping("/{commentId}/like")
