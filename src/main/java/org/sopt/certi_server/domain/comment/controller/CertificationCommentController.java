@@ -1,5 +1,7 @@
 package org.sopt.certi_server.domain.comment.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.comment.dto.request.CommentRegisterRequest;
 import org.sopt.certi_server.domain.comment.dto.response.CertificationCommentResponse;
@@ -18,11 +20,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/comments")
+@Tag(name = "CertificationComment 컨트롤러", description = "자격증 댓글과 관련된 API를 처리합니다.")
 public class CertificationCommentController {
 
     private final CertificationCommentService certificationCommentService;
 
     @PostMapping
+    @Operation(summary = "댓글 등록 API", description = "댓글을 등록합니다.")
     public ResponseEntity<SuccessResponse<Void>> registerCertificationComment(
             @RequestBody CommentRegisterRequest commentRegisterRequest,
             @AuthenticationPrincipal Long userId
@@ -32,6 +36,7 @@ public class CertificationCommentController {
     }
 
     @DeleteMapping(value = "/{commentId}")
+    @Operation(summary = "댓글 삭제 API", description = "댓글을 삭제합니다.")
     public ResponseEntity<SuccessResponse<Void>> deleteCertificationComment(
             @AuthenticationPrincipal Long userId,
             @PathVariable(value = "commentId") Long commentId
@@ -41,6 +46,7 @@ public class CertificationCommentController {
     }
 
     @GetMapping
+    @Operation(summary = "댓글 조회 API", description = "해당 자격증의 댓글을 조회합니다.")
     public ResponseEntity<SuccessResponse<PageResponse<CertificationCommentResponse>>> getCommentList(
         @AuthenticationPrincipal Long userId,
         @RequestParam(value = "certificationId") Long certificationId,
@@ -59,6 +65,7 @@ public class CertificationCommentController {
     }
 
     @PostMapping("/{commentId}/like")
+    @Operation(summary = "댓글 좋아요/좋아요 취소 API", description = "댓글을 좋아요/좋아요 취소합니다.")
     public ResponseEntity<SuccessResponse<Void>> toggleCommentLike(
             @AuthenticationPrincipal Long userId,
             @PathVariable(value = "commentId") Long commentId
