@@ -22,7 +22,7 @@ public record CertificationScoreDto(
                 certification.getName(),
                 certification.getCertificationType().getKoreanName(),
                 certification.getTestType().getType(),
-                certification.getTags(),
+                certification.getTags().stream().toList(),
                 recommendationScore,
                 isFavorite
         );

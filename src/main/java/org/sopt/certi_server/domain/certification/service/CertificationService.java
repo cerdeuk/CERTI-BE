@@ -64,6 +64,10 @@ public class CertificationService {
     }
 
 
+//    @Cacheable(
+//            value = "certification_recommend",
+//            key = "#userId"
+//    )
     public CertificationRecommendationListResponse recommendCertifications(Long userId){
         User user = userService.getUser(userId);
         List<Major> userMajors = majorRepository.findAllByUser(user);
