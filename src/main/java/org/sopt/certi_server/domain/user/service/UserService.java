@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.activity.repository.ActivityRepository;
+import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
+import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
@@ -16,6 +18,8 @@ import org.sopt.certi_server.domain.user.repository.CareerRepository;
 import org.sopt.certi_server.domain.user.repository.UserJobRepository;
 import org.sopt.certi_server.domain.user.repository.UserMajorImplRepository;
 import org.sopt.certi_server.domain.user.repository.UserRepository;
+import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
+import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,8 @@ public class UserService {
     private final UserJobRepository userJobRepository;
     private final JobRepository jobRepository;
     private final AcquisitionRepository acquisitionRepository;
+    private final UserPreCertificationRepository userPreCertificationRepository;
+    private final FavoriteRepository favoriteRepository;
     private final CareerRepository careerRepository;
     private final ActivityRepository activityRepository;
 
@@ -103,6 +109,24 @@ public class UserService {
         }
 
         return 96;
+    }
+
+    public GetMyPageInfoResponse getMyPageInfoResponse(final Long userId){
+
+
+        // user 정보(닉네임, 이메일)
+        User user = getUser(userId);
+
+        // 직무 정보
+        GetJobResponse jobResponse = getUserJob(userId);
+
+        // 취득 예정, 취득, 즐겨찾기 자격증 개수
+        int upCount = userPreCertificationRepository.countByUser(user);
+        int acCount = acquisitionRepository.countByUser(user);
+        int fCount = favoriteRepository.countByUser(user);
+
+        return GetMyPageInfoResponse.from(user, jobResponse, upCount, acCount, fCount);
+
     }
 
 }
