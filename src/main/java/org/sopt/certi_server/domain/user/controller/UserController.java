@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.user.dto.request.UpdateJobRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
+import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
 import org.sopt.certi_server.domain.user.service.UserService;
 import org.sopt.certi_server.global.error.code.SuccessCode;
@@ -30,6 +31,16 @@ public class UserController {
         log.info("getHomeUser: userId={}", userId);
         GetUserResponse getUserResponse = userService.getHomeUser(userId);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, getUserResponse));
+    }
+
+    @GetMapping(value = "/mypage")
+    @Operation(summary = "마이 페이지 홈 API", description = "마이페이지 홈 화면을 조회합니다.")
+    public ResponseEntity<SuccessResponse> getMyPageHomeInfo(
+            @AuthenticationPrincipal Long userId
+    ){
+
+        GetMyPageInfoResponse getMyPageInfoResponse = userService.getMyPageInfoResponse(userId);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, getMyPageInfoResponse));
     }
 
     @GetMapping("/job")

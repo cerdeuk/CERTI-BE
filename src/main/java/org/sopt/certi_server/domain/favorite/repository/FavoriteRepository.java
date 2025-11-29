@@ -33,6 +33,8 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
 	void deleteAllByUser(User user);
 
+    int countByUser(User user);
+
     @Query("""
         select distinct c
         from Favorite f
