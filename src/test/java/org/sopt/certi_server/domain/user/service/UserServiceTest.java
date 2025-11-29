@@ -3,7 +3,10 @@ package org.sopt.certi_server.domain.user.service;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+<<<<<<< HEAD
 import org.junit.jupiter.api.Nested;
+=======
+>>>>>>> 798bacb (#170 [feat] 마이페이지 홈화면 API 구현)
 import org.junit.jupiter.api.Test;
 import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
 import org.sopt.certi_server.domain.acquisition.entity.enums.CardType;
@@ -17,11 +20,10 @@ import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
+import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
-import org.sopt.certi_server.domain.user.dto.response.NicknameValidationResponse;
 import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
-import org.sopt.certi_server.domain.user.dto.type.NicknameValidationType;
 import org.sopt.certi_server.domain.user.entity.University;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
