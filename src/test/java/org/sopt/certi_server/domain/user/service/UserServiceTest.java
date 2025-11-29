@@ -3,10 +3,7 @@ package org.sopt.certi_server.domain.user.service;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-<<<<<<< HEAD
 import org.junit.jupiter.api.Nested;
-=======
->>>>>>> 798bacb (#170 [feat] 마이페이지 홈화면 API 구현)
 import org.junit.jupiter.api.Test;
 import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
 import org.sopt.certi_server.domain.acquisition.entity.enums.CardType;
@@ -20,7 +17,6 @@ import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
-import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
 import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
@@ -36,8 +32,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -106,7 +100,7 @@ class UserServiceTest {
     void get_my_page_home(){
         GetMyPageInfoResponse myPageInfoResponse = userService.getMyPageInfoResponse(testUser.getId());
 
-        Assertions.assertThat(myPageInfoResponse.name()).isEqualTo("이성민");
+        Assertions.assertThat(myPageInfoResponse.nickname()).isEqualTo("이성민");
         Assertions.assertThat(myPageInfoResponse.email()).isEqualTo("lee@gmail.com");
         Assertions.assertThat(myPageInfoResponse.jobResponse().jobList()).contains("IT/인터넷");
         Assertions.assertThat(myPageInfoResponse.acCount()).isEqualTo(1);
@@ -208,6 +202,7 @@ class UserServiceTest {
             Assertions.assertThat(response.reason()).isEqualTo(NicknameValidationType.DUPLICATE.getMessage());
         }
     }
+
 
 
 }
