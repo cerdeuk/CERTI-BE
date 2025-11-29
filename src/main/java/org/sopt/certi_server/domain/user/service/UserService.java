@@ -12,6 +12,7 @@ import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
+import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
 import org.sopt.certi_server.domain.user.repository.CareerRepository;
@@ -127,6 +128,11 @@ public class UserService {
 
         return GetMyPageInfoResponse.from(user, jobResponse, upCount, acCount, fCount);
 
+    }
+
+    public PersonalInformationResponse getPersonalInformationResponse(final Long userId){
+        User user = getUser(userId);
+        return PersonalInformationResponse.from(user);
     }
 
 }
