@@ -8,6 +8,7 @@ import org.sopt.certi_server.domain.user.dto.request.UpdateJobRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
+import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
 import org.sopt.certi_server.domain.user.service.UserService;
 import org.sopt.certi_server.global.error.code.SuccessCode;
 import org.sopt.certi_server.global.error.dto.SuccessResponse;
@@ -35,12 +36,21 @@ public class UserController {
 
     @GetMapping(value = "/mypage")
     @Operation(summary = "마이 페이지 홈 API", description = "마이페이지 홈 화면을 조회합니다.")
-    public ResponseEntity<SuccessResponse> getMyPageHomeInfo(
+    public ResponseEntity<SuccessResponse<GetMyPageInfoResponse>> getMyPageHomeInfo(
             @AuthenticationPrincipal Long userId
     ){
 
         GetMyPageInfoResponse getMyPageInfoResponse = userService.getMyPageInfoResponse(userId);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, getMyPageInfoResponse));
+    }
+
+    @GetMapping(value = "/pinfo")
+    @Operation(summary = "개인정보 수정 페이지 조회 API", description = "개인정보 수정 페이지를 조회합니다.")
+    public ResponseEntity<SuccessResponse<PersonalInformationResponse>> getPersonalInformation(
+            @AuthenticationPrincipal Long userId
+    ){
+        PersonalInformationResponse pInformationResponse = userService.getPersonalInformationResponse(userId);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, pInformationResponse));
     }
 
     @GetMapping("/job")
