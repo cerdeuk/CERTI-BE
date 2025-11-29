@@ -11,6 +11,8 @@ import org.sopt.certi_server.domain.user.entity.enums.SocialType;
 import org.sopt.certi_server.domain.user.entity.enums.TrackType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -40,6 +42,9 @@ public class User extends BaseTimeEntity {
     @Column(name = "nickname", nullable = false)
     private String nickname;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "email")
     private String email;
 
@@ -52,6 +57,9 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "social_id")
     private Long socialId;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
 
     public User(String nickname, String email, String profileImageUrl) {
