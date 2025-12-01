@@ -108,7 +108,6 @@ class UserServiceTest {
         Assertions.assertThat(myPageInfoResponse.fCount()).isEqualTo(0);
     }
 
-
     @Nested
     @DisplayName("개인 정보 수정")
     class UpdateUserInformation{

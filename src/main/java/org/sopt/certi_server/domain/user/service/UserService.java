@@ -43,8 +43,6 @@ public class UserService {
     private final FavoriteRepository favoriteRepository;
     private final CareerRepository careerRepository;
     private final ActivityRepository activityRepository;
-    private final ProfanityFilter profanityFilter;
-    private final UniversityRepository universityRepository;
 
     public User getUser(final Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
