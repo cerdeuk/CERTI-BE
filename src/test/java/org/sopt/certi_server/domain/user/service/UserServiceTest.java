@@ -3,6 +3,7 @@ package org.sopt.certi_server.domain.user.service;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
 import org.sopt.certi_server.domain.acquisition.entity.enums.CardType;
@@ -16,7 +17,9 @@ import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
+import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
+import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
 import org.sopt.certi_server.domain.user.entity.University;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
@@ -27,6 +30,8 @@ import org.sopt.certi_server.domain.userprecertification.repository.UserPreCerti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,6 +108,37 @@ class UserServiceTest {
         Assertions.assertThat(myPageInfoResponse.acCount()).isEqualTo(1);
         Assertions.assertThat(myPageInfoResponse.upCount()).isEqualTo(0);
         Assertions.assertThat(myPageInfoResponse.fCount()).isEqualTo(0);
+    }
+
+
+    @Nested
+    @DisplayName("개인 정보 수정")
+    class UpdateUserInformation{
+
+        @Test
+        @DisplayName("[성공] 개인정보 수정을 성공한다")
+        void update_user_information(){
+            // Given
+            UpdateUserRequest request = new UpdateUserRequest(
+                    "이성민",
+                    "leesung2925@gmail.com",
+                    "이뿡빵",
+                    LocalDate.of(2000, 2, 29)
+            );
+
+            // When
+            userService.updateUserInformation(testUser.getId(), request);
+
+            // Then
+            PersonalInformationResponse personalInformationResponse = userService.getPersonalInformationResponse(testUser.getId());
+
+            Assertions.assertThat(personalInformationResponse.name()).isEqualTo("이성민");
+            Assertions.assertThat(personalInformationResponse.email()).isEqualTo("leesung2925@gmail.com");
+            Assertions.assertThat(personalInformationResponse.birthDate()).isEqualTo(LocalDate.of(2000, 2, 29));
+            Assertions.assertThat(personalInformationResponse.nickName()).isEqualTo("이뿡빵");
+        }
+
+
     }
 
 
