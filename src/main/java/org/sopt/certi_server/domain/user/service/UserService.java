@@ -9,6 +9,7 @@ import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
+import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
@@ -135,4 +136,14 @@ public class UserService {
         return PersonalInformationResponse.from(user);
     }
 
+    @Transactional
+    public void updateUserInformation(final Long userId, final UpdateUserRequest request) {
+        User user = getUser(userId);
+        user.changeUser(
+                request.name(),
+                request.nickName(),
+                request.email(),
+                request.birthDate()
+        );
+    }
 }

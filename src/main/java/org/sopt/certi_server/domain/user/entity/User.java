@@ -83,9 +83,11 @@ public class User extends BaseTimeEntity {
         this.socialId = socialId;
     }
 
-    public static User createUser(String nickname, String email, String profileImageUrl) {
-        return new User(nickname, email, profileImageUrl);
+    public void changeUser(String name, String nickname, String email, LocalDate birthDate){
+        this.name = name;
+        this.nickname = nickname;
+        this.email = email;
+        this.birthDate = birthDate;
     }
-
 
 }

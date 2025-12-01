@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.request.UpdateJobRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
@@ -51,6 +52,16 @@ public class UserController {
     ){
         PersonalInformationResponse pInformationResponse = userService.getPersonalInformationResponse(userId);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, pInformationResponse));
+    }
+
+    @PutMapping(value = "/pinfo")
+    @Operation(summary = "개인정보 수정 API", description = "개인정보를 수정합니다.")
+    public ResponseEntity<SuccessResponse<Void>> putPersonalInformation(
+            @AuthenticationPrincipal Long userId,
+            @RequestBody UpdateUserRequest request
+    ){
+        userService.updateUserInformation(userId, request);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
     }
 
     @GetMapping("/job")
