@@ -19,7 +19,9 @@ import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
+import org.sopt.certi_server.domain.user.dto.response.NicknameValidationResponse;
 import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
+import org.sopt.certi_server.domain.user.dto.type.NicknameValidationType;
 import org.sopt.certi_server.domain.user.entity.University;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
@@ -139,6 +141,70 @@ class UserServiceTest {
         }
 
 
+    }
+
+    @Nested
+    @DisplayName("닉네임 검사")
+    class ValidateNickname{
+        @Test
+        @DisplayName("[성공] 닉네임에 욕설이 포함되어 있다.")
+        void nickname_contains_profanity(){
+
+            // Given
+            String nickname = "시발이성민";
+
+            // When
+            NicknameValidationResponse response = userService.validateNickname(nickname);
+
+            // Then
+            Assertions.assertThat(response.isAvailable()).isFalse();
+            Assertions.assertThat(response.reason()).isEqualTo(NicknameValidationType.PROFANITY.getMessage());
+        }
+
+        @Test
+        @DisplayName("[성공] 닉네임이 공백으로 이루어져있다.")
+        void nickname_only_blank(){
+
+            // Given
+            String nickname = "   ";
+
+            // When
+            NicknameValidationResponse response = userService.validateNickname(nickname);
+
+            // Then
+            Assertions.assertThat(response.isAvailable()).isFalse();
+            Assertions.assertThat(response.reason()).isEqualTo(NicknameValidationType.EMPTY.getMessage());
+        }
+
+        @Test
+        @DisplayName("[성공] 닉네임의 길이가 너무 길다")
+        void nickname_too_long(){
+
+            // Given
+            String nickname = "안녕하세요저는이성민입니다";
+
+            // When
+            NicknameValidationResponse response = userService.validateNickname(nickname);
+
+            // Then
+            Assertions.assertThat(response.isAvailable()).isFalse();
+            Assertions.assertThat(response.reason()).isEqualTo(NicknameValidationType.TOO_LONG.getMessage());
+        }
+
+        @Test
+        @DisplayName("[성공] 중복되는 닉네임이 존재한다")
+        void nickname_is_duplicated(){
+
+            // Given
+            String nickname = "이성민";
+
+            // When
+            NicknameValidationResponse response = userService.validateNickname(nickname);
+
+            // Then
+            Assertions.assertThat(response.isAvailable()).isFalse();
+            Assertions.assertThat(response.reason()).isEqualTo(NicknameValidationType.DUPLICATE.getMessage());
+        }
     }
 
 
