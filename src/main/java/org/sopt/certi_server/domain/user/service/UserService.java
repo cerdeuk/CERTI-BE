@@ -24,6 +24,7 @@ import org.sopt.certi_server.domain.user.repository.UserRepository;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
+import org.sopt.certi_server.global.valid.ProfanityFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,7 @@ public class UserService {
     private final FavoriteRepository favoriteRepository;
     private final CareerRepository careerRepository;
     private final ActivityRepository activityRepository;
+    private final ProfanityFilter profanityFilter;
 
     public User getUser(final Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
