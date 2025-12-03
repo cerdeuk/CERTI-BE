@@ -39,7 +39,7 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name = "major_impl_id")
     private MajorImpl major;
 
-    @Column(name = "nickname", nullable = false)
+    @Column(name = "nickname", nullable = false, unique = true)
     private String nickname;
 
     @Column(name = "name")
@@ -69,7 +69,7 @@ public class User extends BaseTimeEntity {
     }
 
     @Builder
-    public User(Long id, University university, String track, String grade, MajorImpl major, String nickname, String email,
+    public User(Long id, University university, String track, String grade, MajorImpl major, String nickname, String name, String email,
                 String profileImageUrl, SocialType socialType, Long socialId) {
         this.id = id;
         this.university = university;
@@ -77,6 +77,7 @@ public class User extends BaseTimeEntity {
         this.grade = Grade.from(grade);
         this.major = major;
         this.nickname = nickname;
+        this.name = name;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
         this.socialType = socialType;

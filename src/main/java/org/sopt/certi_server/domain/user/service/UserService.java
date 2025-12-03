@@ -10,20 +10,17 @@ import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
-import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
-import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
-import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
-import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
+import org.sopt.certi_server.domain.user.dto.response.*;
+import org.sopt.certi_server.domain.user.dto.type.NicknameValidationType;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
 import org.sopt.certi_server.domain.user.repository.CareerRepository;
 import org.sopt.certi_server.domain.user.repository.UserJobRepository;
-import org.sopt.certi_server.domain.user.repository.UserMajorImplRepository;
 import org.sopt.certi_server.domain.user.repository.UserRepository;
-import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
+import org.sopt.certi_server.global.valid.ProfanityFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +33,6 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserMajorImplRepository userMajorImplRepository;
     private final MajorImplRepository majorImplRepository;
     private final UserJobRepository userJobRepository;
     private final JobRepository jobRepository;
@@ -45,6 +41,7 @@ public class UserService {
     private final FavoriteRepository favoriteRepository;
     private final CareerRepository careerRepository;
     private final ActivityRepository activityRepository;
+    private final ProfanityFilter profanityFilter;
 
     public User getUser(final Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
@@ -144,6 +141,41 @@ public class UserService {
                 request.nickName(),
                 request.email(),
                 request.birthDate()
+        );
+    }
+
+    public NicknameValidationResponse validateNickname(String nickname) {
+
+        // 공백 검사
+        if (nickname.isEmpty() || nickname.isBlank()){
+            return NicknameValidationResponse.from(
+                    NicknameValidationType.EMPTY
+            );
+        }
+
+        // 길이 검사
+        if(nickname.length() > 7){
+            return NicknameValidationResponse.from(
+                   NicknameValidationType.TOO_LONG
+            );
+        }
+
+        // 중복 검사
+        if (userRepository.existsByNickname(nickname)){
+            return NicknameValidationResponse.from(
+                    NicknameValidationType.DUPLICATE
+            );
+        }
+
+        // 욕설 검사
+        if (profanityFilter.containsProfanity(nickname)){
+            return NicknameValidationResponse.from(
+                    NicknameValidationType.PROFANITY
+            );
+        }
+
+        return NicknameValidationResponse.from(
+                NicknameValidationType.VALID
         );
     }
 }
