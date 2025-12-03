@@ -17,11 +17,13 @@ import org.sopt.certi_server.domain.user.dto.response.PersonalInformationRespons
 import org.sopt.certi_server.domain.user.entity.University;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
-import org.sopt.certi_server.domain.user.repository.*;
+import org.sopt.certi_server.domain.user.repository.CareerRepository;
+import org.sopt.certi_server.domain.user.repository.UserJobRepository;
+import org.sopt.certi_server.domain.user.repository.UserMajorImplRepository;
+import org.sopt.certi_server.domain.user.repository.UserRepository;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
-import org.sopt.certi_server.global.valid.ProfanityFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

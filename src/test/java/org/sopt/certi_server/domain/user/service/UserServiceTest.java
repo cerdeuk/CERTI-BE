@@ -33,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 class UserServiceTest {
@@ -107,6 +109,7 @@ class UserServiceTest {
         Assertions.assertThat(myPageInfoResponse.upCount()).isEqualTo(0);
         Assertions.assertThat(myPageInfoResponse.fCount()).isEqualTo(0);
     }
+
 
     @Nested
     @DisplayName("개인 정보 수정")

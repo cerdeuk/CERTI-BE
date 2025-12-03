@@ -2,13 +2,10 @@ package org.sopt.certi_server.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.request.UpdateJobRequest;
-import org.sopt.certi_server.domain.user.dto.response.*;
+import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
@@ -40,7 +37,7 @@ public class UserController {
 
     @GetMapping(value = "/mypage")
     @Operation(summary = "마이 페이지 홈 API", description = "마이페이지 홈 화면을 조회합니다.")
-    public ResponseEntity<SuccessResponse> getMyPageHomeInfo(
+    public ResponseEntity<SuccessResponse<GetMyPageInfoResponse>> getMyPageHomeInfo(
             @AuthenticationPrincipal Long userId
     ){
 

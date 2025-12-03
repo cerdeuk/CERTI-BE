@@ -10,7 +10,6 @@ import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.userprecertification.entity.enums.IconType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
