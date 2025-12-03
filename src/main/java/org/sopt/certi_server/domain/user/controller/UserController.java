@@ -2,14 +2,13 @@ package org.sopt.certi_server.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.request.UpdateJobRequest;
-import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
-import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
-import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
-import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
+import org.sopt.certi_server.domain.user.dto.response.*;
 import org.sopt.certi_server.domain.user.service.UserService;
 import org.sopt.certi_server.global.error.code.SuccessCode;
 import org.sopt.certi_server.global.error.dto.SuccessResponse;
@@ -81,5 +80,14 @@ public class UserController {
     ) {
         userService.updateUserJob(userId, updateJobRequest.jobNameList());
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
+    }
+
+    @GetMapping(value = "/validation")
+    @Operation(summary = "닉네임 검증 API", description = "닉네임이 중복이거나 욕설이 포함되어 있는지 검사합니다.")
+    public ResponseEntity<SuccessResponse<NicknameValidationResponse>> validateNickname(
+            @RequestParam(value = "keyword") String nickname
+    ){
+        NicknameValidationResponse response = userService.validateNickname(nickname);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, response));
     }
 }

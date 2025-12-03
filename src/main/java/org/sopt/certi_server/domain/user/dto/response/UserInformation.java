@@ -5,7 +5,7 @@ import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoUserInformation
 
 public record UserInformation(
         String email,
-        String nickname,
+        String name,
         String profileImageUrl
 ) {
     public static UserInformation from(
@@ -13,7 +13,7 @@ public record UserInformation(
     ) {
         return new UserInformation(
                 information.kakaoAccount().email(),
-                information.kakaoAccount().profile().nickname(),
+                information.kakaoAccount().profile().name(),
                 information.kakaoAccount().profile().profileImageUrl()
         );
     }

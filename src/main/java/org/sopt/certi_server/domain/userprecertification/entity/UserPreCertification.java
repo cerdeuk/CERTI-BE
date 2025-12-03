@@ -10,6 +10,8 @@ import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.userprecertification.entity.enums.IconType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,6 +39,10 @@ public class UserPreCertification extends BaseTimeEntity {
 
     @Enumerated(value = EnumType.STRING)
     private IconType iconType;
+
+    @Column(name = "test_date", nullable = false)
+    private LocalDate testDate;
+
 
     @Builder
     public UserPreCertification(User user, Certification certification, IconType iconType) {
