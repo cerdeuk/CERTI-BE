@@ -136,6 +136,12 @@ public class UserService {
     @Transactional
     public void updateUserInformation(final Long userId, final UpdateUserRequest request) {
         User user = getUser(userId);
+
+        NicknameValidationType type = validateKeyword(request.nickName());
+        if(type != NicknameValidationType.VALID){
+            throw new IllegalArgumentException("올바르지 않은 닉네임 형식입니다.");
+        }
+
         user.changeUser(
                 request.name(),
                 request.nickName(),
@@ -146,36 +152,35 @@ public class UserService {
 
     public NicknameValidationResponse validateNickname(String nickname) {
 
+        NicknameValidationType type = validateKeyword(nickname);
+        return NicknameValidationResponse.from(type);
+    }
+
+    public NicknameValidationType validateKeyword(String keyword) {
+
         // 공백 검사
-        if (nickname.isEmpty() || nickname.isBlank()){
-            return NicknameValidationResponse.from(
-                    NicknameValidationType.EMPTY
-            );
+        if (keyword.isEmpty() || keyword.isBlank()){
+                return NicknameValidationType.EMPTY;
         }
 
         // 길이 검사
-        if(nickname.length() > 7){
-            return NicknameValidationResponse.from(
-                   NicknameValidationType.TOO_LONG
-            );
+        if(keyword.length() > 7){
+                return NicknameValidationType.TOO_LONG;
         }
 
         // 중복 검사
-        if (userRepository.existsByNickname(nickname)){
-            return NicknameValidationResponse.from(
-                    NicknameValidationType.DUPLICATE
-            );
+        if (userRepository.existsByNickname(keyword)){
+                return NicknameValidationType.DUPLICATE;
         }
 
         // 욕설 검사
-        if (profanityFilter.containsProfanity(nickname)){
-            return NicknameValidationResponse.from(
-                    NicknameValidationType.PROFANITY
-            );
+        if (profanityFilter.containsProfanity(keyword)){
+                return NicknameValidationType.PROFANITY;
+
         }
 
-        return NicknameValidationResponse.from(
-                NicknameValidationType.VALID
-        );
+        return NicknameValidationType.VALID;
     }
+
+
 }
