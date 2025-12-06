@@ -11,6 +11,7 @@ import org.sopt.certi_server.domain.userprecertification.entity.enums.IconType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -41,21 +42,32 @@ public class UserPreCertification extends BaseTimeEntity {
     private IconType iconType;
 
     @Column(name = "test_date", nullable = false)
-    private LocalDate testDate;
+    private LocalDateTime testDate;
 
+    @Embedded
+    private Location location;
 
     @Builder
-    public UserPreCertification(User user, Certification certification, IconType iconType) {
+    public UserPreCertification(User user, Certification certification, IconType iconType, Location location, LocalDateTime testDate) {
         this.user = user;
         this.certification = certification;
         this.iconType = iconType;
+        this.location = location;
+        this.testDate = testDate;
     }
 
-    public static UserPreCertification create(User user, Certification certification, IconType iconType) {
+    public static UserPreCertification create(User user, Certification certification, IconType iconType, Location location, LocalDateTime testDate) {
         return UserPreCertification.builder()
                 .user(user)
                 .certification(certification)
                 .iconType(iconType)
+                .location(location)
+                .testDate(testDate)
                 .build();
+    }
+
+    public void changeUserPreCertification(Location location, LocalDateTime testDate){
+        this.location = location;
+        this.testDate = testDate;
     }
 }

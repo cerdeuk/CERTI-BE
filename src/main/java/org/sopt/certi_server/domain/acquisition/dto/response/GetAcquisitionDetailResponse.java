@@ -20,7 +20,7 @@ public record GetAcquisitionDetailResponse(
         List<String> tags,
         String description,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
-        LocalDate createdAt
+        LocalDate acquisitionDate
 ) {
     public static GetAcquisitionDetailResponse from(Acquisition acquisition) {
         return GetAcquisitionDetailResponse.builder()
@@ -29,7 +29,7 @@ public record GetAcquisitionDetailResponse(
                 .cardBackImageUrl(acquisition.getCardType().getCardBackImageUrl())
                 .index(acquisition.getCardType().getIndex())
                 .name(acquisition.getCertification().getName())
-                .createdAt(acquisition.getCreatedTime().toLocalDate())
+                .acquisitionDate(acquisition.getAcquisitionDate())
                 .description(acquisition.getCertification().getDescription())
                 .tags(acquisition.getCertification().getTags())
                 .build();
