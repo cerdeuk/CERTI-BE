@@ -37,7 +37,6 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserMajorImplRepository userMajorImplRepository;
     private final MajorImplRepository majorImplRepository;
     private final UserJobRepository userJobRepository;
     private final JobRepository jobRepository;
