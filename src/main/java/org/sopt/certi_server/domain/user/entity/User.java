@@ -91,4 +91,7 @@ public class User extends BaseTimeEntity {
         this.birthDate = birthDate;
     }
 
+    public void changeUniversity(University university) {
+        this.university = university;
+    }
 }

@@ -90,4 +90,14 @@ public class UserController {
         NicknameValidationResponse response = userService.validateNickname(nickname);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, response));
     }
+
+    @PutMapping(value = "/university")
+    @Operation(summary = "대학교 변경 API", description = "대학교 정보를 변경합니다.")
+    public ResponseEntity<SuccessResponse<Void>> updateUniversity(
+            @AuthenticationPrincipal Long userId,
+            @RequestBody String universityName
+    ){
+        userService.changeUniversity(userId, universityName);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
+    }
 }
