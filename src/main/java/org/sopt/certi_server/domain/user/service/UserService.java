@@ -12,9 +12,11 @@ import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.*;
 import org.sopt.certi_server.domain.user.dto.type.NicknameValidationType;
+import org.sopt.certi_server.domain.user.entity.University;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
 import org.sopt.certi_server.domain.user.repository.CareerRepository;
+import org.sopt.certi_server.domain.user.repository.UniversityRepository;
 import org.sopt.certi_server.domain.user.repository.UserJobRepository;
 import org.sopt.certi_server.domain.user.repository.UserRepository;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
@@ -42,6 +44,7 @@ public class UserService {
     private final CareerRepository careerRepository;
     private final ActivityRepository activityRepository;
     private final ProfanityFilter profanityFilter;
+    private final UniversityRepository universityRepository;
 
     public User getUser(final Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
@@ -183,4 +186,13 @@ public class UserService {
     }
 
 
+    @Transactional
+    public void changeUniversity(Long userId, String universityName) {
+        User user = getUser(userId);
+
+        University university = universityRepository.findByName(universityName)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.UNIVERSITY_NOT_FOUND));
+
+        user.changeUniversity(university);
+    }
 }
