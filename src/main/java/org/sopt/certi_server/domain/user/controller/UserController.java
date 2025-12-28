@@ -100,4 +100,14 @@ public class UserController {
         userService.changeUniversity(userId, universityName);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
     }
+
+    @PutMapping(value = "/major")
+    @Operation(summary = "학과 변경 API", description = "학과 정보를 변경합니다.")
+    public ResponseEntity<SuccessResponse<Void>> updateMajor(
+            @AuthenticationPrincipal Long userId,
+            @RequestBody String majorName
+    ){
+        userService.changeMajor(userId, majorName);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
+    }
 }
