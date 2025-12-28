@@ -7,6 +7,7 @@ import org.sopt.certi_server.domain.activity.repository.ActivityRepository;
 import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
+import org.sopt.certi_server.domain.major.entity.Major;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
@@ -187,12 +188,22 @@ public class UserService {
 
 
     @Transactional
-    public void changeUniversity(Long userId, String universityName) {
+    public void changeUniversity(final Long userId, final String universityName) {
         User user = getUser(userId);
 
         University university = universityRepository.findByName(universityName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.UNIVERSITY_NOT_FOUND));
 
         user.changeUniversity(university);
+    }
+
+    @Transactional
+    public void changeMajor(final Long userId, final String majorName) {
+        User user = getUser(userId);
+
+        MajorImpl mi = majorImplRepository.findMajorImplByName(majorName)
+                .orElseThrow(() ->  new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
+
+        user.changeMajor(mi);
     }
 }
