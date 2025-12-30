@@ -11,7 +11,8 @@ public record CertificationScoreDto(
         String testType,
         List<String> tags,
         int recommendationScore,
-        boolean isFavorite) {
+        boolean isFavorite,
+        String description) {
     public static CertificationScoreDto from(
             Certification certification,
             int recommendationScore,
@@ -24,7 +25,8 @@ public record CertificationScoreDto(
                 certification.getTestType().getType(),
                 certification.getTags().stream().toList(),
                 recommendationScore,
-                isFavorite
+                isFavorite,
+                certification.getDescription()
         );
     }
 
