@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationListResponse;
+import org.sopt.certi_server.domain.certification.dto.response.CertificationRankResponse;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationRecommendationListResponse;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationSimple;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
@@ -80,5 +81,25 @@ public class CertificationController {
         CertificationRecommendationListResponse certiRecommendListRes = certificationService.recommendCertifications(userId);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certiRecommendListRes));
     }
+
+    @GetMapping("/job")
+    @Operation(summary = "직무별 자격증 조회 API", description = "3순위 직무별 자격증을 조회합니다")
+    public ResponseEntity<SuccessResponse<?>> getTop3ByJob(
+        @AuthenticationPrincipal Long userId
+    ){
+        List<CertificationRankResponse> certificationRankResponseList = certificationService.getCertificationJob(userId);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationRankResponseList));
+    }
+
+    @GetMapping("/track")
+    @Operation(summary = "계열별 자격증 조회 API", description = "3순위 계열별 자격증을 조회합니다")
+    public ResponseEntity<SuccessResponse<?>> getTop3ByTrack(
+        @AuthenticationPrincipal Long userId
+    ) {
+        List<CertificationRankResponse> certificationRankResponseList = certificationService.getCertificationTrack(userId);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationRankResponseList));
+
+    }
+
 
 }
