@@ -42,5 +42,5 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: woals2840/certi-server
+        tags: seongmin0229/certi-server
     
