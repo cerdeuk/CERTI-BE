@@ -3,8 +3,11 @@ package org.sopt.certi_server.domain.favorite.repository;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.favorite.entity.Favorite;
 import org.sopt.certi_server.domain.user.entity.User;
+import org.sopt.certi_server.domain.user.entity.enums.TrackType;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,4 +32,32 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     boolean existsByUserAndCertification(User user, Certification certification);
 
 	void deleteAllByUser(User user);
+
+    @Query("""
+        select c
+        from Favorite f
+            join f.certification c
+            join CertificationJob cj on cj.certification = c
+        where cj.job.id = :jobId
+        group by c, cj.weight
+        order by count(f) desc, cj.weight desc
+        """)
+    List<Certification> findTopByJobOrderByFavoriteCount(
+        @Param("jobId") Long jobId,
+        Pageable pageable
+    );
+
+    @Query("""
+        select c
+        from Favorite f
+            join f.certification c
+            join f.user u
+        where u.track = :track
+        group by c
+        order by count(f) desc
+        """)
+    List<Certification> findTopCertificationsByTrack(
+        @Param("track") TrackType track,
+        Pageable pageable
+    );
 }
