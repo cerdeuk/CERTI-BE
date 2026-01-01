@@ -19,9 +19,7 @@ import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
-import org.sopt.certi_server.domain.user.dto.response.NicknameValidationResponse;
 import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
-import org.sopt.certi_server.domain.user.dto.type.NicknameValidationType;
 import org.sopt.certi_server.domain.user.entity.University;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
@@ -29,13 +27,13 @@ import org.sopt.certi_server.domain.user.repository.UniversityRepository;
 import org.sopt.certi_server.domain.user.repository.UserJobRepository;
 import org.sopt.certi_server.domain.user.repository.UserRepository;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
+import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.exception.InvalidNicknameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -66,6 +64,7 @@ class UserServiceTest {
     private MajorImplRepository majorImplRepository;
 
     private User testUser;
+    private User otherUser;
 
     private Job testJob;
     private Certification testCertification;
@@ -80,6 +79,16 @@ class UserServiceTest {
                 User.builder()
                         .email("lee@gmail.com")
                         .nickname("이성민")
+                        .track("공학계열")
+                        .grade("1학년")
+                        .major(testMajor)
+                        .university(testUniversity)
+                        .build()
+        );
+        otherUser = userRepository.save(
+                User.builder()
+                        .email("leee@gmail.com")
+                        .nickname("이헝민")
                         .track("공학계열")
                         .grade("1학년")
                         .major(testMajor)
@@ -104,7 +113,7 @@ class UserServiceTest {
     void get_my_page_home(){
         GetMyPageInfoResponse myPageInfoResponse = userService.getMyPageInfoResponse(testUser.getId());
 
-        Assertions.assertThat(myPageInfoResponse.name()).isEqualTo("이성민");
+        Assertions.assertThat(myPageInfoResponse.nickname()).isEqualTo("이성민");
         Assertions.assertThat(myPageInfoResponse.email()).isEqualTo("lee@gmail.com");
         Assertions.assertThat(myPageInfoResponse.jobResponse().jobList()).contains("IT/인터넷");
         Assertions.assertThat(myPageInfoResponse.acCount()).isEqualTo(1);
@@ -154,11 +163,13 @@ class UserServiceTest {
             String nickname = "시발이성민";
 
             // When
-            NicknameValidationResponse response = userService.validateNickname(nickname);
 
             // Then
-            Assertions.assertThat(response.isAvailable()).isFalse();
-            Assertions.assertThat(response.reason()).isEqualTo(NicknameValidationType.PROFANITY.getMessage());
+            Assertions.assertThatThrownBy(
+                    () -> userService.validateNickname(testUser.getId(), nickname)
+            )
+                .isInstanceOf(InvalidNicknameException.class)
+                .hasMessageContaining(ErrorCode.NICKNAME_CONTAINS_PROFANITY.getMessage());
         }
 
         @Test
@@ -169,11 +180,13 @@ class UserServiceTest {
             String nickname = "   ";
 
             // When
-            NicknameValidationResponse response = userService.validateNickname(nickname);
 
             // Then
-            Assertions.assertThat(response.isAvailable()).isFalse();
-            Assertions.assertThat(response.reason()).isEqualTo(NicknameValidationType.EMPTY.getMessage());
+            Assertions.assertThatThrownBy(
+                            () -> userService.validateNickname(testUser.getId(), nickname)
+                    )
+                    .isInstanceOf(InvalidNicknameException.class)
+                    .hasMessageContaining(ErrorCode.NICKNAME_EMPTY.getMessage());
         }
 
         @Test
@@ -184,11 +197,13 @@ class UserServiceTest {
             String nickname = "안녕하세요저는이성민입니다";
 
             // When
-            NicknameValidationResponse response = userService.validateNickname(nickname);
 
             // Then
-            Assertions.assertThat(response.isAvailable()).isFalse();
-            Assertions.assertThat(response.reason()).isEqualTo(NicknameValidationType.TOO_LONG.getMessage());
+            Assertions.assertThatThrownBy(
+                            () -> userService.validateNickname(testUser.getId(), nickname)
+                    )
+                    .isInstanceOf(InvalidNicknameException.class)
+                    .hasMessageContaining(ErrorCode.NICKNAME_TOO_LONG.getMessage());
         }
 
         @Test
@@ -196,14 +211,31 @@ class UserServiceTest {
         void nickname_is_duplicated(){
 
             // Given
+            String nickname = "이헝민";
+
+            // When
+
+            // Then
+            Assertions.assertThatThrownBy(
+                            () -> userService.validateNickname(testUser.getId(), nickname)
+                    )
+                    .isInstanceOf(InvalidNicknameException.class)
+                    .hasMessageContaining(ErrorCode.NICKNAME_DUPLICATE.getMessage());
+        }
+
+        @Test
+        @DisplayName("[성공] 내 현재 닉네임과 같다")
+        void nickname_is_duplicated_with_current_nickname(){
+
+            // Given
             String nickname = "이성민";
 
             // When
-            NicknameValidationResponse response = userService.validateNickname(nickname);
 
             // Then
-            Assertions.assertThat(response.isAvailable()).isFalse();
-            Assertions.assertThat(response.reason()).isEqualTo(NicknameValidationType.DUPLICATE.getMessage());
+            Assertions.assertThatCode(() -> userService.validateNickname(testUser.getId(), nickname))
+                    .doesNotThrowAnyException();
+
         }
     }
 

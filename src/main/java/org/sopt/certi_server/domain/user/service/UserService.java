@@ -7,12 +7,13 @@ import org.sopt.certi_server.domain.activity.repository.ActivityRepository;
 import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
-import org.sopt.certi_server.domain.major.entity.Major;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
-import org.sopt.certi_server.domain.user.dto.response.*;
-import org.sopt.certi_server.domain.user.dto.type.NicknameValidationType;
+import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
+import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
+import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
+import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
 import org.sopt.certi_server.domain.user.entity.University;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
@@ -22,12 +23,14 @@ import org.sopt.certi_server.domain.user.repository.UserJobRepository;
 import org.sopt.certi_server.domain.user.repository.UserRepository;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.exception.InvalidNicknameException;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.sopt.certi_server.global.valid.ProfanityFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -141,10 +144,7 @@ public class UserService {
     public void updateUserInformation(final Long userId, final UpdateUserRequest request) {
         User user = getUser(userId);
 
-        NicknameValidationType type = validateKeyword(request.nickName());
-        if(type != NicknameValidationType.VALID){
-            throw new IllegalArgumentException("올바르지 않은 닉네임 형식입니다.");
-        }
+        validateNickname(userId, request.nickName());
 
         user.changeUser(
                 request.name(),
@@ -154,36 +154,27 @@ public class UserService {
         );
     }
 
-    public NicknameValidationResponse validateNickname(String nickname) {
+    public void validateNickname(final Long userId, String nickname) {
 
-        NicknameValidationType type = validateKeyword(nickname);
-        return NicknameValidationResponse.from(type);
-    }
-
-    public NicknameValidationType validateKeyword(String keyword) {
+        User user = getUser(userId);
+        if(!Objects.equals(user.getNickname(), nickname) && userRepository.existsByNickname(nickname)) {
+            throw new InvalidNicknameException(ErrorCode.NICKNAME_DUPLICATE);
+        }
 
         // 공백 검사
-        if (keyword.isEmpty() || keyword.isBlank()){
-                return NicknameValidationType.EMPTY;
+        if (nickname.isEmpty() || nickname.isBlank()){
+            throw new InvalidNicknameException(ErrorCode.NICKNAME_EMPTY);
         }
 
         // 길이 검사
-        if(keyword.length() > 7){
-                return NicknameValidationType.TOO_LONG;
-        }
-
-        // 중복 검사
-        if (userRepository.existsByNickname(keyword)){
-                return NicknameValidationType.DUPLICATE;
+        if(nickname.length() > 7){
+            throw new InvalidNicknameException(ErrorCode.NICKNAME_TOO_LONG);
         }
 
         // 욕설 검사
-        if (profanityFilter.containsProfanity(keyword)){
-                return NicknameValidationType.PROFANITY;
-
+        if (profanityFilter.containsProfanity(nickname)){
+            throw new InvalidNicknameException(ErrorCode.NICKNAME_CONTAINS_PROFANITY);
         }
-
-        return NicknameValidationType.VALID;
     }
 
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Builder
 public record GetMyPageInfoResponse(
-        String name,
+        String nickname,
         String email,
         GetJobResponse jobResponse,
         int upCount,
@@ -18,7 +18,7 @@ public record GetMyPageInfoResponse(
             User user, GetJobResponse jobResponse, int upCount, int acCount, int fCount
     ){
         return GetMyPageInfoResponse.builder()
-                .name(user.getNickname())
+                .nickname(user.getNickname())
                 .email(user.getEmail())
                 .jobResponse(jobResponse)
                 .upCount(upCount)

@@ -17,6 +17,10 @@ public enum ErrorCode {
     TEST_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "E400007", "요청 테스트 타입이 올바르지 않습니다"),
     JOB_SIZE_ERROR(HttpStatus.BAD_REQUEST, "E400008", "희망 분야는 1~3개까지 선택가능합니다"),
     MISMATCH_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "E400009", "리프레시 토큰이 일치하지 않습니다"),
+    NICKNAME_TOO_LONG(HttpStatus.BAD_REQUEST, "E400010", "닉네임은 7자 이하만 가능합니다."),
+    NICKNAME_EMPTY(HttpStatus.BAD_REQUEST, "E400011", "닉네임은 공백일 수 없습니다."),
+    NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST, "E400012", "이미 존재하는 닉네임입니다."),
+    NICKNAME_CONTAINS_PROFANITY(HttpStatus.BAD_REQUEST, "E400013", "닉네임에 비속어를 포함할 수 없습니다."),
 
     /* 401 */
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "E401001", "리소스 접근 권한이 없습니다."),

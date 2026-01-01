@@ -49,7 +49,7 @@ public class Acquisition extends BaseTimeEntity {
     @Column(name = "grade")
     private String grade;
 
-    @Column(name = "acquisition_date", nullable = false)
+    @Column(name = "acquisition_date")
     private LocalDate acquisitionDate;
 
     @Builder
