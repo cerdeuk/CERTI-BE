@@ -161,6 +161,19 @@ public class UserService {
             throw new InvalidNicknameException(ErrorCode.NICKNAME_DUPLICATE);
         }
 
+        validateKeyword(nickname);
+    }
+
+    public void validateNickname(String nickname) {
+
+        if(userRepository.existsByNickname(nickname)) {
+            throw new InvalidNicknameException(ErrorCode.NICKNAME_DUPLICATE);
+        }
+
+        validateKeyword(nickname);
+    }
+
+    private void validateKeyword(String nickname) {
         // 공백 검사
         if (nickname.isEmpty() || nickname.isBlank()){
             throw new InvalidNicknameException(ErrorCode.NICKNAME_EMPTY);
