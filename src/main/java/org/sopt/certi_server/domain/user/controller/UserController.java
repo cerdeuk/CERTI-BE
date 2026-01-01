@@ -85,11 +85,12 @@ public class UserController {
 
     @GetMapping(value = "/validation")
     @Operation(summary = "닉네임 검증 API", description = "닉네임이 중복이거나 욕설이 포함되어 있는지 검사합니다.")
-    public ResponseEntity<SuccessResponse<NicknameValidationResponse>> validateNickname(
+    public ResponseEntity<SuccessResponse<Void>> validateNickname(
+            @AuthenticationPrincipal Long userId,
             @RequestParam(value = "keyword") String nickname
     ){
-        NicknameValidationResponse response = userService.validateNickname(nickname);
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, response));
+        userService.validateNickname(userId, nickname);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH));
     }
 
     @PutMapping(value = "/university")
