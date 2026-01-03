@@ -34,7 +34,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/v1/admin/**",
             "/api/v1/university/**",
             "/api/v1/major/**",
-            "/actuator/**"
+            "/actuator/**",
+            "/api/v1/user/validation"
 
     );
 
