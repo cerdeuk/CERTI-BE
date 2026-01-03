@@ -97,6 +97,7 @@ public class UserController {
             @AuthenticationPrincipal Long userId,
             @RequestBody String universityName
     ){
+        log.info("universityName: {}", universityName);
         userService.changeUniversity(userId, universityName);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
     }
