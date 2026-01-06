@@ -94,4 +94,8 @@ public class User extends BaseTimeEntity {
     public void changeUniversity(University university) {
         this.university = university;
     }
+
+    public void changeMajor(MajorImpl mi) {
+        this.major = mi;
+    }
 }
