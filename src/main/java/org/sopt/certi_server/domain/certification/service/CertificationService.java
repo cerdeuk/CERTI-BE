@@ -204,7 +204,11 @@ public class CertificationService {
 
     public List<CertificationRankResponse> getCertificationJob(final Long userId){
         User user = userService.getUser(userId);
-        String jobName = userService.getUserJob(userId).jobList().get(0);
+        List<String> jobList = userService.getUserJob(userId).jobList();
+        if (jobList.isEmpty()) {
+            throw new NotFoundException(ErrorCode.JOB_NOT_FOUND);
+        }
+        String jobName = jobList.get(0);
         Job job = jobRepository.findByName(jobName)
             .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
 

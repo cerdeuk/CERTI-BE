@@ -34,13 +34,13 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 	void deleteAllByUser(User user);
 
     @Query("""
-        select c
+        select distinct c
         from Favorite f
             join f.certification c
             join CertificationJob cj on cj.certification = c
         where cj.job.id = :jobId
-        group by c, cj.weight
-        order by count(f) desc, cj.weight desc
+        group by c
+        order by count(f) desc, max(cj.weight) desc
         """)
     List<Certification> findTopByJobOrderByFavoriteCount(
         @Param("jobId") Long jobId,
