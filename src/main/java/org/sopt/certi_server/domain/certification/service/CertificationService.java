@@ -17,15 +17,19 @@ import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.Major;
 import org.sopt.certi_server.domain.major.repository.MajorRepository;
 import org.sopt.certi_server.domain.user.entity.User;
+import org.sopt.certi_server.domain.user.entity.enums.TrackType;
 import org.sopt.certi_server.domain.user.service.UserService;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,6 +49,7 @@ public class CertificationService {
     private final CertificationJobRepository certificationJobRepository;
     private final CertificationRepositoryCustomImpl certificationRepositoryCustomImpl;
     private final UserService userService;
+    private final FavoriteRepository favoriteRepository;
 
 
     @Cacheable(
@@ -195,6 +200,42 @@ public class CertificationService {
 
         return CertificationListResponse.of(certificationSimpleList);
 
+    }
+
+    public List<CertificationRankResponse> getCertificationJob(final Long userId){
+        User user = userService.getUser(userId);
+        List<String> jobList = userService.getUserJob(userId).jobList();
+        if (jobList.isEmpty()) {
+            throw new NotFoundException(ErrorCode.JOB_NOT_FOUND);
+        }
+        String jobName = jobList.get(0);
+        Job job = jobRepository.findByName(jobName)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
+
+        Pageable top3 = PageRequest.of(0, 3);
+        List<Certification> certList =
+            favoriteRepository.findTopByJobOrderByFavoriteCount(job.getId(), top3);
+
+        AtomicInteger rank = new AtomicInteger(1);
+
+        return certList.stream()
+            .map(cert -> new CertificationRankResponse(rank.getAndIncrement(), cert))
+            .toList();
+    }
+
+    public List<CertificationRankResponse> getCertificationTrack(final Long userId){
+        User user = userService.getUser(userId);
+        TrackType trackType = user.getTrack();
+
+        Pageable top3 = PageRequest.of(0, 3);
+
+        List<Certification> certificationList = favoriteRepository.findTopCertificationsByTrack(trackType, top3);
+
+        AtomicInteger rank = new AtomicInteger(1);
+
+        return certificationList.stream()
+            .map(c -> new CertificationRankResponse(rank.getAndIncrement(), c))
+            .toList();
     }
 
 }

@@ -16,6 +16,7 @@ public class CertificationSimple {
     private List<String> tags;
     @JsonProperty(value = "isFavorite")
     private boolean favorite;
+    private String description;
 
     public CertificationSimple(
             Certification certification,
@@ -29,5 +30,6 @@ public class CertificationSimple {
                 certification.getTestType().getType() : null;
         this.tags = certification.getTags();
         this.favorite = favorite;
+        this.description = certification.getDescription();
     }
 }
