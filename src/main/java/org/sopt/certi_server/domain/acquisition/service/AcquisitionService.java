@@ -2,8 +2,9 @@ package org.sopt.certi_server.domain.acquisition.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.sopt.certi_server.domain.acquisition.dto.request.CreateAcquisitionRequest;
+import org.sopt.certi_server.domain.acquisition.dto.request.PatchAcquisitionRequest;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionDetailResponse;
-import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionListDetailResponse;
 import org.sopt.certi_server.domain.acquisition.dto.response.GetAcquisitionResponse;
 import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
 import org.sopt.certi_server.domain.acquisition.entity.enums.CardType;
@@ -21,6 +22,7 @@ import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,8 +41,8 @@ public class AcquisitionService {
 
 
     @Transactional
-    public boolean createAcquisition(final Long userId, final Long certificationId) {
-        Certification certification = certificationService.getCertification(certificationId);
+    public boolean createAcquisition(final Long userId, final CreateAcquisitionRequest request) {
+        Certification certification = certificationService.getCertification(request.certificationId());
         User user = userService.getUser(userId);
 
         //중복 여부 확인
@@ -66,6 +68,7 @@ public class AcquisitionService {
                 .certification(certification)
                 .cardType(cardType)
                 .smallCardType(smallCardType)
+                .acquisitionDate(LocalDate.now())
                 .build();
 
         acquisitionRepository.save(acquisition);
@@ -91,12 +94,12 @@ public class AcquisitionService {
         return GetAcquisitionDetailResponse.from(acquisition);
     }
 
-    public List<GetAcquisitionListDetailResponse> getAcquisitionList(final Long userId) {
+    public List<GetAcquisitionResponse> getAcquisitionList(final Long userId) {
         User user = userService.getUser(userId);
         List<Acquisition> acquisitionList = acquisitionRepository.findByUserOrderByIdDesc(user);
 
         return acquisitionList.stream()
-                .map(GetAcquisitionListDetailResponse::from)
+                .map(GetAcquisitionResponse::from)
                 .toList();
     }
 
@@ -110,5 +113,21 @@ public class AcquisitionService {
         }
 
         acquisitionRepository.delete(findAcquisition);
+    }
+
+    @Transactional
+    public void patchAcquisition(Long userId, Long acquisitionId, PatchAcquisitionRequest request) {
+
+        User user = userService.getUser(userId);
+        Acquisition acquisition = getAcquisition(acquisitionId);
+
+        if (!Objects.equals(acquisition.getUser().getId(), user.getId())) {
+            throw new ForbiddenException(ErrorCode.ACCESS_DENIED);
+        }
+
+        acquisition.changeAcquisition(
+                request.acquisitionDate(),
+                request.grade()
+        );
     }
 }

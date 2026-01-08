@@ -126,7 +126,8 @@ public class AuthService {
 
         return User.builder()
                 .email(request.userInformation().email())
-                .nickname(request.userInformation().nickname())
+                .name(request.userInformation().name())
+                .nickname(request.nickname())
                 .profileImageUrl(request.userInformation().profileImageUrl())
                 .track(request.track())
                 .grade(request.grade())

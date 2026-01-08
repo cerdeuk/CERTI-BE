@@ -7,8 +7,11 @@ import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.service.UserService;
+import org.sopt.certi_server.domain.userprecertification.dto.request.CreateUserPreCertificationRequest;
+import org.sopt.certi_server.domain.userprecertification.dto.request.PatchPreCertificationRequest;
 import org.sopt.certi_server.domain.userprecertification.dto.response.PreCertificationSimple;
 import org.sopt.certi_server.domain.userprecertification.dto.response.PreCertificationSimpleListResponse;
+import org.sopt.certi_server.domain.userprecertification.entity.Location;
 import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
 import org.sopt.certi_server.domain.userprecertification.entity.enums.IconType;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
@@ -37,9 +40,9 @@ public class UserPreCertificationService {
     }
 
     @Transactional
-    public boolean createNewPreCertification(final Long userId, final Long certificationId) {
+    public boolean createNewPreCertification(final Long userId, final CreateUserPreCertificationRequest request) {
         User user = userService.getUser(userId);
-        Certification certification = certificationService.getCertification(certificationId);
+        Certification certification = certificationService.getCertification(request.certificationId());
 
         if(acquisitionRepository.existsByUserAndCertification(user, certification)){
             log.info("이미 취득한 자격증에 대해 취득 예정 시도");
@@ -54,7 +57,16 @@ public class UserPreCertificationService {
                 .map(userPreCertification -> IconType.issueNextIconType(userPreCertification.getIconType().getIndex()))
                 .orElseGet(IconType::issueRandomIconType);
 
-        userPreCertificationRepository.save(UserPreCertification.create(user, certification, iconType));
+        userPreCertificationRepository.save(UserPreCertification.create(
+                user,
+                certification,
+                iconType,
+                Location.builder()
+                        .city(request.city())
+                        .state(request.state())
+                        .build(),
+                request.testDate()
+                ));
 
         return true;
     }
@@ -68,5 +80,24 @@ public class UserPreCertificationService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PRECERTIFICATION_NOT_FOUND));
 
         userPreCertificationRepository.delete(userPreCertification);
+    }
+
+    @Transactional
+    public void patchPreCertification(Long userId, Long userPreCertificationId, PatchPreCertificationRequest request) {
+
+        User user = userService.getUser(userId);
+        UserPreCertification upc = userPreCertificationRepository.findById(userPreCertificationId).orElseThrow(
+                () -> new NotFoundException(ErrorCode.PRECERTIFICATION_NOT_FOUND)
+        );
+
+        if(upc.getUser() != user) throw new ForbiddenException(ErrorCode.ACCESS_DENIED);
+
+        upc.changeUserPreCertification(
+                Location.builder()
+                        .city(request.city())
+                        .state(request.state())
+                        .build(),
+                request.testDate()
+        );
     }
 }

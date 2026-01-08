@@ -11,6 +11,8 @@ import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -44,11 +46,24 @@ public class Acquisition extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "grade")
+    private String grade;
+
+    @Column(name = "acquisition_date")
+    private LocalDate acquisitionDate;
+
     @Builder
-    public Acquisition(Certification certification, CardType cardType, User user, SmallCardType smallCardType) {
+    public Acquisition(Certification certification, CardType cardType, User user, SmallCardType smallCardType, String grade, LocalDate acquisitionDate) {
         this.certification = certification;
         this.smallCardType = smallCardType;
         this.cardType = cardType;
         this.user = user;
+        this.grade = grade;
+        this.acquisitionDate = acquisitionDate;
+    }
+
+    public void changeAcquisition(LocalDate acquisitionDate, String grade) {
+        this.acquisitionDate = acquisitionDate;
+        this.grade = grade;
     }
 }

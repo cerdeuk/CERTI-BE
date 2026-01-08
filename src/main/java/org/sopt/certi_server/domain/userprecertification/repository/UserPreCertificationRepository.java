@@ -41,4 +41,6 @@ public interface UserPreCertificationRepository extends JpaRepository<UserPreCer
             @Param("certificationId") Long certificationId,
             @Param("users") List<User> users
     );
+
+    int countByUser(User user);
 }
