@@ -29,7 +29,6 @@ public class AcquisitionController {
     @Operation(summary = "취득한 자격증 추가 API", description = "취득한 자격증을 추가합니다")
     public ResponseEntity<SuccessResponse<Boolean>> addAcquisition(
             @AuthenticationPrincipal Long userId,
-            @Parameter(description = "certification Id", example = "1")
             @RequestBody CreateAcquisitionRequest request
             ) {
         boolean isAcquired = acquisitionService.createAcquisition(userId, request);

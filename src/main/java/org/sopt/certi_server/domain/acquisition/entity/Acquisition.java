@@ -53,12 +53,13 @@ public class Acquisition extends BaseTimeEntity {
     private LocalDate acquisitionDate;
 
     @Builder
-    public Acquisition(Certification certification, CardType cardType, User user, SmallCardType smallCardType, String grade) {
+    public Acquisition(Certification certification, CardType cardType, User user, SmallCardType smallCardType, String grade, LocalDate acquisitionDate) {
         this.certification = certification;
         this.smallCardType = smallCardType;
         this.cardType = cardType;
         this.user = user;
-        this.acquisitionDate = LocalDate.now();
+        this.grade = grade;
+        this.acquisitionDate = acquisitionDate;
     }
 
     public void changeAcquisition(LocalDate acquisitionDate, String grade) {
