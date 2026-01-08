@@ -8,8 +8,10 @@ import org.sopt.certi_server.domain.certification.dto.response.CertificationSimp
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.entity.QCertification;
 import org.sopt.certi_server.domain.certification.entity.QCertificationJob;
+import org.sopt.certi_server.domain.certification.entity.QCertificationTrack;
 import org.sopt.certi_server.domain.favorite.entity.QFavorite;
 import org.sopt.certi_server.domain.user.entity.User;
+import org.sopt.certi_server.domain.user.entity.enums.TrackType;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -52,5 +54,38 @@ public class CertificationRepositoryCustomImpl implements CertificationRepositor
                 })
                 .filter(Objects::nonNull)
                 .toList();
+    }
+
+    @Override
+    public List<CertificationSimple> findByTrackAndFavorite(User user, boolean isFavorite, TrackType track) {
+        QCertification certification = QCertification.certification;
+        QFavorite favorite = QFavorite.favorite;
+        QCertificationTrack certificationTrack = QCertificationTrack.certificationTrack;
+
+        List<Tuple> results = jpaQueryFactory
+            .select(certification, favorite)
+            .from(certification)
+            .leftJoin(favorite)
+            .on(favorite.user.eq(user)
+                .and(favorite.certification.eq(certification)))
+            .join(certificationTrack)
+            .on(certificationTrack.certification.eq(certification))
+            .where(
+                certificationTrack.track.eq(track),
+                isFavorite ? favorite.isNotNull() : null
+            )
+            .orderBy(certification.id.desc())
+            .fetch();
+
+        return results.stream()
+            .map(tuple -> {
+                Certification findCertification = tuple.get(certification);
+                boolean fav = tuple.get(favorite) != null;
+
+                if (findCertification == null) return null;
+                return new CertificationSimple(findCertification, fav);
+            })
+            .filter(Objects::nonNull)
+            .toList();
     }
 }
