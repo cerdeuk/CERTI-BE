@@ -191,7 +191,7 @@ public class CertificationService {
     }
 
 
-    public CertificationListResponse getCertificationList(final Long userId, final boolean isFavorite, final String jobName) {
+    public CertificationListResponse getCertificationByJobList(final Long userId, final boolean isFavorite, final String jobName) {
         User user = userService.getUser(userId);
         Job job = jobRepository.findByName(jobName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
@@ -201,6 +201,19 @@ public class CertificationService {
         return CertificationListResponse.of(certificationSimpleList);
 
     }
+
+    public CertificationListResponse getCertificationByTrackList(final Long userId, final boolean isFavorite, final String track) {
+        User user = userService.getUser(userId);
+
+        TrackType trackType = TrackType.from(track);
+
+        List<CertificationSimple> certificationSimpleList =
+            certificationRepositoryCustomImpl.findByTrackAndFavorite(user, isFavorite, trackType);
+
+        return CertificationListResponse.of(certificationSimpleList);
+    }
+
+
 
     public List<CertificationRankResponse> getCertificationJob(final Long userId){
         User user = userService.getUser(userId);
