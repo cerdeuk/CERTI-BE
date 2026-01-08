@@ -6,8 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
-import org.sopt.certi_server.domain.user.dto.request.UpdateJobRequest;
+import org.sopt.certi_server.domain.user.dto.request.*;
 import org.sopt.certi_server.domain.user.dto.response.*;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
@@ -100,10 +99,9 @@ public class UserController {
     @Operation(summary = "대학교 변경 API", description = "대학교 정보를 변경합니다.")
     public ResponseEntity<SuccessResponse<Void>> updateUniversity(
             @AuthenticationPrincipal Long userId,
-            @RequestBody String universityName
+            @RequestBody UpdateUniversityRequest request
     ){
-        log.info("universityName: {}", universityName);
-        userService.changeUniversity(userId, universityName);
+        userService.changeUniversity(userId, request.universityName());
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
     }
 
@@ -111,9 +109,9 @@ public class UserController {
     @Operation(summary = "학과 변경 API", description = "학과 정보를 변경합니다.")
     public ResponseEntity<SuccessResponse<Void>> updateMajor(
             @AuthenticationPrincipal Long userId,
-            @RequestBody String majorName
+            @RequestBody UpdateMajorRequest request
     ){
-        userService.changeMajor(userId, majorName);
+        userService.changeMajor(userId, request.majorName());
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
     }
 }
