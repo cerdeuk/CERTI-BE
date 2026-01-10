@@ -120,7 +120,6 @@ public class UserPreCertificationService {
             .map(p -> new DayDotRes(p.getDay(), p.getCount()))
             .toList();
 
-        // "아무것도 없으면 null" 요구사항 반영
         List<DayDotRes> dayDotResList = days.isEmpty()
             ? null
             : days.stream().map(d -> new  DayDotRes(d.day(), d.count())).toList();
