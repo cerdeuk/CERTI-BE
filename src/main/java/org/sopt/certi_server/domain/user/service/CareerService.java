@@ -3,11 +3,13 @@ package org.sopt.certi_server.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.user.dto.request.CreateCareerRequest;
+import org.sopt.certi_server.domain.user.dto.request.UpdateCareerRequest;
 import org.sopt.certi_server.domain.user.dto.response.CareerDetailResponse;
 import org.sopt.certi_server.domain.user.entity.Career;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.repository.CareerRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.exception.ForbiddenException;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,5 +60,28 @@ public class CareerService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
 
         careerRepository.delete(career);
+    }
+
+    @Transactional
+    public void updateCareer(Long userId, Long careerId, UpdateCareerRequest req) {
+        User user = userService.getUser(userId);
+
+        Career career = careerRepository.findById(careerId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+
+        if (!career.getUser().getId().equals(user.getId())) {
+            throw new ForbiddenException(ErrorCode.ACCESS_DENIED);
+        }
+
+        // 4) 수정 (PUT 스타일: 전체 덮어쓰기)
+        career.updateAll(
+            req.name(),
+            req.startAt(),
+            req.endAt(),
+            req.place(),
+            req.description()
+        );
+
+        careerRepository.save(career);
     }
 }
