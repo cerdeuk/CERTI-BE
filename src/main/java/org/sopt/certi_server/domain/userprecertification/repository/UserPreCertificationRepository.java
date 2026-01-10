@@ -2,11 +2,14 @@ package org.sopt.certi_server.domain.userprecertification.repository;
 
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
+import org.sopt.certi_server.domain.userprecertification.dto.response.DayDotRes;
+import org.sopt.certi_server.domain.userprecertification.dto.response.MonthCalendarRes;
 import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,4 +46,38 @@ public interface UserPreCertificationRepository extends JpaRepository<UserPreCer
     );
 
     int countByUser(User user);
+
+    @Query("""
+    select function('day', upc.testDate) as day,
+           count(upc.id) as count
+    from UserPreCertification upc
+    where upc.user.id = :userId
+      and upc.testDate between :start and :end
+    group by function('day', upc.testDate)
+    order by function('day', upc.testDate) asc
+""")
+    List<DayDotProjection> findMonthDots(
+        @Param("userId") Long userId,
+        @Param("start") LocalDateTime start,
+        @Param("end") LocalDateTime end
+    );
+
+    @Query("""
+        select upc
+        from UserPreCertification upc
+        join fetch upc.certification c
+        where upc.user.id = :userId
+          and upc.testDate between :start and :end
+        order by upc.testDate asc
+    """)
+    List<UserPreCertification> findDayItems(
+        @Param("userId") Long userId,
+        @Param("start") LocalDateTime start,
+        @Param("end") LocalDateTime end
+    );
+
+    public interface DayDotProjection {
+        Integer getDay();
+        Long getCount();
+    }
 }
