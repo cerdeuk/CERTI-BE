@@ -53,4 +53,12 @@ public class Career {
         this.description = description;
         this.user = user;
     }
+
+    public void updateAll(String name, LocalDate startAt, LocalDate endAt, String place, String description) {
+        this.name = name;
+        this.startAt = startAt;
+        this.endAt = endAt;
+        this.place = place;
+        this.description = description;
+    }
 }
