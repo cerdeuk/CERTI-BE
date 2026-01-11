@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.user.dto.request.CreateCareerRequest;
+import org.sopt.certi_server.domain.user.dto.request.UpdateCareerRequest;
 import org.sopt.certi_server.domain.user.dto.response.CareerDetailResponse;
 import org.sopt.certi_server.domain.user.dto.response.GetCareersReponse;
 import org.sopt.certi_server.domain.user.service.CareerService;
@@ -41,6 +42,17 @@ public class CareerController {
             @Valid @RequestBody CreateCareerRequest request
     ) {
         careerService.createCareer(userId, request);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
+    }
+
+    @PutMapping("/{careerId}")
+    @Operation(summary = "경력사항 수정 API", description = "사용자의 경력사항을 수정합니다")
+    public ResponseEntity<SuccessResponse> updateCareer(
+        @AuthenticationPrincipal Long userId,
+        @PathVariable Long careerId,
+        @Valid @RequestBody UpdateCareerRequest request
+    ) {
+        careerService.updateCareer(userId, careerId, request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
     }
 
