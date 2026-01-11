@@ -88,11 +88,12 @@ public class User extends BaseTimeEntity {
         this.marketingAgree = marketingAgree;
     }
 
-    public void changeUser(String name, String nickname, String email, LocalDate birthDate){
+    public void changeUser(String name, String nickname, String email, LocalDate birthDate, String profileImageUrl){
         this.name = name;
         this.nickname = nickname;
         this.email = email;
         this.birthDate = birthDate;
+        this.profileImageUrl = profileImageUrl;
     }
 
     public void changeUniversity(University university) {

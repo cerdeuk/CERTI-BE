@@ -10,7 +10,8 @@ public record PersonalInformationResponse(
         String nickName,
         String name,
         String email,
-        LocalDate birthDate
+        LocalDate birthDate,
+        String profileImageURL
 ) {
 
     public static PersonalInformationResponse from(User user){
@@ -19,6 +20,7 @@ public record PersonalInformationResponse(
                 .nickName(user.getNickname())
                 .email(user.getEmail())
                 .birthDate(user.getBirthDate())
+                .profileImageURL(user.getProfileImageUrl())
                 .build();
     }
 }

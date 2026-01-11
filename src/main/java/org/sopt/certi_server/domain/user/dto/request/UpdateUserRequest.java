@@ -20,7 +20,9 @@ public record UpdateUserRequest(
         String nickName,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
         @Past(message = "생년월일은 과거 날짜여야 합니다.")
-        LocalDate birthDate
+        LocalDate birthDate,
+
+        String publicURL
 ) {
 
 }
