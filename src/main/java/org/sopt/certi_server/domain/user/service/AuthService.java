@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.activity.repository.ActivityRepository;
+import org.sopt.certi_server.domain.comment.repository.CertificationCommentLikeRepository;
+import org.sopt.certi_server.domain.comment.repository.CertificationCommentRepository;
 import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
@@ -55,6 +57,8 @@ public class AuthService {
     private final FavoriteRepository favoriteRepository;
     private final CareerRepository careerRepository;
     private final ActivityRepository activityRepository;
+    private final CertificationCommentRepository certificationCommentRepository;
+    private final CertificationCommentLikeRepository certificationCommentLikeRepository;
 
     public AuthResponse login(OAuthUserInformation userInfo) {
         return userRepository.findBySocialTypeAndSocialId(userInfo.socialType(), userInfo.socialId())
@@ -141,6 +145,12 @@ public class AuthService {
     @Transactional
     public void withdraw(final Long userId){
         User user = userService.getUser(userId);
+
+        //좋아요 삭제
+        certificationCommentLikeRepository.deleteAllByUser(user);
+
+        //댓글 삭제
+        certificationCommentRepository.deleteAllByUser(user);
 
         //희망 직무 삭제
         userJobRepository.deleteAllByUser(user);
