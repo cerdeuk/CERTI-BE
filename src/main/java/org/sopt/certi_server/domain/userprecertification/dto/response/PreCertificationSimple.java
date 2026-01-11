@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public record PreCertificationSimple(
         Long certificationId,
         String certificationName,
+        String certificationType,
         String averagePeriod,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul") LocalDate nearestTestDate,
         String agencyName,
@@ -22,6 +23,7 @@ public record PreCertificationSimple(
         return new PreCertificationSimple(
                 upc.getCertification().getId(),
                 upc.getCertification().getName(),
+                upc.getCertification().getCertificationType().getKoreanName(),
                 upc.getCertification().getAveragePeriod(),
                 upc.getCertification().getNearestTestDate(),
                 upc.getCertification().getAgency().getName(),

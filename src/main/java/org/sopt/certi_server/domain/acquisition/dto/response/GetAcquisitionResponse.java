@@ -13,6 +13,7 @@ import lombok.Builder;
 public record GetAcquisitionResponse(
 	Long acquisitionId,
 	String cardFrontImageUrl,
+	String certificationType,
 	int index,
 	String name,
 	List<String> tags,
@@ -25,6 +26,7 @@ public record GetAcquisitionResponse(
 		return GetAcquisitionResponse.builder()
 			.acquisitionId(acquisition.getId())
 			.cardFrontImageUrl(acquisition.getCardType().getCardFrontImageUrl())
+			.certificationType(acquisition.getCertification().getCertificationType().getKoreanName())
 			.index(acquisition.getCardType().getIndex())
 			.name(acquisition.getCertification().getName())
 			.acquisitionDate(acquisition.getAcquisitionDate())

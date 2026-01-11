@@ -129,16 +129,6 @@ public class UserController {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, userService.getPreSignedURL(userId)));
     }
 
-    @PatchMapping(value = "/profile-image")
-    @Operation(summary = "프로필 이미지 수정 API", description = "업로드 된 이미지로 프로필 이미지를 변경합니다.")
-    public ResponseEntity<SuccessResponse<Void>> patchUserProfileImage(
-            @AuthenticationPrincipal Long userId,
-            @RequestBody PatchUserProfileImageRequest request
-    ){
-        userService.updateUserProfileImage(userId, request);
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
-    }
-
 
     @GetMapping(value = "/marketing-agreement")
     @Operation(summary = "광고성 수신 정보 동의 조회 API", description = "광고성 수신 정보 동의 정보를 조회합니다.")

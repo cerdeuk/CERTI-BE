@@ -152,7 +152,8 @@ public class UserService {
                 request.name(),
                 request.nickName(),
                 request.email(),
-                request.birthDate()
+                request.birthDate(),
+                request.publicURL()
         );
     }
 
