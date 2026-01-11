@@ -1,5 +1,9 @@
 package org.sopt.certi_server.domain.userprecertification.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
@@ -9,8 +13,12 @@ import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.service.UserService;
 import org.sopt.certi_server.domain.userprecertification.dto.request.CreateUserPreCertificationRequest;
 import org.sopt.certi_server.domain.userprecertification.dto.request.PatchPreCertificationRequest;
+import org.sopt.certi_server.domain.userprecertification.dto.response.DayDotRes;
+import org.sopt.certi_server.domain.userprecertification.dto.response.DayScheduleRes;
+import org.sopt.certi_server.domain.userprecertification.dto.response.MonthCalendarRes;
 import org.sopt.certi_server.domain.userprecertification.dto.response.PreCertificationSimple;
 import org.sopt.certi_server.domain.userprecertification.dto.response.PreCertificationSimpleListResponse;
+import org.sopt.certi_server.domain.userprecertification.dto.response.ScheduleICertificationRes;
 import org.sopt.certi_server.domain.userprecertification.entity.Location;
 import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
 import org.sopt.certi_server.domain.userprecertification.entity.enums.IconType;
@@ -100,4 +108,60 @@ public class UserPreCertificationService {
                 request.testDate()
         );
     }
+
+    public MonthCalendarRes getMonthCalendar(Long userId, int year, int month) {
+        LocalDate first = LocalDate.of(year, month, 1);
+        LocalDate last = first.withDayOfMonth(first.lengthOfMonth());
+
+        LocalDateTime start = first.atStartOfDay();
+        LocalDateTime end = last.atTime(23, 59, 59);
+
+        List<DayDotRes> days = userPreCertificationRepository.findMonthDots(userId, start, end).stream()
+            .map(p -> new DayDotRes(p.getDay(), p.getCount()))
+            .toList();
+
+        List<DayDotRes> dayDotResList = days.isEmpty()
+            ? null
+            : days.stream().map(d -> new  DayDotRes(d.day(), d.count())).toList();
+
+        return new MonthCalendarRes(year, month, days);
+    }
+
+    public DayScheduleRes getDaySchedules(Long userId, LocalDate date) {
+        LocalDateTime start = date.atStartOfDay();
+        LocalDateTime end = date.atTime(23, 59, 59);
+
+        List<UserPreCertification> list =
+            userPreCertificationRepository.findDayItems(userId, start, end);
+
+        List<ScheduleICertificationRes> items = list.isEmpty()
+            ? null
+            : list.stream().map(this::toScheduleItem).toList();
+
+        return new DayScheduleRes(date, items);
+    }
+
+    private ScheduleICertificationRes toScheduleItem(UserPreCertification upc) {
+
+        String certificationName = upc.getCertification().getName();
+        String certificationType = upc.getCertification().getCertificationType() == null
+            ? null
+            : upc.getCertification().getCertificationType().getKoreanName();
+
+        String description = upc.getCertification().getDescription();
+
+        String location = upc.getLocation() == null ? null : upc.getLocation().toString(); // Location 설계에 맞게 수정
+        String time = upc.getTestDate() == null ? null : upc.getTestDate().toString();
+
+        return new ScheduleICertificationRes(
+            upc.getId(),
+            certificationName,
+            certificationType,
+            description,
+            location,
+            time
+        );
+    }
+
+
 }
