@@ -2,7 +2,6 @@ package org.sopt.certi_server.domain.comment.repository;
 
 
 import org.sopt.certi_server.domain.comment.entity.CertificationComment;
-import org.sopt.certi_server.domain.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,6 +33,4 @@ public interface CertificationCommentRepository extends JpaRepository<Certificat
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE CertificationComment c SET c.likeCount = c.likeCount - 1 WHERE c.id = :commentId")
     void decrementLikeCount(@Param("commentId") Long commentId);
-
-    void deleteAllByUser(User user);
 }

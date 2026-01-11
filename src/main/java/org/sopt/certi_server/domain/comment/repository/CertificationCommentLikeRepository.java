@@ -42,6 +42,4 @@ public interface CertificationCommentLikeRepository extends JpaRepository<Certif
             @Param("user") User user,
             @Param("certification") Certification certification
     );
-
-    void deleteAllByUser(User user);
 }

@@ -78,7 +78,7 @@ public class UserController {
 
     @PostMapping("/job")
     @Operation(summary = "희망직무 수정 API", description = "사용자의 희망직무를 수정합니다.")
-    public ResponseEntity<SuccessResponse<Void>> updateUserJob(
+    public ResponseEntity<SuccessResponse> updateUserJob(
             @AuthenticationPrincipal Long userId,
             @RequestBody UpdateJobRequest updateJobRequest
     ) {
@@ -113,13 +113,5 @@ public class UserController {
     ){
         userService.changeMajor(userId, request.majorName());
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
-    }
-
-    @GetMapping(value = "/track")
-    @Operation(summary = "계열 조회 API", description = "계열 정보를 반환합니다.")
-    public ResponseEntity<SuccessResponse<GetTrackResponse>> getUserTrack(
-            @AuthenticationPrincipal Long userId
-    ){
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, userService.getTrack(userId)));
     }
 }

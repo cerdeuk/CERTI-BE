@@ -10,7 +10,10 @@ import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
-import org.sopt.certi_server.domain.user.dto.response.*;
+import org.sopt.certi_server.domain.user.dto.response.GetJobResponse;
+import org.sopt.certi_server.domain.user.dto.response.GetMyPageInfoResponse;
+import org.sopt.certi_server.domain.user.dto.response.GetUserResponse;
+import org.sopt.certi_server.domain.user.dto.response.PersonalInformationResponse;
 import org.sopt.certi_server.domain.user.entity.University;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
@@ -207,10 +210,4 @@ public class UserService {
 
         user.changeMajor(mi);
     }
-
-    public GetTrackResponse getTrack(Long userId) {
-        User user = getUser(userId);
-        return GetTrackResponse.of(user.getTrack());
-    }
-
 }

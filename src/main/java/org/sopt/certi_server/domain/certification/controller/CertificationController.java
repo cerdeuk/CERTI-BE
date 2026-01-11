@@ -64,7 +64,7 @@ public class CertificationController {
 
     @GetMapping("/jobs")
     @Operation(summary = "직무별 자격증 조회 API", description = "직무별로 자격증 리스트를 조회합니다")
-    public ResponseEntity<SuccessResponse<CertificationListResponse>> getCertificationByJobList(
+    public ResponseEntity<SuccessResponse<?>> getCertificationByJobList(
             @AuthenticationPrincipal Long userId,
             @RequestParam(value = "isFavorite") Boolean isFavorite,
             @RequestParam(value = "jobs") String job
@@ -75,7 +75,7 @@ public class CertificationController {
 
     @GetMapping("/tracks")
     @Operation(summary = "계열별 자격증 조회 API", description = "계열별 자격증 리스트를 조회합니다")
-    public ResponseEntity<SuccessResponse<CertificationListResponse>> getCertificationByTrackList(
+    public ResponseEntity<SuccessResponse<?>> getCertificationByTrackList(
         @AuthenticationPrincipal Long userId,
         @RequestParam(value = "isFavorite") Boolean isFavorite,
         @RequestParam(value = "tracks") String track
