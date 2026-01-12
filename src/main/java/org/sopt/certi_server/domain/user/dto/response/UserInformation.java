@@ -13,7 +13,7 @@ public record UserInformation(
     ) {
         return new UserInformation(
                 information.kakaoAccount().email(),
-                information.kakaoAccount().profile().name(),
+                information.kakaoAccount().profile().nickname(),
                 information.kakaoAccount().profile().profileImageUrl()
         );
     }

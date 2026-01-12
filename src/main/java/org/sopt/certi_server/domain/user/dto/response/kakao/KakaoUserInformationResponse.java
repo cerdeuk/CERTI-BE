@@ -18,7 +18,7 @@ public record KakaoUserInformationResponse(
 
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public record KakaoProfile(
-            String name,
+            String nickname,
             String profileImageUrl
     ) {
 

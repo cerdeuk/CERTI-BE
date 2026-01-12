@@ -26,7 +26,7 @@ public class ActivityController {
 
     @PostMapping
     @Operation(summary = "대내외활동 추가 API", description = "대내외 활동을 추가합니다")
-    public ResponseEntity<SuccessResponse> createActivity(
+    public ResponseEntity<SuccessResponse<Void>> createActivity(
             @AuthenticationPrincipal Long userId,
             @Valid @RequestBody CreateActivityRequest request) {
         activityService.createActivity(userId, request);
@@ -46,7 +46,7 @@ public class ActivityController {
 
     @DeleteMapping("/{activity-id}")
     @Operation(summary = "대내외 활동 삭제 API", description = "대내외 활동을 삭제합니다")
-    public ResponseEntity<SuccessResponse> deleteActivity(
+    public ResponseEntity<SuccessResponse<Void>> deleteActivity(
             @AuthenticationPrincipal Long userId,
             @Parameter(description = "activity Id", example = "1")
             @PathVariable(name = "activity-id") Long activityId
