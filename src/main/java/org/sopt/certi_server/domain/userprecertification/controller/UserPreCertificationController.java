@@ -36,7 +36,6 @@ public class UserPreCertificationController {
     @Operation(summary = "취득예정 자격증 추가 API", description = "취득예정 자격증을 추가합니다")
     public ResponseEntity<SuccessResponse<?>> addPreCertification(
             @AuthenticationPrincipal Long userId,
-            @Parameter(description = "certification Id", example = "1")
             @RequestBody CreateUserPreCertificationRequest request
     ) {
         boolean isPreCertificated = userPreCertificationService.createNewPreCertification(userId, request);

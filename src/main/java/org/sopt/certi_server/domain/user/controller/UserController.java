@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.user.dto.request.*;
@@ -59,7 +60,7 @@ public class UserController {
     @Operation(summary = "개인정보 수정 API", description = "개인정보를 수정합니다.")
     public ResponseEntity<SuccessResponse<Void>> putPersonalInformation(
             @AuthenticationPrincipal Long userId,
-            @RequestBody UpdateUserRequest request
+            @Valid @RequestBody UpdateUserRequest request
     ){
         userService.updateUserInformation(userId, request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
