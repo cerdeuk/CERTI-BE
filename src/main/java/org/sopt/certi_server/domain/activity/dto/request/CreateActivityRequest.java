@@ -8,9 +8,13 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public record CreateActivityRequest(
+
+        @Schema(description = "활동 시작일", example = "2024.05.24", type = "string")
         @NotNull(message = "활동 시작일은 필수 입력값입니다.")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
         LocalDate startAt,
+
+        @Schema(description = "활동 종료일", example = "2024.05.28", type = "string")
         @NotNull(message = "활동 종료일은 필수 입력값입니다")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
         LocalDate endAt,
