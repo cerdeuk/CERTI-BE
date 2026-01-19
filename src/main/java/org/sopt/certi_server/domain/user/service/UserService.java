@@ -239,10 +239,4 @@ public class UserService {
 
         return GetPreSignedURLResponse.of(preSignedURL, publicKey);
     }
-
-    @Transactional
-    public void updateUserProfileImage(final Long userId, final PatchUserProfileImageRequest request) {
-        User user = getUser(userId);
-        user.updateProfileImage(request.publicURL());
-    }
 }

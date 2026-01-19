@@ -4,6 +4,8 @@ import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 
 import java.net.URL;
 import java.time.Duration;
@@ -12,6 +14,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class S3Service {
     private final S3Template s3Template;
+    private final S3Client s3Client;
 
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucketName;
@@ -27,8 +30,17 @@ public class S3Service {
         return preSignedUrl.toString();
     }
 
+//    public String getPublicKey(String key){
+//        return String.format("https://%s.s3.ap-northeast-2.amazonaws.com/%s", bucketName, key);
+//    }
+
     public String getPublicKey(String key){
-        return String.format("https://%s.s3.ap-northeast-2.amazonaws.com/%s", bucketName, key);
+        return s3Client.utilities()
+                .getUrl(GetUrlRequest.builder()
+                        .bucket(bucketName)
+                        .key(key)
+                        .build())
+                .toString();
     }
 
     /**
