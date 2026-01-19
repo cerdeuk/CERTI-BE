@@ -69,7 +69,7 @@ public class AuthController {
     @Operation(summary = "회원 가입", description = "회원 가입을 진행합니다.")
     public ResponseEntity<SuccessResponse<SignUpResponse>> processSignup(
             @RequestHeader("Authorization") @NotEmpty(message = "임시 토큰이 누락되었습니다.") String authorization,
-            @RequestBody SignupRequest request
+            @Valid @RequestBody SignupRequest request
     ) {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE, authService.register(authorization, request)));
     }
