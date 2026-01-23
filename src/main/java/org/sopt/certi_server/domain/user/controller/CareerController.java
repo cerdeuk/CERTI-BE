@@ -37,7 +37,7 @@ public class CareerController {
 
     @PostMapping
     @Operation(summary = "경력사항 추가 API", description = "사용자의 경력사항을 추가합니다")
-    public ResponseEntity<SuccessResponse> createCareer(
+    public ResponseEntity<SuccessResponse<Void>> createCareer(
             @AuthenticationPrincipal Long userId,
             @Valid @RequestBody CreateCareerRequest request
     ) {
@@ -47,7 +47,7 @@ public class CareerController {
 
     @PutMapping("/{careerId}")
     @Operation(summary = "경력사항 수정 API", description = "사용자의 경력사항을 수정합니다")
-    public ResponseEntity<SuccessResponse> updateCareer(
+    public ResponseEntity<SuccessResponse<Void>> updateCareer(
         @AuthenticationPrincipal Long userId,
         @PathVariable Long careerId,
         @Valid @RequestBody UpdateCareerRequest request
@@ -58,7 +58,7 @@ public class CareerController {
 
     @DeleteMapping("/{career-id}")
     @Operation(summary = "경력사항 삭제 API", description = "사용자의 경력사항을 삭제합니다")
-    public ResponseEntity<SuccessResponse> deleteCareer(
+    public ResponseEntity<SuccessResponse<Void>> deleteCareer(
             @AuthenticationPrincipal Long userId,
             @PathVariable("career-id") Long careerId
     ) {

@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.activity.service;
 
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.activity.dto.request.CreateActivityRequest;
+import org.sopt.certi_server.domain.activity.dto.request.UpdateActivityRequest;
 import org.sopt.certi_server.domain.activity.dto.response.ActivityDetailResponse;
 import org.sopt.certi_server.domain.activity.repository.ActivityRepository;
 import org.sopt.certi_server.domain.user.entity.Activity;
@@ -62,5 +63,26 @@ public class ActivityService {
         }
 
         activityRepository.deleteById(activityId);
+    }
+
+    @Transactional
+    public void updateActivity(Long userId, Long activityId, UpdateActivityRequest request) {
+        User user = userService.getUser(userId);
+
+        Activity activity = activityRepository.findById(activityId).orElseThrow(
+                () -> new NotFoundException(ErrorCode.ACTIVITY_NOT_FOUND)
+        );
+
+        if(activity.getUser() != user){
+            throw new ForbiddenException(ErrorCode.ACCESS_DENIED);
+        }
+
+        activity.updateAll(
+                request.name(),
+                request.description(),
+                request.startAt(),
+                request.endAt(),
+                request.place()
+        );
     }
 }

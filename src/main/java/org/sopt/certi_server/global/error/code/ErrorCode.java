@@ -1,6 +1,7 @@
 package org.sopt.certi_server.global.error.code;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
@@ -50,6 +51,7 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "E404016", "존재하지 않는 댓글입니다."),
     MISSING_HANDLER(HttpStatus.NOT_FOUND, "E404017", "URL을 찾을 수 없습니다."),
     COMMENT_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "E404018", "이미 취소된 좋아요입니다."),
+    ACTIVITY_NOT_FOUND(HttpStatus.NOT_FOUND, "E404019", "존재하지 않는 대외활동입니다."),
 
 
     /* 409 CONFLICT */

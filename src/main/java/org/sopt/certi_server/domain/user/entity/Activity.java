@@ -57,4 +57,18 @@ public class Activity {
         this.user = user;
     }
 
+    public void updateAll(
+        String name,
+        String description,
+        LocalDate startAt,
+        LocalDate endAt,
+        String place
+    ){
+        this.name = name;
+        this.description = description;
+        this.startAt = startAt;
+        this.endAt = endAt;
+        this.place = place;
+    }
+
 }
