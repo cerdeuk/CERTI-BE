@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.activity.dto.request.CreateActivityRequest;
+import org.sopt.certi_server.domain.activity.dto.request.UpdateActivityRequest;
 import org.sopt.certi_server.domain.activity.dto.response.ActivityDetailResponse;
 import org.sopt.certi_server.domain.activity.dto.response.GetActivityListResponse;
 import org.sopt.certi_server.domain.activity.service.ActivityService;
@@ -26,7 +27,7 @@ public class ActivityController {
 
     @PostMapping
     @Operation(summary = "대내외활동 추가 API", description = "대내외 활동을 추가합니다")
-    public ResponseEntity<SuccessResponse> createActivity(
+    public ResponseEntity<SuccessResponse<Void>> createActivity(
             @AuthenticationPrincipal Long userId,
             @Valid @RequestBody CreateActivityRequest request) {
         activityService.createActivity(userId, request);
@@ -44,9 +45,20 @@ public class ActivityController {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, activityListResponse));
     }
 
+    @PutMapping(value = "/{activity-id}")
+    @Operation(summary = "대외활동 수정 API", description = "대외활동 정보를 수정합니다.")
+    public ResponseEntity<SuccessResponse<Void>> updateActivity(
+            @AuthenticationPrincipal Long userId,
+            @PathVariable(name = "activity-id") Long activityId,
+            @Valid @RequestBody UpdateActivityRequest request
+    ){
+        activityService.updateActivity(userId, activityId, request);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
+    }
+
     @DeleteMapping("/{activity-id}")
     @Operation(summary = "대내외 활동 삭제 API", description = "대내외 활동을 삭제합니다")
-    public ResponseEntity<SuccessResponse> deleteActivity(
+    public ResponseEntity<SuccessResponse<Void>> deleteActivity(
             @AuthenticationPrincipal Long userId,
             @Parameter(description = "activity Id", example = "1")
             @PathVariable(name = "activity-id") Long activityId

@@ -2,8 +2,7 @@ package org.sopt.certi_server.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.user.dto.request.*;
@@ -61,7 +60,7 @@ public class UserController {
     @Operation(summary = "개인정보 수정 API", description = "개인정보를 수정합니다.")
     public ResponseEntity<SuccessResponse<Void>> putPersonalInformation(
             @AuthenticationPrincipal Long userId,
-            @RequestBody UpdateUserRequest request
+            @Valid @RequestBody UpdateUserRequest request
     ){
         userService.updateUserInformation(userId, request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
@@ -121,5 +120,31 @@ public class UserController {
             @AuthenticationPrincipal Long userId
     ){
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, userService.getTrack(userId)));
+    }
+
+    @GetMapping(value = "/presigned-url")
+    @Operation(summary = "presigned URL 반환 API", description = "Presigned URL을 반환합니다. 해당 URL을 통해 이미지를 업로드 할 수 있습니다.")
+    public ResponseEntity<SuccessResponse<GetPreSignedURLResponse>> getPreSignedURL(
+            @AuthenticationPrincipal Long userId
+    ){
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, userService.getPreSignedURL(userId)));
+    }
+
+
+    @GetMapping(value = "/marketing-agreement")
+    @Operation(summary = "광고성 수신 정보 동의 조회 API", description = "광고성 수신 정보 동의 정보를 조회합니다.")
+    public ResponseEntity<SuccessResponse<MarketingResponse>> getMarketingAgreeInformation(
+            @AuthenticationPrincipal Long userId
+    ){
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, userService.getMarketingAgree(userId)));
+    }
+
+    @PatchMapping(value = "/marketing-agreement")
+    @Operation(summary = "광고성 수신 정보 동의 토글 API", description = "광고성 수신 정보 동의를 토글식으로 변경합니다.")
+    public ResponseEntity<SuccessResponse<Void>> patchMarketingAgree(
+            @AuthenticationPrincipal Long userId
+    ){
+        userService.toggleMarketingAgree(userId);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
     }
 }

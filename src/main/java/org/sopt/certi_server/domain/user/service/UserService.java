@@ -9,6 +9,7 @@ import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
+import org.sopt.certi_server.domain.user.dto.request.PatchUserProfileImageRequest;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.*;
 import org.sopt.certi_server.domain.user.entity.University;
@@ -22,12 +23,14 @@ import org.sopt.certi_server.domain.userprecertification.repository.UserPreCerti
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.InvalidNicknameException;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
+import org.sopt.certi_server.global.s3.S3Service;
 import org.sopt.certi_server.global.valid.ProfanityFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +38,8 @@ import java.util.Objects;
 @Slf4j
 public class UserService {
 
+
+    private final S3Service s3Service;
     private final UserRepository userRepository;
     private final MajorImplRepository majorImplRepository;
     private final UserJobRepository userJobRepository;
@@ -147,7 +152,8 @@ public class UserService {
                 request.name(),
                 request.nickName(),
                 request.email(),
-                request.birthDate()
+                request.birthDate(),
+                request.publicURL()
         );
     }
 
@@ -161,7 +167,7 @@ public class UserService {
         validateKeyword(nickname);
     }
 
-    public void validateNickname(String nickname) {
+    public void validateNickname(final String nickname) {
 
         if(userRepository.existsByNickname(nickname)) {
             throw new InvalidNicknameException(ErrorCode.NICKNAME_DUPLICATE);
@@ -208,9 +214,29 @@ public class UserService {
         user.changeMajor(mi);
     }
 
-    public GetTrackResponse getTrack(Long userId) {
+    public GetTrackResponse getTrack(final Long userId) {
         User user = getUser(userId);
         return GetTrackResponse.of(user.getTrack());
     }
 
+    public MarketingResponse getMarketingAgree(final Long userId){
+        User user = getUser(userId);
+
+        return MarketingResponse.of(user.getMarketingAgree());
+    }
+
+    @Transactional
+    public void toggleMarketingAgree(final Long userId) {
+        User user = getUser(userId);
+
+        user.updateMarketingAgree();
+    }
+
+    public GetPreSignedURLResponse getPreSignedURL(final Long userId) {
+        String key = "profiles/user-" + userId + "/" + UUID.randomUUID();
+        String publicKey = s3Service.getPublicKey(key);
+        String preSignedURL = s3Service.getPreSignedUrlForUpload(key);
+
+        return GetPreSignedURLResponse.of(preSignedURL, publicKey);
+    }
 }

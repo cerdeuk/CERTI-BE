@@ -8,6 +8,7 @@ import java.util.List;
 @Builder
 public record GetMyPageInfoResponse(
         String nickname,
+        String profileImageURL,
         String email,
         GetJobResponse jobResponse,
         int upCount,
@@ -19,6 +20,7 @@ public record GetMyPageInfoResponse(
     ){
         return GetMyPageInfoResponse.builder()
                 .nickname(user.getNickname())
+                .profileImageURL(user.getProfileImageUrl())
                 .email(user.getEmail())
                 .jobResponse(jobResponse)
                 .upCount(upCount)

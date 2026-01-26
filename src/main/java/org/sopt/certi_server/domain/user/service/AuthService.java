@@ -139,6 +139,7 @@ public class AuthService {
                 .university(universityService.getUniversityByName(request.university()))
                 .socialType(request.userInformation().socialType())
                 .socialId(request.userInformation().socialId())
+                .marketingAgree(false)
                 .build();
     }
 

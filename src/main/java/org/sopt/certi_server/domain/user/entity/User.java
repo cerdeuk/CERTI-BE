@@ -61,6 +61,9 @@ public class User extends BaseTimeEntity {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Column(name = "marketing_agree")
+    private Boolean marketingAgree;
+
 
     public User(String nickname, String email, String profileImageUrl) {
         this.nickname = nickname;
@@ -70,7 +73,7 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(Long id, University university, String track, String grade, MajorImpl major, String nickname, String name, String email,
-                String profileImageUrl, SocialType socialType, Long socialId) {
+                String profileImageUrl, SocialType socialType, Long socialId, Boolean marketingAgree) {
         this.id = id;
         this.university = university;
         this.track = TrackType.from(track);
@@ -82,13 +85,15 @@ public class User extends BaseTimeEntity {
         this.profileImageUrl = profileImageUrl;
         this.socialType = socialType;
         this.socialId = socialId;
+        this.marketingAgree = marketingAgree;
     }
 
-    public void changeUser(String name, String nickname, String email, LocalDate birthDate){
+    public void changeUser(String name, String nickname, String email, LocalDate birthDate, String profileImageUrl){
         this.name = name;
         this.nickname = nickname;
         this.email = email;
         this.birthDate = birthDate;
+        this.profileImageUrl = profileImageUrl;
     }
 
     public void changeUniversity(University university) {
@@ -97,5 +102,13 @@ public class User extends BaseTimeEntity {
 
     public void changeMajor(MajorImpl mi) {
         this.major = mi;
+    }
+
+    public void updateMarketingAgree() {
+        this.marketingAgree = !this.marketingAgree;
+    }
+
+    public void updateProfileImage(String publicKey) {
+        this.profileImageUrl = publicKey;
     }
 }

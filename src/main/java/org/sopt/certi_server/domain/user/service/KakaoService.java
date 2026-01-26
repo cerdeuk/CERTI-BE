@@ -54,7 +54,7 @@ public class KakaoService implements SocialService {
     public OAuthUserInformation getUserInfoByAccessToken(String accessToken) {
         try {
             KakaoUserInformationResponse information = kakaoApiFeignClient.getInformation("Bearer " + accessToken);
-            log.info(information.kakaoAccount().profile().name());
+            log.info(information.kakaoAccount().profile().nickname());
             log.info(information.kakaoAccount().email());
             return OAuthUserInformation.from(information);
         } catch (Exception e) {

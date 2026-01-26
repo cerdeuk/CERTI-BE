@@ -18,7 +18,7 @@ public record OAuthUserInformation(
                 information.id(),
                 SocialType.KAKAO,
                 information.kakaoAccount().email(),
-                information.kakaoAccount().profile().name(),
+                information.kakaoAccount().profile().nickname(),
                 information.kakaoAccount().profile().profileImageUrl()
         );
     }
