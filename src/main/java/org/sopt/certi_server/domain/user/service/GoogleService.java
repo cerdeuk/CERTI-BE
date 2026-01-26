@@ -2,6 +2,7 @@ package org.sopt.certi_server.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.sopt.certi_server.domain.user.dto.request.google.GoogleTokenRequest;
 import org.sopt.certi_server.domain.user.dto.response.LoginUriResponse;
 import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
 import org.sopt.certi_server.domain.user.dto.response.google.GoogleOAuthResponse;
@@ -29,13 +30,12 @@ public class GoogleService implements SocialService{
     private String googleRedirectUri;
 
     private static final String GOOGLE_AUTH_URI = "https://accounts.google.com/o/oauth2/v2/auth";
-    private static final String REDIRECT_URI = "&redirect_uri=";
 
     @Override
     public LoginUriResponse getAuthorizationUri() {
         String uri = GOOGLE_AUTH_URI +
-                "?client-id=" + googleClientId +
-                "&redirect_uri=" + REDIRECT_URI +
+                "?client_id=" + googleClientId +
+                "&redirect_uri=" + googleRedirectUri +
                 "&response_type=code" +
                 "&scope=openid%20email%20profile";
 
@@ -66,11 +66,12 @@ public class GoogleService implements SocialService{
     public GoogleOAuthResponse getOAuthToken(String code){
         try{
             return googleOAuthFeignClient.getToken(
-                    code,
-                    googleClientId,
-                    googleClientSecret,
-                    REDIRECT_URI,
-                    "authorization_code"
+                code,
+                googleClientId,
+                googleClientSecret,
+                googleRedirectUri,
+                "authorization_code",
+                    ""
             );
         }catch (Exception e) {
             log.error("google oauth token 발급 실패: {}", e.getMessage());
