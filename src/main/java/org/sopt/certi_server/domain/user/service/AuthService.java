@@ -49,6 +49,7 @@ public class AuthService {
     private final UserMajorImplRepository userMajorImplRepository;
     private final JwtService jwtService;
     private final KakaoService kakaoService;
+    private final GoogleService googleService;
     private final UniversityService universityService;
     private final TokenService tokenService;
     private final UserService userService;
@@ -119,6 +120,7 @@ public class AuthService {
     public SocialService getSocialServiceByType(SocialType socialType) {
         return switch (socialType) {
             case KAKAO -> kakaoService;
+            case GOOGLE -> googleService;
             case APPLE -> null;
         };
     }
