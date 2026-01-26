@@ -1,5 +1,6 @@
 package org.sopt.certi_server.global.client.google;
 
+import org.sopt.certi_server.domain.user.dto.request.google.GoogleTokenRequest;
 import org.sopt.certi_server.domain.user.dto.response.google.GoogleOAuthResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
