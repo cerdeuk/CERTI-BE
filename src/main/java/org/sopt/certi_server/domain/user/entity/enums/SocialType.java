@@ -6,7 +6,7 @@ import org.sopt.certi_server.global.error.exception.NotFoundException;
 
 @Getter
 public enum SocialType {
-    KAKAO, APPLE;
+    KAKAO, APPLE, GOOGLE;
 
     public static SocialType from(String value) {
         try {

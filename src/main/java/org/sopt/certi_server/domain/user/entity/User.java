@@ -56,7 +56,7 @@ public class User extends BaseTimeEntity {
     private SocialType socialType;
 
     @Column(name = "social_id")
-    private Long socialId;
+    private String socialId;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
@@ -73,7 +73,7 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(Long id, University university, String track, String grade, MajorImpl major, String nickname, String name, String email,
-                String profileImageUrl, SocialType socialType, Long socialId, Boolean marketingAgree) {
+                String profileImageUrl, SocialType socialType, String socialId, Boolean marketingAgree) {
         this.id = id;
         this.university = university;
         this.track = TrackType.from(track);
