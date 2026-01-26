@@ -1,8 +1,11 @@
 package org.sopt.certi_server.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.user.dto.response.LoginUriResponse;
 import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
+import org.sopt.certi_server.domain.user.dto.response.google.GoogleOAuthResponse;
+import org.sopt.certi_server.domain.user.dto.response.google.GoogleUserInformation;
 import org.sopt.certi_server.global.client.google.GoogleApiFeignClient;
 import org.sopt.certi_server.global.client.google.GoogleOAuthFeignClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class GoogleService implements SocialService{
 
     private final GoogleOAuthFeignClient googleOAuthFeignClient;
@@ -24,18 +28,53 @@ public class GoogleService implements SocialService{
     @Value("${google.redirect-uri}")
     private String googleRedirectUri;
 
+    private static final String GOOGLE_AUTH_URI = "https://accounts.google.com/o/oauth2/v2/auth";
+    private static final String REDIRECT_URI = "&redirect_uri=";
+
     @Override
     public LoginUriResponse getAuthorizationUri() {
-        return null;
+        String uri = GOOGLE_AUTH_URI +
+                "?client-id=" + googleClientId +
+                "&redirect_uri=" + REDIRECT_URI +
+                "&response_type=code" +
+                "&scope=openid%20email%20profile";
+
+        return LoginUriResponse.of(uri);
     }
 
     @Override
     public OAuthUserInformation getUserInfo(String code) {
-        return null;
+
+        GoogleOAuthResponse oauth = getOAuthToken(code);
+        log.info("oauth info: {}", oauth);
+        String accessToken = oauth.accessToken();
+        log.info("google oauth access token: {}", accessToken);
+        return getUserInfoByAccessToken(accessToken);
     }
 
     @Override
     public OAuthUserInformation getUserInfoByAccessToken(String token) {
-        return null;
+        try{
+            GoogleUserInformation information = googleApiFeignClient.getUserInfo("Bearer " + token);
+            return OAuthUserInformation.from(information);
+        }catch (Exception e) {
+            log.error("google user data 획득 실패: {}", e.getMessage());
+            throw e;
+        }
+    }
+
+    public GoogleOAuthResponse getOAuthToken(String code){
+        try{
+            return googleOAuthFeignClient.getToken(
+                    code,
+                    googleClientId,
+                    googleClientSecret,
+                    REDIRECT_URI,
+                    "authorization_code"
+            );
+        }catch (Exception e) {
+            log.error("google oauth token 발급 실패: {}", e.getMessage());
+            throw e;
+        }
     }
 }

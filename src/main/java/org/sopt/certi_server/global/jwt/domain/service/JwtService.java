@@ -28,7 +28,7 @@ public class JwtService {
         return JwtResponse.of(accessToken, refreshToken);
     }
 
-    public String generatePreSignupToken(Long socialId){
+    public String generatePreSignupToken(String socialId){
         return jwtProvider.generatePreSignupToken(socialId);
     }
 

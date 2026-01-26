@@ -29,7 +29,7 @@ public class JwtProvider {
         return generateToken(Map.of(USER_ID, userId), jwtProperties.getRefreshTokenExpirationTime());
     }
 
-    public String generatePreSignupToken(Long socialId){
+    public String generatePreSignupToken(String socialId){
         return generateToken(Map.of(SOCIAL_ID, socialId), jwtProperties.getPreSignupTokenExpirationTime());
     }
 
