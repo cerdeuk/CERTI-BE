@@ -1,4 +1,4 @@
-package org.sopt.certi_server.global.client;
+package org.sopt.certi_server.global.client.kakao;
 
 import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoUserInformationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
