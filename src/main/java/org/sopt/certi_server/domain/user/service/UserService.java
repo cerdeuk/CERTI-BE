@@ -15,10 +15,8 @@ import org.sopt.certi_server.domain.user.dto.response.*;
 import org.sopt.certi_server.domain.user.entity.University;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
-import org.sopt.certi_server.domain.user.repository.CareerRepository;
-import org.sopt.certi_server.domain.user.repository.UniversityRepository;
-import org.sopt.certi_server.domain.user.repository.UserJobRepository;
-import org.sopt.certi_server.domain.user.repository.UserRepository;
+import org.sopt.certi_server.domain.user.entity.UserMajorImpl;
+import org.sopt.certi_server.domain.user.repository.*;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.InvalidNicknameException;
@@ -51,6 +49,7 @@ public class UserService {
     private final ActivityRepository activityRepository;
     private final ProfanityFilter profanityFilter;
     private final UniversityRepository universityRepository;
+    private final UserMajorImplRepository userMajorImplRepository;
 
     public User getUser(final Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
@@ -208,9 +207,12 @@ public class UserService {
     public void changeMajor(final Long userId, final String majorName) {
         User user = getUser(userId);
 
+        UserMajorImpl umi = userMajorImplRepository.findByUserId(userId);
+
         MajorImpl mi = majorImplRepository.findMajorImplByName(majorName)
                 .orElseThrow(() ->  new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
 
+        umi.changeMajor(mi);
         user.changeMajor(mi);
     }
 
