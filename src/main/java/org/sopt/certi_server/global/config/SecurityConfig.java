@@ -28,7 +28,6 @@ public class SecurityConfig {
             "/api/v1/auth/sign-up",
             "/api/v1/auth/sign-in",
             "/api/v1/auth/reissue",
-            "/api/v1/admin/**",
             "/api/v1/university/**",
             "/api/v1/major/**",
             "/actuator/**",
@@ -60,6 +59,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(HttpMethod.OPTIONS)
                         .permitAll() //OPTION추가
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers(WHITELIST)
                         .permitAll()
                         .anyRequest()

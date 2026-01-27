@@ -22,9 +22,9 @@ public class JwtService {
     private final JwtValidator jwtValidator;
     private final TokenService tokenService;
 
-    public JwtResponse issueToken(Long userId) {
-        String accessToken = jwtProvider.generateAccessToken(userId);
-        String refreshToken = jwtProvider.generateRefreshToken(userId);
+    public JwtResponse issueToken(Long userId, String role) {
+        String accessToken = jwtProvider.generateAccessToken(userId, role);
+        String refreshToken = jwtProvider.generateRefreshToken(userId, role);
         return JwtResponse.of(accessToken, refreshToken);
     }
 
@@ -47,6 +47,7 @@ public class JwtService {
         String refreshToken = jwtExtractor.extractToken(authorizationHeader);
         jwtValidator.validateRefreshToken(refreshToken); // 또는 refresh 전용 validator 추가 가능
         Long userId = jwtExtractor.extractUserId(refreshToken);
+        String role = jwtExtractor.extractRole(authorizationHeader);
 
         Token findRefreshToken = tokenService.getTokenByUserId(userId);
 
@@ -57,8 +58,8 @@ public class JwtService {
 
         tokenService.deleteRefreshToken(userId);
 
-        String newAccessToken = jwtProvider.generateAccessToken(userId);
-        String newRefreshToken = jwtProvider.generateRefreshToken(userId);
+        String newAccessToken = jwtProvider.generateAccessToken(userId, role);
+        String newRefreshToken = jwtProvider.generateRefreshToken(userId, role);
 
         tokenService.saveRefreshToken(userId, newRefreshToken);
 

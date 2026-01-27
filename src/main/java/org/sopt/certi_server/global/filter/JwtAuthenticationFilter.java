@@ -11,6 +11,7 @@ import org.sopt.certi_server.global.jwt.core.JwtExtractor;
 import org.sopt.certi_server.global.jwt.core.JwtValidator;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,7 +32,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/v1/auth/sign-up",
             "/api/v1/auth/sign-in",
             "/api/v1/auth/reissue",
-            "/api/v1/admin/**",
             "/api/v1/university/**",
             "/api/v1/major/**",
             "/actuator/**",
@@ -53,14 +53,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         Long userId = jwtExtractor.extractUserId(token);
-        authenticate(request, userId);
+        String role = jwtExtractor.extractRole(token);
+
+        log.info("role : {}", role);
+
+        authenticate(request, userId, role);
         filterChain.doFilter(request, response);
     }
 
-    private void authenticate(HttpServletRequest request, Long userId) {
+    private void authenticate(HttpServletRequest request, Long userId, String role) {
+
+        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
+
         SecurityContextHolder
                 .getContext()
-                .setAuthentication(new UsernamePasswordAuthenticationToken(userId, null, null));
+                .setAuthentication(new UsernamePasswordAuthenticationToken(userId, null, authorities));
     }
 
     @Override
