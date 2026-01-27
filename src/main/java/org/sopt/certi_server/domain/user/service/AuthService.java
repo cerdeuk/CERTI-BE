@@ -136,7 +136,6 @@ public class AuthService {
         MajorImpl majorImpl = majorImplRepository.findMajorImplByName(request.major())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
 
-
         return User.builder()
                 .email(request.userInformation().email())
                 .name(request.userInformation().name())
