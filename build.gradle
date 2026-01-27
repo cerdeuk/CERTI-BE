@@ -87,6 +87,9 @@ dependencies {
 
 	// ahocorasick(아호코라식) 의존성 추가
 	implementation 'org.ahocorasick:ahocorasick:0.6.3'
+
+	implementation 'com.nimbusds:nimbus-jose-jwt:9.37.3'
+
 }
 
 

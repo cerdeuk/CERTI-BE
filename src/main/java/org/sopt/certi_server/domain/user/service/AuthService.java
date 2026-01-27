@@ -59,6 +59,7 @@ public class AuthService {
     private final ActivityRepository activityRepository;
     private final CertificationCommentRepository certificationCommentRepository;
     private final CertificationCommentLikeRepository certificationCommentLikeRepository;
+    private final AppleOAuthService appleOAuthService;
 
     public AuthResponse login(OAuthUserInformation userInfo) {
         return userRepository.findBySocialTypeAndSocialId(userInfo.socialType(), userInfo.socialId())
@@ -119,7 +120,7 @@ public class AuthService {
     public SocialService getSocialServiceByType(SocialType socialType) {
         return switch (socialType) {
             case KAKAO -> kakaoService;
-            case APPLE -> null;
+            case APPLE -> appleOAuthService;
         };
     }
 
