@@ -64,7 +64,7 @@ public class AuthService {
     private final CertificationCommentLikeRepository certificationCommentLikeRepository;
     private final AppleOAuthService appleOAuthService;
 
-    public AuthResponse login(OAuthUserInformation userInfo) {
+	public AuthResponse login(OAuthUserInformation userInfo) {
         return userRepository.findBySocialTypeAndSocialId(userInfo.socialType(), userInfo.socialId())
                 .map(this::handleExistingUser)
                 .orElseGet(() -> handleNewUser(userInfo));
@@ -123,8 +123,8 @@ public class AuthService {
     public SocialService getSocialServiceByType(SocialType socialType) {
         return switch (socialType) {
             case KAKAO -> kakaoService;
-            case GOOGLE -> googleService;
             case APPLE -> appleOAuthService;
+            case GOOGLE -> googleService;
         };
     }
 
@@ -135,6 +135,7 @@ public class AuthService {
 
         MajorImpl majorImpl = majorImplRepository.findMajorImplByName(request.major())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
+
 
         return User.builder()
                 .email(request.userInformation().email())
