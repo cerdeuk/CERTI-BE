@@ -16,17 +16,18 @@ import java.util.Map;
 public class JwtProvider {
 
     private static final String USER_ID = "userId";
+    private static final String ROLE = "role";
     private static final String SOCIAL_ID = "socialId";
 
     private final JwtProperties jwtProperties;
     private final SecretKey secretKey;
 
-    public String generateAccessToken(Long userId) {
-        return generateToken(Map.of(USER_ID, userId), jwtProperties.getAccessTokenExpirationTime());
+    public String generateAccessToken(Long userId, String role) {
+        return generateToken(Map.of(USER_ID, userId, ROLE, role), jwtProperties.getAccessTokenExpirationTime());
     }
 
-    public String generateRefreshToken(Long userId) {
-        return generateToken(Map.of(USER_ID, userId), jwtProperties.getRefreshTokenExpirationTime());
+    public String generateRefreshToken(Long userId, String role) {
+        return generateToken(Map.of(USER_ID, userId, ROLE, role), jwtProperties.getRefreshTokenExpirationTime());
     }
 
     public String generatePreSignupToken(String socialId){
