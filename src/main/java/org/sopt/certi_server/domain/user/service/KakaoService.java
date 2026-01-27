@@ -6,8 +6,8 @@ import org.sopt.certi_server.domain.user.dto.response.LoginUriResponse;
 import org.sopt.certi_server.domain.user.dto.response.OAuthUserInformation;
 import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoOAuthResponse;
 import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoUserInformationResponse;
-import org.sopt.certi_server.global.client.KakaoApiFeignClient;
-import org.sopt.certi_server.global.client.KakaoOAuthFeignClient;
+import org.sopt.certi_server.global.client.kakao.KakaoApiFeignClient;
+import org.sopt.certi_server.global.client.kakao.KakaoOAuthFeignClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

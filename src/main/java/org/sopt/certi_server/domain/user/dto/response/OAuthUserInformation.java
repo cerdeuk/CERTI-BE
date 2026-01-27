@@ -1,11 +1,12 @@
 package org.sopt.certi_server.domain.user.dto.response;
 
 import jakarta.validation.constraints.NotEmpty;
+import org.sopt.certi_server.domain.user.dto.response.google.GoogleUserInformation;
 import org.sopt.certi_server.domain.user.dto.response.kakao.KakaoUserInformationResponse;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
 
 public record OAuthUserInformation(
-        Long socialId,
+        String socialId,
         SocialType socialType,
         String email,
         @NotEmpty(message = "사용자 닉네임 정보는 필수입니다.") String name,
@@ -15,11 +16,25 @@ public record OAuthUserInformation(
             KakaoUserInformationResponse information
     ) {
         return new OAuthUserInformation(
-                information.id(),
+                Long.toString(information.id()),
                 SocialType.KAKAO,
                 information.kakaoAccount().email(),
                 information.kakaoAccount().profile().nickname(),
                 information.kakaoAccount().profile().profileImageUrl()
         );
     }
+
+    public static OAuthUserInformation from(
+            GoogleUserInformation information
+    ) {
+        return new OAuthUserInformation(
+                information.sub(),
+                SocialType.GOOGLE,
+                information.email(),
+                information.name(),
+                information.picture()
+        );
+    }
+
+
 }
