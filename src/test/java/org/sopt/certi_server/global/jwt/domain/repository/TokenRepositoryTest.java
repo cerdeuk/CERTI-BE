@@ -16,8 +16,6 @@ class TokenRepositoryTest {
     @Autowired
     private TokenRepository tokenRepository;
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
 
     @DisplayName("Token 객체를 Redis에 저장하고 조회할 수 있다")
     @Test

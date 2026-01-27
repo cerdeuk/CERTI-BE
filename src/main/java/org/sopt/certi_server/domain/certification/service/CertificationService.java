@@ -37,7 +37,6 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@CacheConfig(cacheManager = "redisCacheManager")
 @Slf4j
 public class CertificationService {
 
@@ -52,10 +51,6 @@ public class CertificationService {
     private final FavoriteRepository favoriteRepository;
 
 
-    @Cacheable(
-            value = "certification",
-            key = "#certificationId"
-    )
     public CertificationDetailResponse getCertificationDetail(final Long certificationId) {
         Certification certification = getCertification(certificationId);
         return CertificationDetailResponse.from(certification);

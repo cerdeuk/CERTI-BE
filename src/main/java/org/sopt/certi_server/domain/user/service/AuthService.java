@@ -62,8 +62,9 @@ public class AuthService {
     private final ActivityRepository activityRepository;
     private final CertificationCommentRepository certificationCommentRepository;
     private final CertificationCommentLikeRepository certificationCommentLikeRepository;
+    private final AppleOAuthService appleOAuthService;
 
-    public AuthResponse login(OAuthUserInformation userInfo) {
+	public AuthResponse login(OAuthUserInformation userInfo) {
         return userRepository.findBySocialTypeAndSocialId(userInfo.socialType(), userInfo.socialId())
                 .map(this::handleExistingUser)
                 .orElseGet(() -> handleNewUser(userInfo));
@@ -122,8 +123,8 @@ public class AuthService {
     public SocialService getSocialServiceByType(SocialType socialType) {
         return switch (socialType) {
             case KAKAO -> kakaoService;
+            case APPLE -> appleOAuthService;
             case GOOGLE -> googleService;
-            case APPLE -> null;
         };
     }
 
