@@ -45,10 +45,10 @@ public class AppleOAuthService implements SocialService {
 
 		AppleTokenResponse token = appleOAuthFeignClient.token(body);
 
-		var claims = idTokenVerifier.verify(token.idToken()); // ✅ audience = appId
+		var claims = idTokenVerifier.verify(token.idToken());
 
 		return new OAuthUserInformation(
-			appleSubToLongIdStable(claims.subject()),
+			appleSubToLongIdStable(claims.subject()).toString(),
 			SocialType.APPLE,
 			claims.email(),
 			"APPLE_USER",
@@ -63,7 +63,7 @@ public class AppleOAuthService implements SocialService {
 		var claims = idTokenVerifier.verify(idToken);
 
 		return new OAuthUserInformation(
-			appleSubToLongIdStable(claims.subject()),
+			appleSubToLongIdStable(claims.subject()).toString(),
 			SocialType.APPLE,
 			claims.email(),
 			"APPLE_USER",
