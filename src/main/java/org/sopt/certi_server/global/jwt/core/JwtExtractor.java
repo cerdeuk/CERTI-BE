@@ -51,4 +51,14 @@ public class JwtExtractor {
         }
     }
 
+    public String extractRole(String token) {
+        Claims claims = extractClaims(token);
+        try {
+            return claims.get("role", String.class);
+        } catch (IllegalArgumentException e) {
+            log.error("토큰 유저 정보 누락: {}", e.getMessage());
+            throw new UnauthorizedException();
+        }
+    }
+
 }

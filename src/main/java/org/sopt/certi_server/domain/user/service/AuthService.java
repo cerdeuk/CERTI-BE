@@ -20,6 +20,7 @@ import org.sopt.certi_server.domain.user.dto.response.SignUpResponse;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.UserJob;
 import org.sopt.certi_server.domain.user.entity.UserMajorImpl;
+import org.sopt.certi_server.domain.user.entity.enums.Role;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
 import org.sopt.certi_server.domain.user.repository.CareerRepository;
 import org.sopt.certi_server.domain.user.repository.UserJobRepository;
@@ -52,6 +53,7 @@ public class AuthService {
     private final GoogleService googleService;
     private final UniversityService universityService;
     private final TokenService tokenService;
+    // UserService는 원래 원칙대로라면 참조하면 안됨, facade 패턴을 사용하던지, UserService와 AuthService를 통합하던지 해야할것같음
     private final UserService userService;
     private final UserPreCertificationRepository userPreCertificationRepository;
     private final AcquisitionRepository acquisitionRepository;
@@ -73,7 +75,7 @@ public class AuthService {
     }
 
     private AuthResponse handleExistingUser(final User user) {
-        JwtResponse jwtResponse = jwtService.issueToken(user.getId());
+        JwtResponse jwtResponse = jwtService.issueToken(user.getId(), user.getRole().name());
         return AuthResponse.ofRegisteredUser(user.getId(), user.getNickname(), jwtResponse);
     }
 
@@ -102,7 +104,7 @@ public class AuthService {
 
         userMajorImplRepository.save(UserMajorImpl.createUserMajorImpl(newUser, major));
 
-        JwtResponse token = jwtService.issueToken(newUser.getId());
+        JwtResponse token = jwtService.issueToken(newUser.getId(), newUser.getRole().name());
         tokenService.saveRefreshToken(newUser.getId(), token.refreshToken());
 
         return SignUpResponse.of(
@@ -126,9 +128,12 @@ public class AuthService {
     }
 
     private User convertDtoToEntity(SignupRequest request) {
+
+        // 유저 닉네임 검증
+        userService.validateNickname(request.nickname());
+
         MajorImpl majorImpl = majorImplRepository.findMajorImplByName(request.major())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
-
 
         return User.builder()
                 .email(request.userInformation().email())
@@ -142,6 +147,7 @@ public class AuthService {
                 .socialType(request.userInformation().socialType())
                 .socialId(request.userInformation().socialId())
                 .marketingAgree(false)
+                .role(Role.ROLE_USER)
                 .build();
     }
 

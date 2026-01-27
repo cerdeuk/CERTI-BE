@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.user.entity.enums.Grade;
+import org.sopt.certi_server.domain.user.entity.enums.Role;
 import org.sopt.certi_server.domain.user.entity.enums.SocialType;
 import org.sopt.certi_server.domain.user.entity.enums.TrackType;
 import org.sopt.certi_server.global.entity.BaseTimeEntity;
@@ -64,6 +65,10 @@ public class User extends BaseTimeEntity {
     @Column(name = "marketing_agree")
     private Boolean marketingAgree;
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
 
     public User(String nickname, String email, String profileImageUrl) {
         this.nickname = nickname;
@@ -73,7 +78,7 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(Long id, University university, String track, String grade, MajorImpl major, String nickname, String name, String email,
-                String profileImageUrl, SocialType socialType, String socialId, Boolean marketingAgree) {
+                String profileImageUrl, SocialType socialType, String socialId, Boolean marketingAgree, Role role) {
         this.id = id;
         this.university = university;
         this.track = TrackType.from(track);
@@ -86,6 +91,7 @@ public class User extends BaseTimeEntity {
         this.socialType = socialType;
         this.socialId = socialId;
         this.marketingAgree = marketingAgree;
+        this.role = role;
     }
 
     public void changeUser(String name, String nickname, String email, LocalDate birthDate, String profileImageUrl){
