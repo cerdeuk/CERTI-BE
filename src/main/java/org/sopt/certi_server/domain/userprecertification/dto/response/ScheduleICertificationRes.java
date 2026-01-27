@@ -19,8 +19,7 @@ public record ScheduleICertificationRes(
 	String expirationPeriod,
 	String city,
 	String state,
-	@JsonFormat()
-	LocalDateTime testDate,
+	String testDate,
 	boolean isAcquired
 ) {
 }
