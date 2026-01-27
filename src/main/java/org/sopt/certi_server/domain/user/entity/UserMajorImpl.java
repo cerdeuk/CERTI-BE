@@ -14,6 +14,9 @@ import org.sopt.certi_server.domain.major.entity.MajorImpl;
                 @Index(name = "user_id_idx", columnList = "user_id"),
                 @Index(name = "major_impl_id_idx", columnList = "major_impl_id"),
                 @Index(name = "user_id_major_impl_id_idx", columnList = "major_impl_id, user_id")
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "major_impl_id"})
         }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,5 +40,9 @@ public class UserMajorImpl {
 
     public static UserMajorImpl createUserMajorImpl(User user, MajorImpl major) {
         return new UserMajorImpl(user, major);
+    }
+
+    public void changeMajor(MajorImpl mi) {
+        this.majorImpl = mi;
     }
 }
