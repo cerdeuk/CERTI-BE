@@ -154,12 +154,21 @@ public class UserPreCertificationService {
         String time = upc.getTestDate() == null ? null : upc.getTestDate().toString();
 
         return new ScheduleICertificationRes(
-            upc.getId(),
-            certificationName,
-            certificationType,
-            description,
-            location,
-            time
+            upc.getCertification().getId(),
+            upc.getCertification().getName(),
+            upc.getCertification().getTags(),
+            upc.getCertification().getAveragePeriod(),
+            upc.getCertification().getCharge(),
+            upc.getCertification().getAgency().getName(),
+            upc.getCertification().getTestType().toString(),
+            upc.getCertification().getDescription(),
+            upc.getCertification().getApplicationMethod(),
+            upc.getCertification().getApplicationUrl(),
+            upc.getCertification().getExpirationPeriod(),
+            upc.getLocation().getCity(),
+            upc.getLocation().getState(),
+            upc.getTestDate().toString(),
+            true                  // isAcquired
         );
     }
 
