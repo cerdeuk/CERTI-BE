@@ -150,16 +150,26 @@ public class UserPreCertificationService {
 
         String description = upc.getCertification().getDescription();
 
-        String location = upc.getLocation() == null ? null : upc.getLocation().toString(); // Location 설계에 맞게 수정
-        String time = upc.getTestDate() == null ? null : upc.getTestDate().toString();
+        String city = upc.getLocation() == null ? null : upc.getLocation().getCity();
+        String state = upc.getLocation() == null ? null : upc.getLocation().getState();
+        String testDate = upc.getTestDate() == null ? null : upc.getTestDate().toString();
 
         return new ScheduleICertificationRes(
-            upc.getId(),
+            upc.getCertification().getId(),
             certificationName,
-            certificationType,
+            upc.getCertification().getTags(),
+            upc.getCertification().getAveragePeriod(),
+            upc.getCertification().getCharge(),
+            upc.getCertification().getAgency().getName(),
+            upc.getCertification().getTestType().toString(),
             description,
-            location,
-            time
+            upc.getCertification().getApplicationMethod(),
+            upc.getCertification().getApplicationUrl(),
+            upc.getCertification().getExpirationPeriod(),
+            city,
+            state,
+            testDate,
+            true                  // isAcquired
         );
     }
 

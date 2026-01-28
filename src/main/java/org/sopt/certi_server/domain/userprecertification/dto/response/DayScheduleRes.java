@@ -5,5 +5,5 @@ import java.util.List;
 
 public record DayScheduleRes(
 	LocalDate date,
-	List<ScheduleICertificationRes> items // 없으면 null
+	List<ScheduleICertificationRes> certifications // 없으면 null
 ) {}
