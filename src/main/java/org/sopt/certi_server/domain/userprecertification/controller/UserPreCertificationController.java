@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -84,7 +85,14 @@ public class UserPreCertificationController {
     @Operation(summary = "일별 취득예정 자격증 조회", description = "캘린더에서 일별 취득예정 자격증을 조회합니다")
     public ResponseEntity<SuccessResponse<DayScheduleRes>> getDay(
         @AuthenticationPrincipal Long userId,
-        @RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+        @Parameter(
+            description = "조회 날짜 (YYYY-MM-DD)",
+            example = "2026-01-28",
+            schema = @Schema(type = "string", format = "date")
+        )
+        @RequestParam(required = true)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        LocalDate date
     ){
         DayScheduleRes dayScheduleRes = userPreCertificationService.getDaySchedules(userId, date);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, dayScheduleRes));
