@@ -169,7 +169,7 @@ public class UserPreCertificationService {
             city,
             state,
             testDate,
-            true                  // isAcquired
+            false                // isAcquired
         );
     }
 
