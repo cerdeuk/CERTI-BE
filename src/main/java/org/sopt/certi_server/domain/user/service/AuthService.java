@@ -148,6 +148,7 @@ public class AuthService {
                 .socialType(request.userInformation().socialType())
                 .socialId(request.userInformation().socialId())
                 .marketingAgree(false)
+                .privacyAgree(false)
                 .role(Role.ROLE_USER)
                 .build();
     }

@@ -131,20 +131,31 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "/marketing-agreement")
-    @Operation(summary = "광고성 수신 정보 동의 조회 API", description = "광고성 수신 정보 동의 정보를 조회합니다.")
-    public ResponseEntity<SuccessResponse<MarketingResponse>> getMarketingAgreeInformation(
+    @GetMapping(value = "/agreement")
+    @Operation(summary = "광고성 수신 정보 및 개인정보 수집 동의 조회 API", description = "광고성 수신 정보 및 개인정보 수집 동의 정보를 조회합니다.")
+    public ResponseEntity<SuccessResponse<AgreementResponse>> getMarketingAgreeInformation(
             @AuthenticationPrincipal Long userId
     ){
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, userService.getMarketingAgree(userId)));
     }
 
     @PatchMapping(value = "/marketing-agreement")
-    @Operation(summary = "광고성 수신 정보 동의 토글 API", description = "광고성 수신 정보 동의를 토글식으로 변경합니다.")
+    @Operation(summary = "광고성 수신 정보 동의 API", description = "광고성 수신 정보 동의를 변경합니다.")
     public ResponseEntity<SuccessResponse<Void>> patchMarketingAgree(
-            @AuthenticationPrincipal Long userId
+            @AuthenticationPrincipal Long userId,
+            @RequestBody UpdateAgreementRequest request
     ){
-        userService.toggleMarketingAgree(userId);
+        userService.toggleMarketingAgree(userId, request);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
+    }
+
+    @PatchMapping(value = "/privacy-agreement")
+    @Operation(summary = "개인정보 수집 동의 토글 API", description = "개인정보 수집 동의를 변경합니다.")
+    public ResponseEntity<SuccessResponse<Void>> patchPrivacyAgree(
+            @AuthenticationPrincipal Long userId,
+            @RequestBody UpdateAgreementRequest request
+    ){
+        userService.updatePrivacyAgree(userId, request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
     }
 }
