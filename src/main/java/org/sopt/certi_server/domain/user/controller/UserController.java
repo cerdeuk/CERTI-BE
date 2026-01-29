@@ -140,20 +140,20 @@ public class UserController {
     }
 
     @PatchMapping(value = "/marketing-agreement")
-    @Operation(summary = "광고성 수신 정보 동의 API", description = "광고성 수신 정보 동의를 변경합니다.")
+    @Operation(summary = "광고성 정보 수신 동의 수정 API", description = "광고성 수신 정보 동의를 변경합니다.")
     public ResponseEntity<SuccessResponse<Void>> patchMarketingAgree(
             @AuthenticationPrincipal Long userId,
-            @RequestBody UpdateAgreementRequest request
+            @Valid @RequestBody UpdateAgreementRequest request
     ){
         userService.toggleMarketingAgree(userId, request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
     }
 
     @PatchMapping(value = "/privacy-agreement")
-    @Operation(summary = "개인정보 수집 동의 토글 API", description = "개인정보 수집 동의를 변경합니다.")
+    @Operation(summary = "개인정보 수집 동의 수정 API", description = "개인정보 수집 동의를 변경합니다.")
     public ResponseEntity<SuccessResponse<Void>> patchPrivacyAgree(
             @AuthenticationPrincipal Long userId,
-            @RequestBody UpdateAgreementRequest request
+            @Valid @RequestBody UpdateAgreementRequest request
     ){
         userService.updatePrivacyAgree(userId, request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
