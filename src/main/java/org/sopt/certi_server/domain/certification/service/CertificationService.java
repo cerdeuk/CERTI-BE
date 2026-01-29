@@ -3,6 +3,7 @@ package org.sopt.certi_server.domain.certification.service;
 import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
 import org.sopt.certi_server.domain.certification.dto.response.*;
 import org.sopt.certi_server.domain.certification.entity.*;
@@ -19,6 +20,8 @@ import org.sopt.certi_server.domain.major.repository.MajorRepository;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.sopt.certi_server.domain.user.entity.enums.TrackType;
 import org.sopt.certi_server.domain.user.service.UserService;
+import org.sopt.certi_server.domain.userprecertification.entity.UserPreCertification;
+import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.cache.annotation.CacheConfig;
@@ -49,11 +52,22 @@ public class CertificationService {
     private final CertificationRepositoryCustomImpl certificationRepositoryCustomImpl;
     private final UserService userService;
     private final FavoriteRepository favoriteRepository;
+    private final AcquisitionRepository acquisitionRepository;
+    private final UserPreCertificationRepository userPreCertificationRepository;
 
 
-    public CertificationDetailResponse getCertificationDetail(final Long certificationId) {
+    public CertificationDetailResponse getCertificationDetail(final Long userId, final Long certificationId) {
+        User user = userService.getUser(userId);
         Certification certification = getCertification(certificationId);
-        return CertificationDetailResponse.from(certification);
+
+        boolean acExists = acquisitionRepository.existsByUserAndCertification(user, certification);
+        boolean prExists = userPreCertificationRepository.existsByUserAndCertification(user, certification);
+
+        String state = "NORMAL";
+        if(acExists) state = "ACQUISITION";
+        if(prExists) state = "ANTICIPATED";
+
+        return CertificationDetailResponse.from(certification, state);
     }
 
     @Transactional

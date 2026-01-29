@@ -121,9 +121,9 @@ public class AdminService {
     @Transactional
     public void addCertificationMajor(CertificationMajorCreateRequest request) {
 
-        Major major = majorRepository.findByName(request.majorName())
+        Major major = majorRepository.findById(request.majorId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
-        Certification certification = certificationRepository.findByName(request.certificationName())
+        Certification certification = certificationRepository.findById(request.certificationId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CERTIFICATION_NOT_FOUND));
 
         try {
@@ -145,9 +145,9 @@ public class AdminService {
     @Transactional
     public void addCertificationJob(CertificationJobCreateRequest request) {
 
-        Job job = jobRepository.findByName(request.jobName())
+        Job job = jobRepository.findById(request.jobId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
-        Certification certification = certificationRepository.findByName(request.certificationName())
+        Certification certification = certificationRepository.findById(request.certificationId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CERTIFICATION_NOT_FOUND));
 
         try {
@@ -157,4 +157,18 @@ public class AdminService {
         }
     }
 
+    @Transactional
+    public void updateCertificationMajor(CertificationMajorPatchRequest request) {
+        CertificationMajor certificationMajor = certificationMajorRepository.findByCertificationIdAndMajorId(request.certificationId(), request.majorImplId())
+                .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+        certificationMajor.updateWeight(request.weight());
+    }
+
+    @Transactional
+    public void updateCertificationJob(CertificationJobPatchRequest request) {
+        CertificationJob certificationJob = certificationJobRepository.findByCertificationIdAndJobId(request.certificationId(), request.jobId())
+                .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+
+        certificationJob.updateWeight(request.weight());
+    }
 }
