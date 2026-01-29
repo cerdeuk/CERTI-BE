@@ -9,7 +9,7 @@ import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
 import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
-import org.sopt.certi_server.domain.user.dto.request.PatchUserProfileImageRequest;
+import org.sopt.certi_server.domain.user.dto.request.UpdateAgreementRequest;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
 import org.sopt.certi_server.domain.user.dto.response.*;
 import org.sopt.certi_server.domain.user.entity.University;
@@ -221,17 +221,17 @@ public class UserService {
         return GetTrackResponse.of(user.getTrack());
     }
 
-    public MarketingResponse getMarketingAgree(final Long userId){
+    public AgreementResponse getMarketingAgree(final Long userId){
         User user = getUser(userId);
 
-        return MarketingResponse.of(user.getMarketingAgree());
+        return AgreementResponse.of(user.getMarketingAgree(), user.getPrivacyAgree());
     }
 
     @Transactional
-    public void toggleMarketingAgree(final Long userId) {
+    public void toggleMarketingAgree(final Long userId, UpdateAgreementRequest request) {
         User user = getUser(userId);
 
-        user.updateMarketingAgree();
+        user.updateMarketingAgree(request.isAgreed());
     }
 
     public GetPreSignedURLResponse getPreSignedURL(final Long userId) {
@@ -240,5 +240,12 @@ public class UserService {
         String preSignedURL = s3Service.getPreSignedUrlForUpload(key);
 
         return GetPreSignedURLResponse.of(preSignedURL, publicKey);
+    }
+
+    @Transactional
+    public void updatePrivacyAgree(Long userId, UpdateAgreementRequest request) {
+        User user = getUser(userId);
+
+        user.updatePrivacyAgree(request.isAgreed());
     }
 }

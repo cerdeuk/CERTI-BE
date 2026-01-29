@@ -65,6 +65,9 @@ public class User extends BaseTimeEntity {
     @Column(name = "marketing_agree")
     private Boolean marketingAgree;
 
+    @Column(name = "privacy_agree")
+    private Boolean privacyAgree;
+
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -78,7 +81,7 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(Long id, University university, String track, String grade, MajorImpl major, String nickname, String name, String email,
-                String profileImageUrl, SocialType socialType, String socialId, Boolean marketingAgree, Role role) {
+                String profileImageUrl, SocialType socialType, String socialId, Boolean marketingAgree, Boolean privacyAgree, Role role) {
         this.id = id;
         this.university = university;
         this.track = TrackType.from(track);
@@ -91,6 +94,7 @@ public class User extends BaseTimeEntity {
         this.socialType = socialType;
         this.socialId = socialId;
         this.marketingAgree = marketingAgree;
+        this.privacyAgree = privacyAgree;
         this.role = role;
     }
 
@@ -110,11 +114,15 @@ public class User extends BaseTimeEntity {
         this.major = mi;
     }
 
-    public void updateMarketingAgree() {
-        this.marketingAgree = !this.marketingAgree;
+    public void updateMarketingAgree(Boolean agreed) {
+        this.marketingAgree = agreed;
     }
 
     public void updateProfileImage(String publicKey) {
         this.profileImageUrl = publicKey;
+    }
+
+    public void updatePrivacyAgree(Boolean agreed) {
+        this.privacyAgree = agreed;
     }
 }
