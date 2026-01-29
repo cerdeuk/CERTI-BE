@@ -20,11 +20,12 @@ public record CertificationDetailResponse(
         String testDateInformation,
         String applicationMethod,
         String applicationUrl,
-        String expirationPeriod
+        String expirationPeriod,
+        String state
 
 
 ) {
-    public static CertificationDetailResponse from(Certification certification) {
+    public static CertificationDetailResponse from(Certification certification, String state) {
         return new CertificationDetailResponse(
                 certification.getId(),
                 certification.getName(),
@@ -37,7 +38,8 @@ public record CertificationDetailResponse(
                 certification.getTestDateInformation(),
                 certification.getApplicationMethod(),
                 certification.getApplicationUrl(),
-                certification.getExpirationPeriod()
+                certification.getExpirationPeriod(),
+                state
         );
     }
 }

@@ -47,4 +47,7 @@ public class CertificationMajor {
         this.major = major;
     }
 
+    public void updateWeight(Double weight) {
+        this.weight = weight;
+    }
 }

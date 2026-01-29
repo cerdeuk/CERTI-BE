@@ -47,4 +47,8 @@ public class CertificationJob {
     public void updateJob(Job job) {
         this.job = job;
     }
+
+    public void updateWeight(Double weight) {
+        this.weight = weight;
+    }
 }
