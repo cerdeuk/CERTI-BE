@@ -15,7 +15,7 @@ public class MessageFormatter {
 			"유저 아이디 : %d\n" +
 			"유저 닉네임 : %s\n\n" +
 			"[신고된 댓글 작성자]\n" +
-			"유저 아이디 : %d\n" +
+			"유저 아이디 : %s\n" +
 			"유저 닉네임 : %s\n\n" +
 			"[신고된 댓글 내용]\n%s\n```";
 
@@ -23,6 +23,9 @@ public class MessageFormatter {
 		CertificationComment comment = report.getCertificationComment();
 		User reporter = report.getUser();
 		User commentWriter = comment.getUser();
+		String commentWriterId = (commentWriter != null) ? String.valueOf(commentWriter.getId()) : "알수없음";
+		String commentWriterNickname = (commentWriter != null) ? commentWriter.getNickname() : "탈퇴한 사용자";
+		String content = (comment.getContent() != null) ? comment.getContent() : "(삭제된 댓글)";
 
 		return String.format(
 			COMMENT_REPORT_MESSAGE,
@@ -30,9 +33,9 @@ public class MessageFormatter {
 			comment.getId(),
 			reporter.getId(),
 			reporter.getNickname(),
-			commentWriter.getId(),
-			commentWriter.getNickname(),
-			comment.getContent()
+			commentWriterId,
+			commentWriterNickname,
+			content
 		);
 	}
 }

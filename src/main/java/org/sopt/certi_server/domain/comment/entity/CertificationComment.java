@@ -41,7 +41,7 @@ public class CertificationComment extends BaseTimeEntity {
     @Column(name = "like_count")
     private Long likeCount = 0L;
 
-    @Column(name = "deleted_at", nullable = false)
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     @Builder
