@@ -3,6 +3,7 @@ package org.sopt.certi_server.domain.certification.dto.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.sopt.certi_server.domain.user.entity.enums.TrackType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +23,7 @@ public record CertificationCreateRequest(
         List<String> tags,
         String expirationPeriod,
         String applicationMethod,
-        String applicationUrl
+        String applicationUrl,
+        TrackType trackType
 ) {
 }

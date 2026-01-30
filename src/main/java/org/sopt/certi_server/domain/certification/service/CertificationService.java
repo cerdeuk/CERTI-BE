@@ -54,6 +54,7 @@ public class CertificationService {
     private final FavoriteRepository favoriteRepository;
     private final AcquisitionRepository acquisitionRepository;
     private final UserPreCertificationRepository userPreCertificationRepository;
+    private final CertificationTrackRepository certificationTrackRepository;
 
 
     public CertificationDetailResponse getCertificationDetail(final Long userId, final Long certificationId) {
@@ -75,6 +76,15 @@ public class CertificationService {
         Certification newCertification = convertDtoToEntity(request);
 
         certificationRepository.save(newCertification);
+
+        TrackType trackType = request.trackType();
+
+        CertificationTrack ct = CertificationTrack.builder()
+                .certification(newCertification)
+                .track(trackType)
+                .build();
+
+        certificationTrackRepository.save(ct);
     }
 
 

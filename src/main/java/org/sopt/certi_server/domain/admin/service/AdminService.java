@@ -21,8 +21,11 @@ import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.major.repository.MajorRepository;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.dto.PageResponse;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,15 +66,17 @@ public class AdminService {
         );
     }
 
-    public AdminCertificationListResponse getAllCertifications() {
+    public PageResponse<AdminCertificationResponse> getAllCertifications(PageRequest request) {
 
-        List<Certification> allCertifications = certificationRepository.findAll();
+        Pageable pageable = request.toPageable();
 
-        return AdminCertificationListResponse.of(
-                allCertifications.stream()
-                        .map(AdminCertificationResponse::from)
-                        .toList()
+        Page<Certification> allCertifications = certificationRepository.findAll(pageable);
+        Page<AdminCertificationResponse> acrPage = allCertifications.map(
+                AdminCertificationResponse::from
         );
+
+
+        return PageResponse.from(acrPage);
     }
 
     @Transactional
