@@ -210,4 +210,9 @@ public class CertificationCommentService {
             certificationCommentRepository.incrementLikeCount(commentId);
         }
     }
+
+    public CertificationComment getComment(Long commentId){
+        return certificationCommentRepository.findById(commentId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.COMMENT_NOT_FOUND));
+    }
 }
