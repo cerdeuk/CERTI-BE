@@ -54,7 +54,7 @@ public class CertificationCommentController {
                 page = 0,
                 size = 10,
                 sort = "id",
-                direction = Sort.Direction.DESC
+                direction = Sort.Direction.ASC
         ) final Pageable pageable
     ){
         Page<CertificationCommentResponse> responsePage = certificationCommentService.getCommentsByCertification(userId, certificationId, pageable);
