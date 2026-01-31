@@ -11,11 +11,9 @@ import org.sopt.certi_server.domain.major.entity.MajorImpl;
 import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.user.dto.request.UpdateAgreementRequest;
 import org.sopt.certi_server.domain.user.dto.request.UpdateUserRequest;
+import org.sopt.certi_server.domain.user.dto.request.UserBlockRequest;
 import org.sopt.certi_server.domain.user.dto.response.*;
-import org.sopt.certi_server.domain.user.entity.University;
-import org.sopt.certi_server.domain.user.entity.User;
-import org.sopt.certi_server.domain.user.entity.UserJob;
-import org.sopt.certi_server.domain.user.entity.UserMajorImpl;
+import org.sopt.certi_server.domain.user.entity.*;
 import org.sopt.certi_server.domain.user.repository.*;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
@@ -50,6 +48,7 @@ public class UserService {
     private final ProfanityFilter profanityFilter;
     private final UniversityRepository universityRepository;
     private final UserMajorImplRepository userMajorImplRepository;
+    private final UserBlockRepository userBlockRepository;
 
     public User getUser(final Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
@@ -247,5 +246,17 @@ public class UserService {
         User user = getUser(userId);
 
         user.updatePrivacyAgree(request.isAgreed());
+    }
+
+    @Transactional
+    public void blockUser(Long userId, UserBlockRequest request) {
+
+        User blocker = getUser(userId);
+        User blocked = getUser(request.userId());
+
+        userBlockRepository.save(UserBlock.builder()
+                        .blocker(blocker)
+                        .blocked(blocked)
+                .build());
     }
 }

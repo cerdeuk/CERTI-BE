@@ -158,4 +158,15 @@ public class UserController {
         userService.updatePrivacyAgree(userId, request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
     }
+
+    @PostMapping(value = "/block")
+    @Operation(summary = "특정 사용자 차단 API", description = "특정 사용자를 차단합니다.")
+    public ResponseEntity<SuccessResponse<Void>> blockUser(
+            @AuthenticationPrincipal Long userId,
+            @Valid @RequestBody UserBlockRequest request
+    ){
+        userService.blockUser(userId, request);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
+    }
+
 }
