@@ -5,6 +5,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.comment.entity.CertificationComment;
 import org.sopt.certi_server.domain.comment.entity.QCertificationComment;
 import org.sopt.certi_server.domain.user.entity.QUserBlock;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Slf4j
 public class CertificationCommentRepositoryCustomImpl implements CertificationCommentRepositoryCustom{
 
     private final JPAQueryFactory jpaQueryFactory;
@@ -85,6 +87,7 @@ public class CertificationCommentRepositoryCustomImpl implements CertificationCo
             }
         } else {
             // 기본 정렬값: 최신순
+            log.info("기본 정렬 호출");
             orders.add(new OrderSpecifier<>(Order.DESC, comment.createdTime));
         }
 
