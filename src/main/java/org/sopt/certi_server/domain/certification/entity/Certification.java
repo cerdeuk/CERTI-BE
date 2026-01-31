@@ -69,6 +69,7 @@ public class Certification extends BaseTimeEntity {
     @Column(name = "expiration_period", nullable = false)
     private String expirationPeriod;
 
+
     @Builder
     public Certification(Long id, Agency agency, String name, CertificationType certificationType, TestType testType, String averagePeriod, String charge,
                          List<String> tags, String description, String testDateInformation, LocalDate nearestTestDate,

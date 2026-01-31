@@ -31,9 +31,10 @@ public class CertificationController {
     @GetMapping(value = "/{certificationId}")
     @Operation(summary = "자격증 조회 API", description = "자격증을 조회합니다")
     public ResponseEntity<SuccessResponse<CertificationDetailResponse>> getCertification(
+            @AuthenticationPrincipal Long userId,
             @Parameter(description = "certificatio Id", example = "1")
             @PathVariable Long certificationId) {
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.getCertificationDetail(certificationId)));
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, certificationService.getCertificationDetail(userId, certificationId)));
     }
 
     @GetMapping(value = "/search")

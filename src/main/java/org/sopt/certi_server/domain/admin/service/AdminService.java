@@ -21,8 +21,11 @@ import org.sopt.certi_server.domain.major.repository.MajorImplRepository;
 import org.sopt.certi_server.domain.major.repository.MajorRepository;
 import org.sopt.certi_server.domain.userprecertification.repository.UserPreCertificationRepository;
 import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.dto.PageResponse;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,15 +66,17 @@ public class AdminService {
         );
     }
 
-    public AdminCertificationListResponse getAllCertifications() {
+    public PageResponse<AdminCertificationResponse> getAllCertifications(PageRequest request) {
 
-        List<Certification> allCertifications = certificationRepository.findAll();
+        Pageable pageable = request.toPageable();
 
-        return AdminCertificationListResponse.of(
-                allCertifications.stream()
-                        .map(AdminCertificationResponse::from)
-                        .toList()
+        Page<Certification> allCertifications = certificationRepository.findAll(pageable);
+        Page<AdminCertificationResponse> acrPage = allCertifications.map(
+                AdminCertificationResponse::from
         );
+
+
+        return PageResponse.from(acrPage);
     }
 
     @Transactional
@@ -121,9 +126,9 @@ public class AdminService {
     @Transactional
     public void addCertificationMajor(CertificationMajorCreateRequest request) {
 
-        Major major = majorRepository.findByName(request.majorName())
+        Major major = majorRepository.findById(request.majorId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MAJOR_NOT_FOUND));
-        Certification certification = certificationRepository.findByName(request.certificationName())
+        Certification certification = certificationRepository.findById(request.certificationId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CERTIFICATION_NOT_FOUND));
 
         try {
@@ -145,9 +150,9 @@ public class AdminService {
     @Transactional
     public void addCertificationJob(CertificationJobCreateRequest request) {
 
-        Job job = jobRepository.findByName(request.jobName())
+        Job job = jobRepository.findById(request.jobId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.JOB_NOT_FOUND));
-        Certification certification = certificationRepository.findByName(request.certificationName())
+        Certification certification = certificationRepository.findById(request.certificationId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CERTIFICATION_NOT_FOUND));
 
         try {
@@ -157,4 +162,18 @@ public class AdminService {
         }
     }
 
+    @Transactional
+    public void updateCertificationMajor(CertificationMajorPatchRequest request) {
+        CertificationMajor certificationMajor = certificationMajorRepository.findByCertificationIdAndMajorId(request.certificationId(), request.majorImplId())
+                .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+        certificationMajor.updateWeight(request.weight());
+    }
+
+    @Transactional
+    public void updateCertificationJob(CertificationJobPatchRequest request) {
+        CertificationJob certificationJob = certificationJobRepository.findByCertificationIdAndJobId(request.certificationId(), request.jobId())
+                .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
+
+        certificationJob.updateWeight(request.weight());
+    }
 }

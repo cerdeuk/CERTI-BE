@@ -37,4 +37,6 @@ public interface CertificationMajorRepository extends JpaRepository<Certificatio
                     where cm.major.id in :majorIds
             """)
     List<CertificationMajor> findByMajorIds(List<Long> majorIds);
+
+    Optional<CertificationMajor> findByCertificationIdAndMajorId(Long certificationId, Long majorId);
 }

@@ -39,4 +39,5 @@ public interface CertificationJobRepository extends JpaRepository<CertificationJ
     List<CertificationJob> findByJobIds(List<Long> jobIds);
 
 
+    Optional<CertificationJob> findByCertificationIdAndJobId(Long certificationId, Long jobId);
 }
