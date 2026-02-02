@@ -95,7 +95,7 @@ public class CertificationController {
     }
 
     @GetMapping("/job")
-    @Operation(summary = "직무별 자격증 조회 API", description = "3순위 직무별 자격증을 조회합니다")
+    @Operation(summary = "직무별 3순위 자격증 조회 API", description = "3순위 직무별 자격증을 조회합니다")
     public ResponseEntity<SuccessResponse<?>> getTop3ByJob(
         @AuthenticationPrincipal Long userId
     ){
@@ -104,7 +104,7 @@ public class CertificationController {
     }
 
     @GetMapping("/track")
-    @Operation(summary = "계열별 자격증 조회 API", description = "3순위 계열별 자격증을 조회합니다")
+    @Operation(summary = "계열별 3순위 자격증 조회 API", description = "3순위 계열별 자격증을 조회합니다")
     public ResponseEntity<SuccessResponse<?>> getTop3ByTrack(
         @AuthenticationPrincipal Long userId
     ) {
