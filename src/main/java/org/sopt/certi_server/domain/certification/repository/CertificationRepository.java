@@ -3,8 +3,11 @@ package org.sopt.certi_server.domain.certification.repository;
 import org.sopt.certi_server.domain.certification.dto.response.CertificationSimple;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.user.entity.User;
+import org.sopt.certi_server.domain.user.entity.enums.TrackType;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,4 +32,31 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
 
     @Query("SELECT c FROM Certification c LEFT JOIN FETCH c.tags WHERE c.id = :id")
     Optional<Certification> findByIdWithTags(Long id);
+
+    @Query("""
+        select c
+        from Certification c
+            left join Favorite f on f.certification = c
+            left join f.user u on u.track = :track
+        group by c
+        order by count(f) desc
+""")
+    List<Certification> findTopCertificationsByTrack(
+        @Param("track") TrackType track,
+        Pageable pageable);
+
+
+    @Query("""
+        select c
+        from Certification c
+            left join Favorite f on f.certification = c
+            join CertificationJob cj on cj.certification = c
+        where cj.job.id = :jobId
+        group by c
+        order by count(f) desc
+""")
+    List<Certification> findTopByJobOrderByFavoriteCount(
+        @Param("jobId") Long jobId,
+        Pageable pageable
+    );
 }
