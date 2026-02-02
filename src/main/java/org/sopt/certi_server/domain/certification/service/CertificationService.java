@@ -222,7 +222,7 @@ public class CertificationService {
 
         Pageable top3 = PageRequest.of(0, 3);
         List<Certification> certList =
-            favoriteRepository.findTopByJobOrderByFavoriteCount(job.getId(), top3);
+            certificationRepository.findTopByJobOrderByFavoriteCount(job.getId(), top3);
 
         AtomicInteger rank = new AtomicInteger(1);
 
@@ -237,7 +237,7 @@ public class CertificationService {
 
         Pageable top3 = PageRequest.of(0, 3);
 
-        List<Certification> certificationList = favoriteRepository.findTopCertificationsByTrack(trackType, top3);
+        List<Certification> certificationList = certificationRepository.findTopCertificationsByTrack(trackType, top3);
 
         AtomicInteger rank = new AtomicInteger(1);
 
