@@ -117,3 +117,4 @@ clean {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+

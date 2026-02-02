@@ -134,7 +134,8 @@ class UserServiceTest {
                     "이성민",
                     "leesung2925@gmail.com",
                     "이뿡빵",
-                    LocalDate.of(2000, 2, 29)
+                    LocalDate.of(2000, 2, 29),
+                    "https://community.linkareer.com/written_test/2629945"
             );
 
             // When

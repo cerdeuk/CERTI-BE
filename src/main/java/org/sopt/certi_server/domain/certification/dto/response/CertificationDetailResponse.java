@@ -2,10 +2,8 @@ package org.sopt.certi_server.domain.certification.dto.response;
 
 import lombok.Builder;
 import org.sopt.certi_server.domain.certification.entity.Certification;
-import org.sopt.certi_server.domain.job.entity.Job;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Builder
 public record CertificationDetailResponse(
@@ -21,7 +19,7 @@ public record CertificationDetailResponse(
         String applicationMethod,
         String applicationUrl,
         String expirationPeriod,
-        String state
+        String certState
 
 
 ) {

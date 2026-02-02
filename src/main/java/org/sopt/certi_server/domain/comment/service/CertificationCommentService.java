@@ -87,7 +87,7 @@ public class CertificationCommentService {
             final Long certificationId,
             final Pageable pageble
     ){
-        Page<CertificationComment> commentPage = certificationCommentRepository.findByCertificationId(certificationId, pageble);
+        Page<CertificationComment> commentPage = certificationCommentRepository.findByCertificationId(certificationId, userId, pageble);
 
         List<User> users = commentPage.getContent().stream()
                 .map(CertificationComment::getUser)
