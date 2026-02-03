@@ -90,6 +90,9 @@ dependencies {
 
 	implementation 'com.nimbusds:nimbus-jose-jwt:9.37.3'
 
+	// id 토큰 복호화를 위한 구글 api 클라이언트 라이브러리
+	implementation 'com.google.api-client:google-api-client:2.2.0'
+
 }
 
 
@@ -117,4 +120,5 @@ clean {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
 

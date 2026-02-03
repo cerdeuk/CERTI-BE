@@ -1,5 +1,9 @@
 package org.sopt.certi_server.domain.user.service;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.user.dto.request.google.GoogleTokenRequest;
@@ -11,6 +15,8 @@ import org.sopt.certi_server.global.client.google.GoogleApiFeignClient;
 import org.sopt.certi_server.global.client.google.GoogleOAuthFeignClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @Service
@@ -56,6 +62,7 @@ public class GoogleService implements SocialService{
     public OAuthUserInformation getUserInfoByAccessToken(String token) {
         try{
             log.info("google access token: {}", token);
+            verifyToken(token);
             GoogleUserInformation information = googleApiFeignClient.getUserInfo("Bearer " + token);
             return OAuthUserInformation.from(information);
         }catch (Exception e) {
@@ -77,6 +84,37 @@ public class GoogleService implements SocialService{
         }catch (Exception e) {
             log.error("google oauth token 발급 실패: {}", e.getMessage());
             throw e;
+        }
+    }
+
+    public void verifyToken(String idTokenString) {
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+                // 내 앱의 Client ID를 설정 (중요: 다른 앱에서 발급된 토큰을 차단함)
+                .setAudience(Collections.singletonList(googleClientId))
+                .build();
+
+        try {
+            // 1. 토큰 검증 (서명 확인, 만료 여부 확인 등)
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+
+            if (idToken != null) {
+                // 2. 복호화된 페이로드(내용물) 가져오기
+                GoogleIdToken.Payload payload = idToken.getPayload();
+
+                // 3. 사용자 정보 추출
+                String userId = payload.getSubject();    // 구글의 유니크한 사용자 ID
+                String email = payload.getEmail();       // 이메일
+                String name = (String) payload.get("name"); // 이름
+                String pictureUrl = (String) payload.get("picture"); // 프로필 사진
+
+                log.info("User ID: {}", userId);
+                log.info("Email: {}", email);
+            } else {
+                System.out.println("유효하지 않은 토큰입니다.");
+            }
+        } catch (Exception e) {
+            log.error("구글 ID 토큰 파싱 실패");
+            e.printStackTrace();
         }
     }
 }
