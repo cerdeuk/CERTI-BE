@@ -55,6 +55,7 @@ public class GoogleService implements SocialService{
     @Override
     public OAuthUserInformation getUserInfoByAccessToken(String token) {
         try{
+            log.info("google access token: {}", token);
             GoogleUserInformation information = googleApiFeignClient.getUserInfo("Bearer " + token);
             return OAuthUserInformation.from(information);
         }catch (Exception e) {
