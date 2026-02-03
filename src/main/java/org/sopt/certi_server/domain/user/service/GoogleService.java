@@ -71,6 +71,14 @@ public class GoogleService implements SocialService{
         }
     }
 
+    // access token이 아닌, id token 방식
+    public OAuthUserInformation getUserInfoByIdToken(String idToken){
+
+        GoogleUserInformation googleUserInformation = verifyToken(idToken);
+
+        return OAuthUserInformation.from(googleUserInformation);
+    }
+
     public GoogleOAuthResponse getOAuthToken(String code){
         try{
             return googleOAuthFeignClient.getToken(
@@ -87,7 +95,7 @@ public class GoogleService implements SocialService{
         }
     }
 
-    public void verifyToken(String idTokenString) {
+    public GoogleUserInformation verifyToken(String idTokenString) {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
                 // 내 앱의 Client ID를 설정 (중요: 다른 앱에서 발급된 토큰을 차단함)
                 .setAudience(Collections.singletonList(googleClientId))
@@ -109,6 +117,8 @@ public class GoogleService implements SocialService{
 
                 log.info("User ID: {}", userId);
                 log.info("Email: {}", email);
+
+                return new GoogleUserInformation(userId, name, null, null, pictureUrl, email, false, null);
             } else {
                 System.out.println("유효하지 않은 토큰입니다.");
             }
