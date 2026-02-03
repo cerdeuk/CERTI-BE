@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public record PreCertificationSimple(
         Long certificationId,
+        Long preCertificationId,
         String certificationName,
         String certificationType,
         String description,
@@ -23,6 +24,7 @@ public record PreCertificationSimple(
     public static PreCertificationSimple from(UserPreCertification upc) {
         return new PreCertificationSimple(
                 upc.getCertification().getId(),
+                upc.getId(),
                 upc.getCertification().getName(),
                 upc.getCertification().getCertificationType().getKoreanName(),
                 upc.getCertification().getDescription(),
