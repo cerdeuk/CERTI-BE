@@ -13,6 +13,8 @@ import org.sopt.certi_server.domain.user.dto.response.google.GoogleOAuthResponse
 import org.sopt.certi_server.domain.user.dto.response.google.GoogleUserInformation;
 import org.sopt.certi_server.global.client.google.GoogleApiFeignClient;
 import org.sopt.certi_server.global.client.google.GoogleOAuthFeignClient;
+import org.sopt.certi_server.global.error.code.ErrorCode;
+import org.sopt.certi_server.global.error.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -126,5 +128,6 @@ public class GoogleService implements SocialService{
             log.error("구글 ID 토큰 파싱 실패");
             e.printStackTrace();
         }
+        throw new BusinessException(ErrorCode.BAD_REQUEST_DATA);
     }
 }
