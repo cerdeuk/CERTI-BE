@@ -64,9 +64,10 @@ public class GoogleService implements SocialService{
     public OAuthUserInformation getUserInfoByAccessToken(String token) {
         try{
             log.info("google access token: {}", token);
-            verifyToken(token);
-            GoogleUserInformation information = googleApiFeignClient.getUserInfo("Bearer " + token);
-            return OAuthUserInformation.from(information);
+
+            // 구글은 access token을 클라이언트에서 발급받는 방식이 anti pattern
+            // 따라서 id token을 분석해 사용자 정보를 추출한다.
+            return getUserInfoByIdToken(token);
         }catch (Exception e) {
             log.error("google user data 획득 실패: {}", e.getMessage());
             throw e;
