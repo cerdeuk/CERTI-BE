@@ -57,13 +57,13 @@ public class UserService {
     public GetUserResponse getHomeUser(final Long userId) {
         User user = getUser(userId);
         List<MajorImpl> majorList = majorImplRepository.findMajorImplByUser(user);
-
+        List<Job> jobList = jobRepository.findAllByUser(user);
         if(majorList.isEmpty()){
             throw new NotFoundException(ErrorCode.MAJOR_NOT_FOUND);
         }
 
         int percentage = calculateResumeProgress(user);
-        return GetUserResponse.from(user, majorList.get(0), percentage);
+        return GetUserResponse.from(user, majorList.get(0), jobList.get(0), percentage);
     }
 
     public GetJobResponse getUserJob(final Long userId) {
