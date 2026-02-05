@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @Builder
 public record GetUserResponse(
+        Long userId,
         String nickname,
         String name,
         String university,
@@ -18,6 +19,7 @@ public record GetUserResponse(
 ) {
     public static GetUserResponse from(User user, MajorImpl majorImpl, int percentage) {
         return GetUserResponse.builder()
+                .userId(user.getId())
                 .nickname(user.getNickname())
                 .name(user.getName())
                 .university(user.getUniversity().getName())
