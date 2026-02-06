@@ -10,8 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public enum CardType {
 
     FIRST("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D1.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D1-2.png", 0),
-    SECOND("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D3.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D3-2.png", 1),
-    THIRD("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D2.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D2-2.png", 2);
+    SECOND("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D2.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D2-2.png", 1),
+    THIRD("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D3.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D3-2.png", 2);
 
     public static final int CARD_TOTAL = 3;
     private static final CardType[] VALUES = values();
