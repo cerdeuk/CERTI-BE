@@ -9,12 +9,11 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequiredArgsConstructor
 public enum CardType {
 
-    FIRST("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3Dskyblue-2.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/Property+1%3D1-2.png", 0),
-    SECOND("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3Dyellow-2.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/Property+1%3D2-2.png", 1),
-    THIRD("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3Dblue-2.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/Property+1%3D3-2.png", 2),
-    FOURTH("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3Dwhite-2.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/Property+1%3D4-2.png", 3);
+    FIRST("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D1.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D1-2.png", 0),
+    SECOND("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D3.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D3-2.png", 1),
+    THIRD("https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D2.png", "https://sopt-certi-bucket.s3.ap-northeast-2.amazonaws.com/certi/color%3D2-2.png", 2);
 
-    public static final int CARD_TOTAL = 4;
+    public static final int CARD_TOTAL = 3;
     private static final CardType[] VALUES = values();
     private final String cardFrontImageUrl;
     private final String cardBackImageUrl;
