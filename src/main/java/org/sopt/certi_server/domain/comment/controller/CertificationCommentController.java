@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.comment.dto.request.CommentRegisterRequest;
 import org.sopt.certi_server.domain.comment.dto.response.CertificationCommentResponse;
+import org.sopt.certi_server.domain.comment.dto.response.CommentCreateResponse;
 import org.sopt.certi_server.domain.comment.service.CertificationCommentService;
 import org.sopt.certi_server.global.error.code.SuccessCode;
 import org.sopt.certi_server.global.error.dto.PageResponse;
@@ -27,12 +28,11 @@ public class CertificationCommentController {
 
     @PostMapping
     @Operation(summary = "댓글 등록 API", description = "댓글을 등록합니다.")
-    public ResponseEntity<SuccessResponse<Void>> registerCertificationComment(
+    public ResponseEntity<SuccessResponse<CommentCreateResponse>> registerCertificationComment(
             @RequestBody CommentRegisterRequest commentRegisterRequest,
             @AuthenticationPrincipal Long userId
     ){
-        certificationCommentService.registerComment(userId, commentRegisterRequest);
-        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE, certificationCommentService.registerComment(userId, commentRegisterRequest)));
     }
 
     @DeleteMapping(value = "/{commentId}")

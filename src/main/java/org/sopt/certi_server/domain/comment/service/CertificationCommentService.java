@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.comment.service;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
@@ -7,6 +8,7 @@ import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
 import org.sopt.certi_server.domain.comment.dto.response.CertificationCommentResponse;
 import org.sopt.certi_server.domain.comment.dto.request.CommentRegisterRequest;
+import org.sopt.certi_server.domain.comment.dto.response.CommentCreateResponse;
 import org.sopt.certi_server.domain.comment.entity.CertificationComment;
 import org.sopt.certi_server.domain.comment.entity.CertificationCommentLike;
 import org.sopt.certi_server.domain.comment.repository.CertificationCommentLikeRepository;
@@ -40,6 +42,7 @@ public class CertificationCommentService {
     private final AcquisitionRepository acquisitionRepository;
     private final UserPreCertificationRepository userPreCertificationRepository;
     private final UserJobRepository userJobRepository;
+    private final EntityManager em;
 
     /**
      * 댓글 등록 메서드
@@ -48,7 +51,7 @@ public class CertificationCommentService {
      * @param request
      */
     @Transactional
-    public void registerComment(
+    public CommentCreateResponse registerComment(
             final Long userId,
             final CommentRegisterRequest request
     ){
@@ -71,7 +74,10 @@ public class CertificationCommentService {
                 .content(request.content())
                 .build();
 
+        em.flush();
         certificationCommentRepository.save(newCertificationComment);
+
+        return new CommentCreateResponse(newCertificationComment.getId());
     }
 
 
