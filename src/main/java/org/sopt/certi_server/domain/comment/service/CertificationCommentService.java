@@ -153,7 +153,7 @@ public class CertificationCommentService {
             List<String> jobNames = userJobMap.getOrDefault(user.getId(), Collections.emptyList());
 
             // 4-2. State Map에서 조회
-            String state = userStateMap.get(user.getId()); // 없으면 null
+            String state = userStateMap.getOrDefault(user.getId(), "NORMAL"); // 없으면 null
 
             return CertificationCommentResponse.from(comment, state, jobNames.get(0), isLike);
         });
