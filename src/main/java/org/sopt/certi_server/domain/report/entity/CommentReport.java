@@ -3,6 +3,7 @@ package org.sopt.certi_server.domain.report.entity;
 import org.sopt.certi_server.domain.comment.entity.CertificationComment;
 import org.sopt.certi_server.domain.user.entity.User;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +33,9 @@ public class CommentReport {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
+	private String content;
+
 	@ManyToOne(targetEntity = CertificationComment.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "certification_comment_id", nullable = false)
 	private CertificationComment certificationComment;
@@ -40,12 +44,13 @@ public class CommentReport {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
-	public CommentReport(CertificationComment certificationComment, User user) {
+	public CommentReport(CertificationComment certificationComment, User user, String content) {
 		this.certificationComment = certificationComment;
 		this.user = user;
+		this.content = content;
 	}
 
-	public static CommentReport createCommentReport(final CertificationComment certificationComment, final User user) {
-		return new CommentReport(certificationComment, user);
+	public static CommentReport createCommentReport(final CertificationComment certificationComment, final User user, final String content) {
+		return new CommentReport(certificationComment, user, content);
 	}
 }
