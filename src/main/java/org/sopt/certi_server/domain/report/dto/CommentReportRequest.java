@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.report.dto;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -12,7 +13,8 @@ public record CommentReportRequest(
 		description = "신고 사유",
 		example = "욕설이 포함되어 있습니다."
 	)
-	@Size(min = 1, max = 100, message = "신고 내용은 최소 1자, 최대 100자입니다")
+	@Size(max = 100, message = "신고 내용은 최소 1자, 최대 100자입니다")
+	@Nullable
 	String content,
 
 	@Schema(
