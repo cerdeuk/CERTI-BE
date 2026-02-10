@@ -1,5 +1,6 @@
 package org.sopt.certi_server.domain.report.controller;
 
+import org.sopt.certi_server.domain.report.dto.CommentReportRequest;
 import org.sopt.certi_server.domain.report.service.ReportService;
 import org.sopt.certi_server.global.error.code.SuccessCode;
 import org.sopt.certi_server.global.error.dto.SuccessResponse;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,9 +34,10 @@ public class ReportController {
 			required = true
 		)
 		@PathVariable(name = "certification_comment_id") Long commentId,
+		@RequestBody CommentReportRequest commentReportRequest,
 		@AuthenticationPrincipal Long userId
 	){
-		reportService.createCommentReport(userId, commentId);
+		reportService.createCommentReport(commentReportRequest, userId, commentId);
 		return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
 	}
 }

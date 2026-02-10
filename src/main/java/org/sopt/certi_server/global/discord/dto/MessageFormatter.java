@@ -13,13 +13,15 @@ public class MessageFormatter {
 		"```[%s] 댓글 %d 신고가 접수되었습니다.\n\n" +
 			"[신고자]\n" +
 			"유저 아이디 : %d\n" +
-			"유저 닉네임 : %s\n\n" +
+			"유저 닉네임 : %s\n" +
+			"신고 사유 : %s\n" +
+			"차단요청 여부 : %s\n\n" +
 			"[신고된 댓글 작성자]\n" +
 			"유저 아이디 : %s\n" +
 			"유저 닉네임 : %s\n\n" +
 			"[신고된 댓글 내용]\n%s\n```";
 
-	public static String formatCommentReport(CommentReport report) {
+	public static String formatCommentReport(CommentReport report, boolean shouldBlockUser) {
 		CertificationComment comment = report.getCertificationComment();
 		User reporter = report.getUser();
 		User commentWriter = comment.getUser();
@@ -33,6 +35,8 @@ public class MessageFormatter {
 			comment.getId(),
 			reporter.getId(),
 			reporter.getNickname(),
+			report.getContent(),
+			shouldBlockUser ? "차단 요청함" : "요청하지 않음",
 			commentWriterId,
 			commentWriterNickname,
 			content
