@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
 	name = "discordwebhookClient",
-	url = "${discord.webhook-url}"
+	url = "${discord.server.webhook-url}"
 )
 public interface DiscordWebhookClient {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
