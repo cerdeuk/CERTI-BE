@@ -33,7 +33,7 @@ public class CommentReport {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = true, length = 100)
 	private String content;
 
 	@ManyToOne(targetEntity = CertificationComment.class, fetch = FetchType.LAZY)
