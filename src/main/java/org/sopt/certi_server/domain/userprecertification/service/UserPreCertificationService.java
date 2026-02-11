@@ -169,7 +169,8 @@ public class UserPreCertificationService {
             city,
             state,
             testDate,
-            false                // isAcquired
+            false,
+            upc.getCertification().getCertificationType().getKoreanName()
         );
     }
 

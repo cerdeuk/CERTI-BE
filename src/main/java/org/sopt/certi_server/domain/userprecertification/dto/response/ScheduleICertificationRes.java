@@ -20,6 +20,7 @@ public record ScheduleICertificationRes(
 	String city,
 	String state,
 	String testDate,
-	boolean isAcquired
+	boolean isAcquired,
+	String certificationType
 ) {
 }
