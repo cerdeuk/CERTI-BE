@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.comment.dto.request.CommentRegisterRequest;
+import org.sopt.certi_server.domain.comment.dto.request.CommentSortType;
 import org.sopt.certi_server.domain.comment.dto.response.CertificationCommentResponse;
 import org.sopt.certi_server.domain.comment.dto.response.CommentCreateResponse;
 import org.sopt.certi_server.domain.comment.service.CertificationCommentService;
@@ -48,16 +49,12 @@ public class CertificationCommentController {
     @GetMapping
     @Operation(summary = "댓글 조회 API", description = "해당 자격증의 댓글을 조회합니다.")
     public ResponseEntity<SuccessResponse<PageResponse<CertificationCommentResponse>>> getCommentList(
-        @AuthenticationPrincipal Long userId,
-        @RequestParam(value = "certificationId") Long certificationId,
-        @PageableDefault(
-                page = 0,
-                size = 10,
-                sort = "createdTime",
-                direction = Sort.Direction.DESC
-        ) final Pageable pageable
+            @AuthenticationPrincipal Long userId,
+            @RequestParam(value = "certificationId") Long certificationId,
+            @RequestParam(defaultValue = "LATEST") CommentSortType commentSortType,
+            @PageableDefault(page = 0, size = 12) final Pageable pageable
     ){
-        Page<CertificationCommentResponse> responsePage = certificationCommentService.getCommentsByCertification(userId, certificationId, pageable);
+        Page<CertificationCommentResponse> responsePage = certificationCommentService.getCommentsByCertification(userId, certificationId, pageable, commentSortType);
 
         PageResponse<CertificationCommentResponse> responsePageDto = PageResponse.from(responsePage);
 

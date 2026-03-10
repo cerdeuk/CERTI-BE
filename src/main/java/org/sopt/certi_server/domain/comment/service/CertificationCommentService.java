@@ -2,10 +2,12 @@ package org.sopt.certi_server.domain.comment.service;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.sopt.certi_server.domain.acquisition.entity.Acquisition;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.service.CertificationService;
+import org.sopt.certi_server.domain.comment.dto.request.CommentSortType;
 import org.sopt.certi_server.domain.comment.dto.response.CertificationCommentResponse;
 import org.sopt.certi_server.domain.comment.dto.request.CommentRegisterRequest;
 import org.sopt.certi_server.domain.comment.dto.response.CommentCreateResponse;
@@ -23,7 +25,9 @@ import org.sopt.certi_server.global.error.code.ErrorCode;
 import org.sopt.certi_server.global.error.exception.NotFoundException;
 import org.sopt.certi_server.global.error.exception.UnauthorizedException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +37,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class CertificationCommentService {
 
     private final UserService userService;
@@ -85,15 +90,23 @@ public class CertificationCommentService {
      * 자격증의 댓글을 조회하는 메서드
      *
      * @param certificationId
-     * @param pageble
+     * @param pageable
      * @return
      */
     public Page<CertificationCommentResponse> getCommentsByCertification(
             final Long userId,
             final Long certificationId,
-            final Pageable pageble
-    ){
-        Page<CertificationComment> commentPage = certificationCommentRepository.findByCertificationId(certificationId, userId, pageble);
+            final Pageable pageable,
+            final CommentSortType commentSortType
+            ){
+
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                getSort(commentSortType)
+        );
+
+        Page<CertificationComment> commentPage = certificationCommentRepository.findByCertificationId(certificationId, userId, sortedPageable);
 
         List<User> users = commentPage.getContent().stream()
                 .map(CertificationComment::getUser)
@@ -220,5 +233,15 @@ public class CertificationCommentService {
     public CertificationComment getComment(Long commentId){
         return certificationCommentRepository.findById(commentId)
             .orElseThrow(() -> new NotFoundException(ErrorCode.COMMENT_NOT_FOUND));
+    }
+
+    private Sort getSort(CommentSortType commentSortType) {
+        return switch (commentSortType) {
+            case LATEST -> Sort.by(Sort.Direction.DESC, "createdTime");
+            case POPULAR -> Sort.by(
+                    Sort.Order.desc("likeCount"),
+                    Sort.Order.desc("createdTime")
+            );
+        };
     }
 }

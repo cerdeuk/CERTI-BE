@@ -10,6 +10,7 @@ import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
 import org.sopt.certi_server.domain.comment.dto.request.CommentRegisterRequest;
+import org.sopt.certi_server.domain.comment.dto.request.CommentSortType;
 import org.sopt.certi_server.domain.comment.dto.response.CertificationCommentResponse;
 import org.sopt.certi_server.domain.comment.entity.CertificationComment;
 import org.sopt.certi_server.domain.comment.entity.CertificationCommentLike;
@@ -88,7 +89,7 @@ class CertificationCommentServiceTest {
     void setUp() {
 
         testUniversity = universityRepository.findById(1L).orElseThrow();
-        testMajor = majorImplRepository.findMajorImplByName("전산학/컴퓨터공학").orElseThrow();
+        testMajor = majorImplRepository.findMajorImplByName("컴퓨터공학과").orElseThrow();
         // Mocking 대신 실제 DB에 데이터 저장
         testUser = userRepository.save(User.builder()
                 .email("lee@gmail.com")
@@ -278,7 +279,8 @@ class CertificationCommentServiceTest {
             // Given
             Long userId = testUser.getId();
             Long certificationId = testCertification.getId();
-            Pageable pageable = PageRequest.of(0, 10);
+            Pageable pageable = PageRequest.of(0, 12);
+            CommentSortType commentSortType = CommentSortType.LATEST;
 
             // 1. 직무 정보 DB에 저장
             userJobRepository.save(UserJob.builder().user(testUser).job(testJob).build());
@@ -296,7 +298,7 @@ class CertificationCommentServiceTest {
                     .build());
 
             // When
-            Page<CertificationCommentResponse> responsePage = certificationCommentService.getCommentsByCertification(userId, certificationId, pageable);
+            Page<CertificationCommentResponse> responsePage = certificationCommentService.getCommentsByCertification(userId, certificationId, pageable, commentSortType);
 
             // Then
             // 1. DTO가 올바르게 조립되었는지 검증
