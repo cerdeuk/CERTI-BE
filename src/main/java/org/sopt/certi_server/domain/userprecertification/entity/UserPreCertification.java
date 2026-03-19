@@ -40,7 +40,7 @@ public class UserPreCertification extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private IconType iconType;
 
-    @Column(name = "test_date", nullable = false)
+    @Column(name = "test_date")
     private LocalDateTime testDate;
 
     @Embedded

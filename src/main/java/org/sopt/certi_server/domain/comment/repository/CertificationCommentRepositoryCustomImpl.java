@@ -25,7 +25,6 @@ public class CertificationCommentRepositoryCustomImpl implements CertificationCo
 
     @Override
     public Page<CertificationComment> findByCertificationId(Long certificationId, Long userId, Pageable pageable) {
-
         QUserBlock block = QUserBlock.userBlock;
         QCertificationComment comment = QCertificationComment.certificationComment;
 
