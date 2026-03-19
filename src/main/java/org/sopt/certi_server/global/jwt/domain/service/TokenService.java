@@ -34,10 +34,11 @@ public class TokenService {
 	@Transactional
 	public void deleteRefreshToken(final Long userId) {
 		log.info("Deleting refresh token for userId : {}", userId);
-		Token token = tokenRepository.findById(userId)
-			.orElseThrow(() -> new NotFoundException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
-		tokenRepository.delete(token);
-		log.info("Successfully deleted refresh token for userId : {}", userId);
+		if (tokenRepository.existsById(userId)) {
+			tokenRepository.deleteById(userId);
+			log.info("Successfully deleted refresh token for userId : {}", userId);
+		};
+		log.info("{}의 Refresh token이 존재하지 않습니다", userId);
 	}
 
 	public Token getTokenByUserId(final Long userId) {
