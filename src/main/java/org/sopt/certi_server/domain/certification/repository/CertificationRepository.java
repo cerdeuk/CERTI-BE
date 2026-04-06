@@ -36,10 +36,12 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
     @Query("""
         select c
         from Certification c
-            left join Favorite f on f.certification = c
-            left join f.user u on u.track = :track
-        group by c
-        order by count(f) desc
+        join CertificationTrack ct on ct.certification = c
+        left join Favorite f on (f.certification = c)
+        left join f.user u on (u = f.user and u.track = :track)
+        where ct.track = :track
+        group by c.id
+        order by count(u) desc
 """)
     List<Certification> findTopCertificationsByTrack(
         @Param("track") TrackType track,
