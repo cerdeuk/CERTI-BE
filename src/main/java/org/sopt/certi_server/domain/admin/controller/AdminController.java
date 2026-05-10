@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.sopt.certi_server.domain.admin.dto.request.CertificationPutRequest;
 import org.sopt.certi_server.domain.admin.dto.request.*;
 import org.sopt.certi_server.domain.admin.dto.response.AdminCertificationDetailResponse;
-import org.sopt.certi_server.domain.admin.dto.response.AdminCertificationListResponse;
 import org.sopt.certi_server.domain.admin.dto.response.AdminCertificationResponse;
 import org.sopt.certi_server.domain.admin.service.AdminService;
 import org.sopt.certi_server.domain.certification.dto.request.CertificationCreateRequest;
@@ -86,7 +86,6 @@ public class AdminController {
 
     @PostMapping(value = "/agency")
     @Operation(summary = "인증기관 추가 API", description = "인증기관을 추가합니다.")
-
     public ResponseEntity<SuccessResponse<Void>> addAgency(@RequestBody AgencyCreateRequest request) {
         adminService.addAgency(request);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_CREATE));
@@ -99,16 +98,25 @@ public class AdminController {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, adminService.getCertificationDetail(certificationId)));
     }
 
+    @PutMapping(value = "/certification/{certificationId}")
+    @Operation(summary = "자격증 수정 API", description = "자격증을 수정하는 API입니다. 필드에 넣은 모든 값을 기반으로 전체 리소스를 덮어쓰니 주의해야 합니다.")
+    public ResponseEntity<SuccessResponse<Void>> putCertificationDetail(
+            @RequestBody CertificationPutRequest request
+    ){
+        adminService.updateCertificationDetail(request);
+        return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_UPDATE));
+    }
+
     @GetMapping(value = "/certification")
     @Operation(summary = "자격증 리스트 조회 API", description = "자격증 리스트를 페이징을 통해 조회합니다.")
     public ResponseEntity<SuccessResponse<PageResponse<AdminCertificationResponse>>> getAllCertifications(
-            @Valid @RequestBody PageRequest request
+            @Valid @ModelAttribute PageRequest request
     ) {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, adminService.getAllCertifications(request)));
     }
 
     @DeleteMapping(value = "/certification/{certificationId}")
-    @Operation(summary = "", description = "")
+    @Operation(summary = "자격증 삭제 API", description = "자격증을 삭제합니다.")
     public ResponseEntity<SuccessResponse<Void>> deleteCertification(@PathVariable Long certificationId) {
         adminService.deleteCertification(certificationId);
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_DELETE));

@@ -1,6 +1,7 @@
 package org.sopt.certi_server.domain.comment.repository;
 
 
+import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.comment.entity.CertificationComment;
 import org.sopt.certi_server.domain.user.entity.User;
 import org.springframework.data.domain.Page;
@@ -36,4 +37,6 @@ public interface CertificationCommentRepository extends JpaRepository<Certificat
     void decrementLikeCount(@Param("commentId") Long commentId);
 
     void deleteAllByUser(User user);
+
+    void deleteAllByCertification(Certification certification);
 }
