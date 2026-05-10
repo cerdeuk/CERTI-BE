@@ -102,7 +102,7 @@ public class AdminController {
     @GetMapping(value = "/certification")
     @Operation(summary = "자격증 리스트 조회 API", description = "자격증 리스트를 페이징을 통해 조회합니다.")
     public ResponseEntity<SuccessResponse<PageResponse<AdminCertificationResponse>>> getAllCertifications(
-            @Valid @RequestBody PageRequest request
+            @Valid @ModelAttribute PageRequest request
     ) {
         return ResponseEntity.ok(SuccessResponse.of(SuccessCode.SUCCESS_FETCH, adminService.getAllCertifications(request)));
     }

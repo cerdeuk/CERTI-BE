@@ -23,7 +23,7 @@ import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
-    @Value("https://www.certii.shop")
+    @Value("${swagger.server-uri}")
     private String serverUri;
 
     @Bean
