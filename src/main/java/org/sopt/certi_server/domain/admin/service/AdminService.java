@@ -4,14 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.sopt.certi_server.domain.acquisition.repository.AcquisitionRepository;
 import org.sopt.certi_server.domain.admin.dto.request.*;
 import org.sopt.certi_server.domain.admin.dto.response.*;
+import org.sopt.certi_server.domain.certification.dto.response.CertificationDetailResponse;
 import org.sopt.certi_server.domain.certification.entity.Agency;
 import org.sopt.certi_server.domain.certification.entity.Certification;
 import org.sopt.certi_server.domain.certification.entity.CertificationJob;
 import org.sopt.certi_server.domain.certification.entity.CertificationMajor;
+import org.sopt.certi_server.domain.certification.entity.enums.TestType;
 import org.sopt.certi_server.domain.certification.repository.AgencyRepository;
 import org.sopt.certi_server.domain.certification.repository.CertificationJobRepository;
 import org.sopt.certi_server.domain.certification.repository.CertificationMajorRepository;
 import org.sopt.certi_server.domain.certification.repository.CertificationRepository;
+import org.sopt.certi_server.domain.comment.repository.CertificationCommentRepository;
 import org.sopt.certi_server.domain.favorite.repository.FavoriteRepository;
 import org.sopt.certi_server.domain.job.entity.Job;
 import org.sopt.certi_server.domain.job.repository.JobRepository;
@@ -46,6 +49,7 @@ public class AdminService {
     private final MajorRepository majorRepository;
     private final MajorImplRepository majorImplRepository;
     private final AgencyRepository agencyRepository;
+    private final CertificationCommentRepository certificationCommentRepository;
 
     public AdminCertificationDetailResponse getCertificationDetail(Long certificationId) {
 
@@ -56,7 +60,7 @@ public class AdminService {
         List<CertificationJob> certificationJobList = certificationJobRepository.findAllByCertification(certification);
 
         return AdminCertificationDetailResponse.of(
-                certificationId,
+                CertificationDetailResponse.from(certification, null),
                 certificationMajorList.stream()
                         .map(CertificationMajorSimple::from)
                         .toList(),
@@ -85,6 +89,7 @@ public class AdminService {
         Certification certification = certificationRepository.findById(certificationId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
 
+        certificationCommentRepository.deleteAllByCertification(certification);
         certificationJobRepository.deleteAllByCertification(certification);
         certificationMajorRepository.deleteAllByCertification(certification);
         acquisitionRepository.deleteAllByCertification(certification);
@@ -175,5 +180,32 @@ public class AdminService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.DATA_NOT_FOUND));
 
         certificationJob.updateWeight(request.weight());
+    }
+
+    @Transactional
+    public void updateCertificationDetail(CertificationPutRequest request) {
+        Certification certification = certificationRepository.findById(request.certificationId()).orElseThrow(() -> {
+            throw new NotFoundException(ErrorCode.CERTIFICATION_NOT_FOUND);
+        });
+
+        Agency agency = agencyRepository.findByName(request.agencyName()).orElseThrow(() -> {
+            throw new NotFoundException(ErrorCode.AGENCY_NOT_FOUND);
+        });
+
+        TestType testType = TestType.from(request.testType());
+
+        certification.update(
+                request.certificationName(),
+                request.tags(),
+                request.averagePeriod(),
+                request.charge(),
+                agency,
+                testType,
+                request.description(),
+                request.testDateInformation(),
+                request.applicationMethod(),
+                request.applicationUrl(),
+                request.expirationPeriod()
+        );
     }
 }

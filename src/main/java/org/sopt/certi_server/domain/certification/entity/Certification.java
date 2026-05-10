@@ -89,5 +89,31 @@ public class Certification extends BaseTimeEntity {
         this.applicationUrl = applicationUrl;
         this.expirationPeriod = expirationPeriod;
     }
+
+    public void update(
+            String certificationName,
+            List<String> tags,
+            String averagePeriod,
+            String charge,
+            Agency agency,
+            TestType testType,
+            String description,
+            String testDateInformation,
+            String applicationMethod,
+            String applicationUrl,
+            String expirationPeriod
+    ) {
+        this.name = certificationName;
+        this.tags = tags;
+        this.averagePeriod = averagePeriod;
+        this.charge = charge;
+        this.agency = agency;
+        this.testType = testType;
+        this.description = description;
+        this.testDateInformation = testDateInformation;
+        this.applicationMethod = applicationMethod;
+        this.applicationUrl = applicationUrl;
+        this.expirationPeriod = expirationPeriod;
+    }
 }
 
